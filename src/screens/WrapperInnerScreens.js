@@ -8,7 +8,6 @@ import { Context as AuthContext } from '../context/AuthContext';
 
 import HomeScreen from './HomeScreen';
 
-import ShoppingHome from './Shopping/ShoppingHome';
 
 import tw from 'tailwind-react-native-classnames';
 import Images from '@assets/images';
