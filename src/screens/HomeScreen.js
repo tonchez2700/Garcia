@@ -35,7 +35,7 @@ const HomeScreen = () => {
                             icon='map'
                             color='#24104F'
                             fontFamily='font-awesome-5'
-                            navigateScreen='ShoppingHome' />
+                            navigateScreen='MapsSCreen' />
                         <MenuItem
                             title='MIS CONTRIBUCIONES'
                             icon='list'

@@ -7,7 +7,7 @@ import { Provider as RegistrationProvider } from '../context/RegistrationContext
 import { Context as AuthContext } from '../context/AuthContext';
 
 import HomeScreen from './HomeScreen';
-
+import MapScreen from './MapScreen';
 
 import tw from 'tailwind-react-native-classnames';
 import Images from '@assets/images';
@@ -60,6 +60,7 @@ const WrapperInnerScreens = () => {
                     initialRouteName='HomeScreen'
                     useLegacyImplementation>
                     <Drawer.Screen name="HomeScreen" component={HomeScreen} />
+                    <Drawer.Screen name="MapScreen" component={MapScreen} />
                 </Drawer.Navigator>
             </RegistrationProvider>
         </SafeAreaView>
