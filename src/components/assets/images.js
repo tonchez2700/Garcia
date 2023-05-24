@@ -9,6 +9,9 @@ const images = {
     Cards: require('./img/tarjetas.png'),
     splash_background_image: require('./img/splash-background.jpg'),
     navBAr_Background: require('./img/NavBar-background.png'),
+    garciaBackgraund: require('./img/garciaBackgraund.png'),
+    garciaLogo: require('./img/garciaLogo.png'),
+
 
 }
 
