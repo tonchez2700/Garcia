@@ -8,6 +8,7 @@ import { general } from '../theme/customTheme';
 import { Icon, Button, Slider } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames'
+import MenuItem from '../components/MenuItem';
 import moment from 'moment';
 
 const HomeScreen = () => {
@@ -27,12 +28,28 @@ const HomeScreen = () => {
 
         return (
             <View style={{ flex: 1, backgroundColor: '#F7F8FAF', padding: 20, }}>
-                <TextInput
-                    fontSize={16}
-                    style={general.Input}
-                    value={state.dataFrom?.document_id}
-                    onChangeText={(value) => handleInputChange(value, 'document_id')}
-                />
+                <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: 20, borderWidth: 1, borderColor: '#7F7F7F', borderRadius: 10, alignItems: 'center' }}>
+                    <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
+                        <MenuItem
+                            title='MAPA'
+                            icon='map'
+                            color='#24104F'
+                            fontFamily='font-awesome-5'
+                            navigateScreen='ShoppingHome' />
+                        <MenuItem
+                            title='MIS CONTRIBUCIONES'
+                            icon='list'
+                            color='#24104F'
+                            fontFamily='font-awesome-5'
+                            navigateScreen='RegisterHomeScreen' />
+                        <MenuItem
+                            title='NUEVA CONTRIBUCION'
+                            icon='plus'
+                            color='#24104F'
+                            fontFamily='font-awesome-5'
+                            navigateScreen='ExpedienteRegistrationScreen' />
+                    </View>
+                </View >
             </View >
 
         );

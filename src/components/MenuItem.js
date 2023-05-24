@@ -11,13 +11,14 @@ const MenuItem = ({ title, icon, fontFamily, navigateScreen, color }) => {
     return (
         <TouchableOpacity
             onPress={() => navigation.navigate(navigateScreen)}
-            style={[tw`p-7 bg-white shadow-md rounded-md mt-3`, { borderColor: '#2D5DA0', borderWidth: 2, width: '40%' }]}>
+            style={[tw`bg-white shadow-md rounded-md `, { borderColor: '#24104F', borderWidth: 2, flexDirection: 'row', padding: 20, justifyContent: 'space-between', marginBottom: 20 }]}>
+            <Text style={{ fontSize: 20 }}>{title}</Text>
             <Icon
-                size={36}
+                size={26}
                 name={icon}
                 type={fontFamily}
                 color={color} />
-            <Text style={tw`text-black uppercase font-bold text-lg text-center mt-3`}>{title}</Text>
+
         </TouchableOpacity>
     )
 }
