@@ -47,6 +47,7 @@ const WrapperInnerScreens = () => {
             <RegistrationProvider>
                 <Drawer.Navigator
                     screenOptions={{
+                        animationTypeForReplace: 'pop',
                         drawerActiveBackgroundColor: '#005691',
                         drawerInactiveBackgroundColor: '#FFFFFF',
                         drawerActiveTintColor: '#FFFFFF',
@@ -57,7 +58,7 @@ const WrapperInnerScreens = () => {
                         )
                     }}
                     drawerContent={(props) => <CustomDrawerContent {...props} />}
-                    initialRouteName='HomeScreen'
+                    initialRouteName='MapScreen'
                     useLegacyImplementation>
                     <Drawer.Screen name="HomeScreen" component={HomeScreen} />
                     <Drawer.Screen name="MapScreen" component={MapScreen} />
