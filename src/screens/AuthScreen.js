@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { Icon, Button, SocialIcon, Divider } from "react-native-elements";
-import { FAB } from "react-native-paper";
 import InputForm from "../components/Forms/InputForm";
 import ButtonFrom from "../components/Forms/ButtonFrom";
 import { Context as AuthContext } from "../context/AuthContext";
