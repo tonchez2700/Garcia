@@ -16,9 +16,10 @@ export default function App() {
       <AuthProvider>
           <Stack.Navigator 
             initialRouteName="LoadingScreen" 
+            
             screenOptions={{ headerShown: false }}>
               <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-              <Stack.Screen name="WrapperInnerScreens" component={WrapperInnerScreens} />
+              <Stack.Screen name="WrapperInnerScreens" component={WrapperInnerScreens} options={{animation: 'slide_from_right'}} />
               <Stack.Screen name="AuthScreen" component={AuthScreen} />
           </Stack.Navigator>
       </AuthProvider>

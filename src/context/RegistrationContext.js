@@ -11,6 +11,7 @@ const initialState = {
     message: null,
     isVisible: false,
     fetchingData: false,
+    isVisibleIncident:false,
     catalog: [],
     listPatients: [],
     file_number: '',
@@ -43,13 +44,14 @@ const RegistrationReducer = (state = initialState, action) => {
                 fetchingData: false
             }
         case 'CHANGE_VISIBLE_MODAL':
-            let visibleCheck = !state.isVisible
+            let visibleType = action.payload.type;
+            let visibleCheck = !state[visibleType]
             return {
                 ...state,
                 error: false,
                 message: '',
                 fetchingData: false,
-                isVisible: visibleCheck
+                [visibleType]: visibleCheck
             }
         case 'SET_CATALOG':
             return {
@@ -136,10 +138,10 @@ const clearState = (dispatch) => {
 }
 
 const isVisibleModal = (dispatch) => {
-    return async (message) => {
+    return async (type,message) => {
         dispatch({
             type: 'CHANGE_VISIBLE_MODAL',
-            payload: { message }
+            payload: { type,message }
         })
     }
 }

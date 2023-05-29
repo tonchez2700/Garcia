@@ -23,7 +23,7 @@ const NavBar = (navigation) => {
                 width: '50%',
                 height: 55,
             }} />}
-            rightComponent={
+            leftComponent={
                 <TouchableOpacity
                     onPress={() => open()}
                     style={{ position: 'absolute' }}>

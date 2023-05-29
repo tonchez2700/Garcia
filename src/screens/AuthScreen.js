@@ -28,27 +28,27 @@ const AuthScreen = () => {
 
   const renderSignInForm = () => (
 
-    <View style={{alignItems: "center", width: "100%",}}>
+    <View style={{ alignItems: "center", width: "100%", }}>
       <Text style={styles.textSession}>Iniciar sesión</Text>
- 
-        <InputForm
-          maxLength={50}
-          name="username"
-          placeholder="Correo"
-          inputContainerStyle={styles.input}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          onChangeText={(value) => handleInputChange(value, "email")}
-        />
-        <InputForm
-          maxLength={15}
-          name="password"
-          inputContainerStyle={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry={true}
-          onChangeText={(value) => handleInputChange(value, "password")}
-        />
-      
+
+      <InputForm
+        maxLength={50}
+        name="username"
+        placeholder="Correo"
+        inputContainerStyle={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        onChangeText={(value) => handleInputChange(value, "email")}
+      />
+      <InputForm
+        maxLength={15}
+        name="password"
+        inputContainerStyle={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry={true}
+        onChangeText={(value) => handleInputChange(value, "password")}
+      />
+
       <View style={styles.buttonContainer}>
         <ButtonFrom
           handleSubmit={() => {
@@ -64,18 +64,18 @@ const AuthScreen = () => {
         <View style={styles.divider}></View>
       </View>
 
-    
-    <View style={{width: 340}}>
+
+      <View style={{ width: 340 }}>
         <View style={{ width: "100%", height: 120 }}>
-        <SocialIcon title="Continuar con Facebook" button type="facebook" />
-        <SocialIcon title="Continuar con Google" button type="google" light />
+          <SocialIcon title="Continuar con Facebook" button type="facebook" />
+          <SocialIcon title="Continuar con Google" button type="google" light />
+        </View>
       </View>
-    </View>
-      
+
 
       <Text style={styles.textDonAccount}>¿No tienes una cuenta?</Text>
 
-      <View style={{ width: "100%", height: 60, alignItems: "center", width:340,  }}>
+      <View style={{ width: "100%", height: 60, alignItems: "center", width: 340, }}>
         <TouchableOpacity
           style={styles.createAccount}
           onPress={() => setIsSignUp(true)}
@@ -93,9 +93,9 @@ const AuthScreen = () => {
   const renderSignUpForm = () => (
     <View style={styles.containerRegister}>
       {/* Aquí va tu formulario de registro */}
-      <Text style={{fontWeight: "bold", fontSize: 20}}>Crea tu cuenta</Text>
-      <View style={{width: "100%", alignItems: "center"}}>
-      <InputForm
+      <Text style={{ fontWeight: "bold", fontSize: 20 }}>Crea tu cuenta</Text>
+      <View style={{ width: "100%", alignItems: "center" }}>
+        <InputForm
           maxLength={50}
           name="username"
           placeholder="Correo"
@@ -130,30 +130,30 @@ const AuthScreen = () => {
           onChangeText={(value) => handleInputChange(value, "password")}
         />
         <View style={styles.buttonContainer}>
-        <ButtonFrom
-          handleSubmit={() => {
-            signin(inputState);
-          }}
-          loading={state.fetchingData ? true : false}
-        />
+          <ButtonFrom
+            handleSubmit={() => {
+              signin(inputState);
+            }}
+            loading={state.fetchingData ? true : false}
+          />
+        </View>
+
       </View>
-      
-      </View>
-      <View style={{width: 300, alignItems: "center", marginTop: 10, paddingBottom: 20, }}>
-        <Text style={{fontSize: 16, fontWeight: "600"}}>¿Tienes una cuenta?, Inicia sesión</Text>
+      <View style={{ width: 300, alignItems: "center", marginTop: 10, paddingBottom: 20, }}>
+        <Text style={{ fontSize: 16, fontWeight: "600" }}>¿Tienes una cuenta?, Inicia sesión</Text>
         <TouchableOpacity
           style={styles.createAccount}
           onPress={() => setIsSignUp(false)}
-          >
+        >
           <Text style={styles.textCreate}>Inicia sesión</Text>
         </TouchableOpacity>
       </View>
-      </View>
-      
+    </View>
+
   );
 
   const renderForgotPasswordForm = () => (
-    <View style={{alignItems: "center", width: "100%",}}>
+    <View style={{ alignItems: "center", width: "100%", }}>
       <Text style={styles.textSession}>Recuperar contraseña</Text>
       <InputForm
         maxLength={50}
@@ -167,13 +167,13 @@ const AuthScreen = () => {
       <View style={styles.buttonContainer}>
         <ButtonFrom
           handleSubmit={() => {
-            
+
           }}
           loading={state.fetchingData ? true : false}
         />
       </View>
       <Text style={styles.textDonAccount}>¿Recordaste tu contraseña?</Text>
-      <View style={{ width: "100%", height: 60, alignItems: "center", width:340,  }}>
+      <View style={{ width: "100%", height: 60, alignItems: "center", width: 340, }}>
         <TouchableOpacity
           style={styles.createAccount}
           onPress={() => setIsForgotPassword(false)}
@@ -197,7 +197,7 @@ const AuthScreen = () => {
               alignContent: "center",
               alignItems: "center",
               paddingBottom: 5,
-              with:  "95%"
+              with: "95%"
             }}
           >
             <Text style={[tw`text-2xl mt-10 font-bold`, { color: "#2A2929" }]}>
@@ -212,11 +212,11 @@ const AuthScreen = () => {
 
       {state.error === true
         ? Alert.alert("Error de Autentificacion", state.message, [
-            {
-              text: "OK",
-              onPress: clearState,
-            },
-          ])
+          {
+            text: "OK",
+            onPress: clearState,
+          },
+        ])
         : null}
     </View>
   );
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: "center",
     alignItems: "center",
-   
+
     borderWidth: 1,
     borderColor: "#707070B3",
     backgroundColor: "rgba(255, 255, 255, .8)",
