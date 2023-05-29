@@ -11,24 +11,24 @@ import {
 import tw from "tailwind-react-native-classnames";
 import { Icon, Button, SocialIcon, Divider } from "react-native-elements";
 import InputForm from "../components/Forms/InputForm";
-import ButtonFrom from "../components/Forms/ButtonFrom";
 import { Context as AuthContext } from "../context/AuthContext";
 import { AuthSchema } from "./../config/schemas";
 import useHandleOnChangeTextInput from "./../hooks/useHandleOnChangeTextInput";
 import { useNavigation } from "@react-navigation/native";
 import Images from "@assets/images";
 import { general } from "../theme/customTheme";
+import ButtonFrom from "../components/Forms/ButtonFrom";
 
 const AuthScreen = () => {
   const navigation = useNavigation();
   const { state, signin, clearState } = useContext(AuthContext);
-  const [inputState, handleInputChange] = useHandleOnChangeTextInput(AuthSchema);
+  const [inputState, handleInputChange] =
+    useHandleOnChangeTextInput(AuthSchema);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   const renderSignInForm = () => (
-
-    <View style={{ alignItems: "center", width: "100%", }}>
+    <View style={{ alignItems: "center", width: "100%" }}>
       <Text style={styles.textSession}>Iniciar sesión</Text>
 
       <InputForm
@@ -54,6 +54,8 @@ const AuthScreen = () => {
           handleSubmit={() => {
             signin(inputState);
           }}
+          title="Iniciar"
+          color="#629DF6"
           loading={state.fetchingData ? true : false}
         />
       </View>
@@ -64,7 +66,6 @@ const AuthScreen = () => {
         <View style={styles.divider}></View>
       </View>
 
-
       <View style={{ width: 340 }}>
         <View style={{ width: "100%", height: 120 }}>
           <SocialIcon title="Continuar con Facebook" button type="facebook" />
@@ -72,10 +73,11 @@ const AuthScreen = () => {
         </View>
       </View>
 
-
       <Text style={styles.textDonAccount}>¿No tienes una cuenta?</Text>
 
-      <View style={{ width: "100%", height: 60, alignItems: "center", width: 340, }}>
+      <View
+        style={{ width: "100%", height: 60, alignItems: "center", width: 340 }}
+      >
         <TouchableOpacity
           style={styles.createAccount}
           onPress={() => setIsSignUp(true)}
@@ -137,10 +139,18 @@ const AuthScreen = () => {
             loading={state.fetchingData ? true : false}
           />
         </View>
-
       </View>
-      <View style={{ width: 300, alignItems: "center", marginTop: 10, paddingBottom: 20, }}>
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>¿Tienes una cuenta?, Inicia sesión</Text>
+      <View
+        style={{
+          width: 300,
+          alignItems: "center",
+          marginTop: 10,
+          paddingBottom: 20,
+        }}
+      >
+        <Text style={{ fontSize: 16, fontWeight: "600" }}>
+          ¿Tienes una cuenta?, Inicia sesión
+        </Text>
         <TouchableOpacity
           style={styles.createAccount}
           onPress={() => setIsSignUp(false)}
@@ -149,11 +159,10 @@ const AuthScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
-
   );
 
   const renderForgotPasswordForm = () => (
-    <View style={{ alignItems: "center", width: "100%", }}>
+    <View style={{ alignItems: "center", width: "100%" }}>
       <Text style={styles.textSession}>Recuperar contraseña</Text>
       <InputForm
         maxLength={50}
@@ -167,13 +176,15 @@ const AuthScreen = () => {
       <View style={styles.buttonContainer}>
         <ButtonFrom
           handleSubmit={() => {
-
+            signin(inputState);
           }}
           loading={state.fetchingData ? true : false}
         />
       </View>
       <Text style={styles.textDonAccount}>¿Recordaste tu contraseña?</Text>
-      <View style={{ width: "100%", height: 60, alignItems: "center", width: 340, }}>
+      <View
+        style={{ width: "100%", height: 60, alignItems: "center", width: 340 }}
+      >
         <TouchableOpacity
           style={styles.createAccount}
           onPress={() => setIsForgotPassword(false)}
@@ -197,7 +208,7 @@ const AuthScreen = () => {
               alignContent: "center",
               alignItems: "center",
               paddingBottom: 5,
-              with: "95%"
+              with: "95%",
             }}
           >
             <Text style={[tw`text-2xl mt-10 font-bold`, { color: "#2A2929" }]}>
@@ -206,17 +217,21 @@ const AuthScreen = () => {
             <Image source={Images.garciaLogo} />
           </View>
 
-          {isSignUp ? renderSignUpForm() : (isForgotPassword ? renderForgotPasswordForm() : renderSignInForm())}
+          {isSignUp
+            ? renderSignUpForm()
+            : isForgotPassword
+            ? renderForgotPasswordForm()
+            : renderSignInForm()}
         </View>
       </ImageBackground>
 
       {state.error === true
         ? Alert.alert("Error de Autentificacion", state.message, [
-          {
-            text: "OK",
-            onPress: clearState,
-          },
-        ])
+            {
+              text: "OK",
+              onPress: clearState,
+            },
+          ])
         : null}
     </View>
   );
@@ -272,7 +287,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    padding: 20
+    padding: 20,
   },
   dividerContainer: {
     flexDirection: "row",
@@ -290,6 +305,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: 60,
     alignItems: "center",
+    justifyContent: "center",
     opacity: 1,
   },
   createAccount: {

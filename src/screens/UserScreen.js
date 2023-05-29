@@ -32,7 +32,7 @@ const UserScreen = () => {
         <Text style={styles.label}>Nombre</Text>
         <Text style={styles.userInfo}>Sharon T Lett</Text>
       </View>
-      <View style={{ width: "100%", height: "40%", }}>
+      <View style={{ width: "100%", height: "40%" }}>
         <Text style={styles.textInput}>Nombre</Text>
         <InputForm
           maxLength={50}
