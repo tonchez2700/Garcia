@@ -144,13 +144,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexWrap: 'wrap',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
         alignItems: 'flex-start',
         marginBottom: 20
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 75,
+        height: 75,
+        marginLeft: 5,
         resizeMode: 'contain',
     },
     buttonContainer: {
