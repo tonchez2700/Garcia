@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet,View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Input } from 'react-native-elements'
 
 
 const InputForm = ({ name, placeholder, ...otherProps }) => {
 
-    return (    
+    return (
         <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
                 <Input
@@ -14,14 +14,14 @@ const InputForm = ({ name, placeholder, ...otherProps }) => {
                     placeholder={placeholder}
                     name={name}
                     autoautoCapitalize='characters'
-                    inputStyle={{fontSize: 14}}
+                    inputStyle={{ fontSize: 14 }}
                     {...otherProps}
                 />
 
             </View>
         </View>
     )
-}       
+}
 
 
 export default InputForm
