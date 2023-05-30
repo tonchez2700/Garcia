@@ -23,7 +23,7 @@ const AuthScreen = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
   const [request, response, promptAsync] = Facebook.useAuthRequest({
-    clientId: "790514239377006",
+    clientId: "605649451337245",
   });
   const { state, signin, clearState } = useContext(AuthContext);
   const [inputState, handleInputChange] =
