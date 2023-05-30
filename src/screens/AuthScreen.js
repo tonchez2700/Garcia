@@ -1,28 +1,64 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet, Text, View, Alert,
-  ImageBackground, TouchableOpacity, Image,
+  ImageBackground, TouchableOpacity, Image, ScrollView
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { Icon, Button, SocialIcon, Divider } from "react-native-elements";
 import InputForm from "../components/Forms/InputForm";
 import { Context as AuthContext } from "../context/AuthContext";
 import { AuthSchema } from "./../config/schemas";
-import useHandleOnChangeTextInput from "./../hooks/useHandleOnChangeTextInput";
-import { useNavigation } from "@react-navigation/native";
-import Images from "@assets/images";
 import { AuthStyle } from "../theme/AuthStyles";
+import { useNavigation } from "@react-navigation/native";
+import useHandleOnChangeTextInput from "./../hooks/useHandleOnChangeTextInput";
+import Images from "@assets/images";
 import ButtonFrom from "../components/Forms/ButtonFrom";
-import { ScrollView } from "react-native-gesture-handler";
+import * as AuthSession from 'expo-auth-session';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import * as WebBrowser from 'expo-web-browser';
 
+WebBrowser.maybeCompleteAuthSession();
 const AuthScreen = () => {
+
   const navigation = useNavigation();
+  const [user, setUser] = useState(null);
+  const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientId: "790514239377006",
+  });
   const { state, signin, clearState } = useContext(AuthContext);
   const [inputState, handleInputChange] =
     useHandleOnChangeTextInput(AuthSchema);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
+  if (request) {
+    console.log(
+      "You need to add this url to your authorized redirect urls on your Facebook app: " +
+      request.redirectUri
+    );
+  }
+
+  useEffect(() => {
+    if (response && response.type === "success" && response.authentication) {
+      (async () => {
+        const userInfoResponse = await fetch(
+          `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id,name,picture.type(large)`
+        );
+        const userInfo = await userInfoResponse.json();
+        setUser(userInfo);
+      })();
+    }
+  }, [response]);
+
+  console.log(user);
+
+  const handlePressAsync = async () => {
+    const result = await promptAsync();
+    if (result.type !== "success") {
+      alert("Uh oh, something went wrong");
+      return;
+    }
+  };
   const renderSignInForm = () => (
     <View style={{ width: "100%", flex: 1 }}>
       <Text style={AuthStyle.textSession}>Iniciar sesión</Text>
@@ -43,7 +79,6 @@ const AuthScreen = () => {
         secureTextEntry={true}
         onChangeText={(value) => handleInputChange(value, "password")}
       />
-
       <ButtonFrom
         handleSubmit={() => {
           signin(inputState);
@@ -52,18 +87,15 @@ const AuthScreen = () => {
         color="#629DF6"
         loading={state.fetchingData ? true : false}
       />
-
       <View style={AuthStyle.dividerContainer}>
         <View style={AuthStyle.divider}></View>
         <Text> o </Text>
         <View style={AuthStyle.divider}></View>
       </View>
-
       <View style={{ width: "100%" }}>
-        <SocialIcon title="Continuar con Facebook" button type="facebook" />
+        <SocialIcon title="Continuar con Facebook" button type="facebook" onPress={async () => handlePressAsync()} />
         <SocialIcon title="Continuar con Google" button type="google" light />
       </View>
-
       <Text style={AuthStyle.textDonAccount}>¿No tienes una cuenta?</Text>
       <View style={{ marginBottom: 15, padding: 10 }}>
         <Button

@@ -1,11 +1,10 @@
 {
   "expo": {
-    "name": "Garcia-a-la-orden",
-    "slug": "Garcia-a-la-orden",
+    "name": "Garcia",
+    "slug": "Garcia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -40,10 +39,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-   
+    "scheme": [
+      "Garcia",
+      "fb790514239377006"
+    ],
     "extra": {
       "eas": {
-        "projectId": "b51b4e3c-cf56-4a23-ae7d-8706020a84d5"
+        "projectId": "61d46014-8a2e-4da2-9d91-7e6cb1e43812"
       }
     }
   }
