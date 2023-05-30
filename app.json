@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "accelerium",
-    "slug": "accelerium",
+    "name": "Garcia-a-la-orden",
+    "slug": "Garcia-a-la-orden",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,7 +22,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Esta aplicación requiere acceso a la cámara para leer documentos de identidad.",
         "NSPhotoLibraryUsageDescription": "Esta aplicación requiere acceso a la galería para guardar las imágenes de los documentos de identidad."
-      }
+      },
+      "bundleIdentifier": "com.tonchez2700.Garciaalaorden"
     },
     "android": {
       "permissions": [
@@ -33,14 +35,15 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.tonchez2700.accelerium"
+      "package": "com.tonchez2700.Garciaalaorden"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+   
     "extra": {
       "eas": {
-        "projectId": "b778938c-4d1d-422b-a6dd-90fdbc8ae3c7"
+        "projectId": "b51b4e3c-cf56-4a23-ae7d-8706020a84d5"
       }
     }
   }
