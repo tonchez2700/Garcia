@@ -200,6 +200,13 @@ const AuthScreen = () => {
     </View>
   );
 
+  const Profile = ({ user }) => (
+    <View style={styles.profile}>
+      <Image source={{ uri: user.picture.data.url }} style={styles.image} />
+      <Text style={styles.name}>{user.name}</Text>
+      <Text>ID: {user.id}</Text>
+    </View>
+  );
   return (
     <View style={AuthStyle.container}>
       <ImageBackground
@@ -217,6 +224,10 @@ const AuthScreen = () => {
             : isForgotPassword
               ? renderForgotPasswordForm()
               : renderSignInForm()}
+
+          {user ? (
+            <Profile user={user} />
+          ) : null}
         </ScrollView>
       </ImageBackground>
 
@@ -234,4 +245,21 @@ const AuthScreen = () => {
 
 export default AuthScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  profile: {
+    alignItems: "center",
+  },
+  name: {
+    fontSize: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+});
