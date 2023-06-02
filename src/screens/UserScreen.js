@@ -1,13 +1,7 @@
 import React, { useContext } from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
+  StyleSheet, View, Text, TextInput,
+  Image, TouchableOpacity, KeyboardAvoidingView, Platform,
 } from "react-native";
 import { Context as RegistrationContext } from "../context/RegistrationContext";
 import { Button } from "react-native-elements";

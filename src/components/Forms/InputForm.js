@@ -6,20 +6,16 @@ import { Input } from 'react-native-elements'
 const InputForm = ({ name, placeholder, ...otherProps }) => {
 
     return (
-        <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
-                <Input
-                    color='#133C60'
-                    labelStyle={{ color: '#133C60' }}
-                    placeholder={placeholder}
-                    name={name}
-                    autoautoCapitalize='characters'
-                    inputStyle={{ fontSize: 14 }}
-                    {...otherProps}
-                />
-
-            </View>
-        </View>
+        <Input
+            color='#133C60'
+            labelStyle={{ color: '#133C60' }}
+            placeholder={placeholder}
+            placeholderTextColor={'#A5A5A5'}
+            name={name}
+            autoautoCapitalize='characters'
+            inputStyle={{ fontSize: 13, lineHeight: 12 }}
+            {...otherProps}
+        />
     )
 }
 

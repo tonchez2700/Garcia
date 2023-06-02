@@ -1,15 +1,15 @@
 import React from 'react'
-import { Header, Icon } from 'react-native-elements';
+import { StatusBar } from "react-native";
+import { Icon } from 'react-native-elements';
 import Logo from './Logo';
 import Images from '@assets/images';
 
 const SimpleNavBar = () => {
     return (
-        <Header
-            backgroundColor="#004480"
-            barStyle="default"
-            leftContainerStyle={{ justifyContent: 'center' }}
-            rightContainerStyle={{ justifyContent: 'center' }}
+        <StatusBar
+            style="auto"
+            backgroundColor="#1E0554" // Cambia el color de fondo de la barra de estado
+            barStyle="light-content" // Cambia el estilo de los iconos y texto de la barra de estado a claro (para fondos oscuros)
         />
 
     )

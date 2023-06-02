@@ -59,46 +59,47 @@ const MapScreen = () => {
     return (
         <View style={styles.container}>
             {location && (
-                <MapView
-                    style={styles.map}
-                    initialRegion={initial}
-                    onPress={handleMapPress}
-                >
+                <View style={{ flex: 1 }}>
+                    <MapView
+                        style={styles.map}
+                        initialRegion={initial}
+                        onPress={handleMapPress} >
 
-                    {
-                        currentCoords && (
-                            points.map((e) => (
-                                <Marker
-                                    key={e.latitude}
-                                    draggable
-                                    coordinate={{ latitude: e.latitude, longitude: e.longitude }}>
-                                </Marker>
-                            ))
-                        )
-                    }
-                </MapView>
-            )}
-            <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
-                <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}
-                    onPress={() => { console.log('peluche');}} >
-                    <Icon size={30} name='exit-run' type='material-community' color='white' />
-                    <Text style={{ color: 'white', textAlign: 'center' }}>Salir{'\n'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisible') }} >
-                    <Icon size={30} name='text-box' type='material-community' color='white' />
-                    <Text style={{ color: 'white', textAlign: 'center' }}>Mis{'\n'}Reportes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}   onPress={() => { isVisibleModal('isVisibleIncident') }} >
-                    <Icon size={30} name='text-box-plus' type='material-community' color='white' />
-                    <Text style={{ color: 'white', textAlign: 'center' }}>Nuevo{'\n'}Reporte</Text>
-                </TouchableOpacity>
-            </View>
+                        {
+                            currentCoords && (
+                                points.map((e) => (
+                                    <Marker
+                                        key={e.latitude}
+                                        draggable
+                                        coordinate={{ latitude: e.latitude, longitude: e.longitude }}>
+                                    </Marker>
+                                ))
+                            )
+                        }
+                    </MapView>
+                    <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
+                        <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}
+                            onPress={() => { console.log('peluche'); }} >
+                            <Icon size={30} name='exit-run' type='material-community' color='white' />
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Salir{'\n'}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisible') }} >
+                            <Icon size={30} name='text-box' type='material-community' color='white' />
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Mis{'\n'}Reportes</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisibleIncident') }} >
+                            <Icon size={30} name='text-box-plus' type='material-community' color='white' />
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Nuevo{'\n'}Reporte</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+            }
             <View style={{ flex: 0 }}>
                 <ModalList />
                 <ModalAddIncident />
             </View>
-
-        </View>
+        </View >
     );
 }
 

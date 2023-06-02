@@ -11,7 +11,7 @@ import MapScreen from './MapScreen';
 
 import tw from 'tailwind-react-native-classnames';
 import Images from '@assets/images';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import NavBar from '../components/NavBar'
 import SimpleNavBar from '../components/SimpleNavBar'
 import UserScreen from './UserScreen';
@@ -24,12 +24,14 @@ const WrapperInnerScreens = () => {
     const CustomDrawerContent = (props) => {
         return (
             <View style={[tw`flex-1`, { backgroundColor: '#fff' }]}>
-                <SimpleNavBar />
+                {
+                    Platform.OS === "android" ? <SimpleNavBar /> : null
+                }
                 <DrawerContentScrollView {...props}
                     style={{ paddingVertical: 0, marginTop: -5, backgroundColor: '#fff' }}>
                     <DrawerItem
-                        label="Inicio"
-                        onPress={() => props.navigation.navigate('HomeScreen')}
+                        label="Mapa"
+                        onPress={() => props.navigation.navigate('MapScreen')}
                     />
                     <DrawerItem
                         label="Mi perfil"
@@ -41,7 +43,7 @@ const WrapperInnerScreens = () => {
                             signout()
                             props.navigation.closeDrawer()
                         }}
-                        icon={({color, size}) => (
+                        icon={({ color, size }) => (
                             <MaterialCommunityIcons name="exit-run" size={24} color="#1E0554" />
                         )}
                     />
@@ -70,7 +72,7 @@ const WrapperInnerScreens = () => {
                     useLegacyImplementation>
                     <Drawer.Screen name="HomeScreen" component={HomeScreen} />
                     <Drawer.Screen name="MapScreen" component={MapScreen} />
-                    <Drawer.Screen name='UserScreen' component={UserScreen}/>
+                    <Drawer.Screen name='UserScreen' component={UserScreen} />
                 </Drawer.Navigator>
             </RegistrationProvider>
         </SafeAreaView>

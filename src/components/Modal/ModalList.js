@@ -48,7 +48,7 @@ const ModalList = () => {
                 break;
             default:
                 textColor = 'black';
-                numeroTexto = '';
+                numeroTexto = 'En proceso';
                 icon = 'warning';
         }
         return { color: textColor, numeroTexto, icon };
@@ -91,7 +91,7 @@ const ModalList = () => {
                                                     name={getColorState(e.estado).icon}
                                                     type='font-awesome'
                                                     color={getColorState(e.estado).color} />
-                                                <Text style={[getColorState(e.estado), { fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.estado).numeroTexto}</Text>
+                                                <Text style={[{ color: getColorState(e.estado).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.estado).numeroTexto}</Text>
                                             </View>
 
                                         </View>
