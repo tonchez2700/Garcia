@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
-  StyleSheet, Text, View, Alert, Animated, Platform, SafeAreaView,
-  ImageBackground, UIManager, Image, ScrollView
+  StyleSheet, Alert, Platform, SafeAreaView,
+  ImageBackground, ScrollView
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { Context as AuthContext } from "../context/AuthContext";

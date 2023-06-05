@@ -98,7 +98,7 @@ const ModalList = () => {
                                         <Image
                                             style={{
                                                 flex: 1,
-                                                width: '40%',
+                                                width: '20%',
                                                 resizeMode: 'stretch',
                                             }}
                                             source={{

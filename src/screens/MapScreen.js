@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {
-    StyleSheet, View, ScrollView,
+    StyleSheet, View, Image,
     Text, TouchableOpacity,
 } from 'react-native';
 import MapView, { PROVIDER_DEFAULT, Marker, } from 'react-native-maps';
@@ -9,6 +9,7 @@ import { Context as RegistrationContext } from '../context/RegistrationContext';
 import ModalList from '../components/Modal/ModalList';
 import ModalAddIncident from '../components/Modal/ModalAddIncident';
 import * as Location from 'expo-location';
+import Images from "@assets/images";
 
 
 
@@ -77,18 +78,18 @@ const MapScreen = () => {
                             )
                         }
                     </MapView>
-                    <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
+                    <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, paddingBottom: 14 }}>
                         <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}
                             onPress={() => { console.log('peluche'); }} >
-                            <Icon size={30} name='exit-run' type='material-community' color='white' />
+                            <Image source={Images.iconSalida} style={{ width: 39, height: 41 }} />
                             <Text style={{ color: 'white', textAlign: 'center' }}>Salir{'\n'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisible') }} >
-                            <Icon size={30} name='text-box' type='material-community' color='white' />
+                            <Image source={Images.iconMisReportes} style={{ width: 39, height: 41 }} />
                             <Text style={{ color: 'white', textAlign: 'center' }}>Mis{'\n'}Reportes</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisibleIncident') }} >
-                            <Icon size={30} name='text-box-plus' type='material-community' color='white' />
+                            <Image source={Images.iconAddReportes} style={{ width: 39, height: 41 }} />
                             <Text style={{ color: 'white', textAlign: 'center' }}>Nuevo{'\n'}Reporte</Text>
                         </TouchableOpacity>
                     </View>
