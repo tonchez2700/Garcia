@@ -25,6 +25,11 @@
       "bundleIdentifier": "com.tonchez2700.Garciaalaorden"
     },
     "android": {
+      "config": {
+        "googleSignIn": {
+          "expoClientId": "8720423194133449956"
+        }
+      },
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE"

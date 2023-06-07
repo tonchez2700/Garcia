@@ -26,7 +26,7 @@ export const AuthStyle = StyleSheet.create({
         backgroundColor: "rgba(255, 255, 255, .8)",
         borderRadius: 20,
         paddingVertical: 28,
-        paddingHorizontal: 14,
+        paddingHorizontal: 15,
     },
     ImagenLogo: {
         height: 69,

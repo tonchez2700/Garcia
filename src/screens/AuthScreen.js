@@ -17,9 +17,9 @@ import SimpleNavBar from '../components/SimpleNavBar'
 
 const AuthScreen = () => {
   const navigation = useNavigation();
-  const { state, signin, clearState } = useContext(AuthContext);
+  const { state, signin, clearState, setStateView } = useContext(AuthContext);
   const [inputState, handleInputChange] = useHandleOnChangeTextInput(AuthSchema);
-  const [stateView, setStateView] = useState(1);
+
 
 
   const getViewCase = (estado) => {
@@ -78,8 +78,8 @@ const AuthScreen = () => {
           keyboardShouldPersistTaps="handled"
           contentInsetAdjustmentBehavior="automatic"
           contentContainerStyle={tw`items-center`}
-          style={[AuthStyle.ContainerWhite, stateView === 1 ? { height: '80%' } : { flex: 1 }]}>
-          {getViewCase(stateView)}
+          style={[AuthStyle.ContainerWhite, state.stateView === 1 || state.stateView === 2 ? { height: '80%' } : { flex: 1 }]}>
+          {getViewCase(state.stateView)}
         </ScrollView>
       </ImageBackground>
       {

@@ -3,7 +3,14 @@ import * as Yup from 'yup';
 
 export const RegistrationSchema = {
     email: '',
-    name: '',
     password: '',
-    password2: '',
+    password_confirmation: '',
+    name: '',
+    paternal_surname: '',
+    maternal_surname: '',
+    phone: '',
+    postal_code: ''
+};
+export const RecoverySchema = {
+    email: '',
 };

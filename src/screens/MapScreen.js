@@ -65,7 +65,6 @@ const MapScreen = () => {
                         style={styles.map}
                         initialRegion={initial}
                         onPress={handleMapPress} >
-
                         {
                             currentCoords && (
                                 points.map((e) => (

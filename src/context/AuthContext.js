@@ -1,5 +1,6 @@
 
 
+import { Alert } from 'react-native'
 import createDataContext from './createDataContext'
 import httpClient from '../services/httpClient'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,6 +12,7 @@ const initialState = {
     message: null,
     fetchingData: false,
     user: null,
+    stateView: 1
 }
 
 const loginReducer = (state = initialState, action) => {
@@ -50,6 +52,14 @@ const loginReducer = (state = initialState, action) => {
                 message: action.payload.message,
                 fetchingData: false,
                 user: null
+            }
+        case 'SET_STATE_VIEW':
+            return {
+                ...state,
+                error: false,
+                message: null,
+                fetchingData: false,
+                stateView: action.payload.value
             }
         default:
             return state
@@ -135,8 +145,105 @@ const tryAuth = async (email, password, dispatch) => {
     }
 }
 
+const setStateView = (dispatch) => {
+    return async (value) => {
+        dispatch({
+            type: 'SET_STATE_VIEW',
+            payload: {
+                value
+            }
+        })
+    }
+
+}
+const register = (dispatch) => {
+    return async (data) => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            const response = await httpClient.post('auth/register', data)
+            if (response.status) {
+                dispatch({
+                    type: 'SET_STATE_VIEW',
+                    payload: {
+                        value: 1
+                    }
+                })
+                Alert.alert(
+                    "Correcto",
+                    "Se ha agregado correctamente la entrada.",
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
+            } else {
+                Alert.alert(
+                    "Ha ocurrido un error",
+                    "Error al llenar los campos.",
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
+            }
+        } catch (error) {
+            dispatch({
+                type: 'SET_RESPONSE_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Error al llenar los campos.'
+                }
+            });
+        }
+    }
+}
+const passwordRecovery = (dispatch) => {
+    return async (email) => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            const response = await httpClient.get('auth/password_recovery', email)
+            if (response.status) {
+                dispatch({
+                    type: 'SET_STATE_VIEW',
+                    payload: {
+                        value: 1
+                    }
+                })
+                Alert.alert(
+                    "Correcto",
+                    response.message,
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
+            } else {
+                Alert.alert(
+                    "Ha ocurrido un error",
+                    response.message,
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
+            }
+        } catch (error) {
+            dispatch({
+                type: 'SET_RESPONSE_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Error al llenar los campos.'
+                }
+            });
+        }
+    }
+}
 export const { Context, Provider } = createDataContext(
     loginReducer,
-    { signin, signout, tryLocalSignin, clearState },
+    {
+        signin,
+        signout,
+        tryLocalSignin,
+        register,
+        setStateView,
+        passwordRecovery,
+        clearState
+    },
     initialState
 );
