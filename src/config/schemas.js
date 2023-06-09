@@ -9,6 +9,7 @@ export const RegistrationSchema = {
     paternal_surname: '',
     maternal_surname: '',
     phone: '',
+    address: '',
     postal_code: ''
 };
 export const RecoverySchema = {

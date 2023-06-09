@@ -17,7 +17,7 @@ import SimpleNavBar from '../components/SimpleNavBar'
 
 const AuthScreen = () => {
   const navigation = useNavigation();
-  const { state, signin, clearState, setStateView } = useContext(AuthContext);
+  const { state, signin, clearState, setStateView, authFacebook } = useContext(AuthContext);
   const [inputState, handleInputChange] = useHandleOnChangeTextInput(AuthSchema);
 
 
@@ -30,6 +30,7 @@ const AuthScreen = () => {
             id={inputState}
             fetchingData={state.fetchingData}
             signin={() => signin(inputState)}
+            authFacebook={(value) => authFacebook(value)}
             onChangeText={(value, typedata) => handleInputChange(value, typedata)}
             stateView={(value) => setStateView(value)} />
         )

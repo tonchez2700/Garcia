@@ -42,6 +42,15 @@ const Registration = ({ fetchingData, id, stateView }) => {
             />
             <TextInput
                 maxLength={50}
+                value={inputState.address}
+                placeholder="Dirección"
+                style={AuthStyle.inputR}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={(value) => handleInputChange(value, "address")}
+            />
+            <TextInput
+                maxLength={50}
                 value={inputState.postal_code}
                 placeholder="Código postal"
                 style={AuthStyle.inputR}

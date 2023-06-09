@@ -8,7 +8,7 @@ const images = {
     iconMisReportes: require('./img/Iconoreportes.png'),
     iconAddReportes: require('./img/iconoAddreportes.png'),
     iconSalida: require('./img/salida.png'),
-    iconGoogle: require('./img/icono-google.png'),
+    iconGoogle: require('./img/icono_google.png'),
     garciaBackgraund: require('./img/garciaBackgraund.png'),
     garciaLogo: require('./img/garciaLogo.png'),
 

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from "react-native";
 import { Button, SocialIcon, } from "react-native-elements";
 import { AuthStyle } from "../../theme/AuthStyles";
 import { useNavigation } from "@react-navigation/native";
 import Images from "@assets/images";
 import ButtonFrom from "../Forms/ButtonFrom";
 import InputForm from "../Forms/InputForm";
+import ButtonsGoogle from "../ButtonsGoogle";
 import * as AuthSession from 'expo-auth-session';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from 'expo-web-browser';
 
 WebBrowser.maybeCompleteAuthSession();
-const Login = ({ onChangeText, signin, fetchingData, id, stateView, Accordion }) => {
+const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook }) => {
 
     const [token, setToken] = useState("");
     const [request, response, promptAsync] = Facebook.useAuthRequest({ clientId: "605649451337245", });
@@ -38,18 +39,20 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, Accordion })
 
             const user = await response.json();
             setUser(user);
-            console.log(user);
+            console.log(JSON.stringify(user, null, 2));
         } catch (error) {
             // Add your own error handler here
         }
     };
     useEffect(() => {
         if (typeAuth == "Facebook") {
+
             if (response && response.type === "success" && response.authentication) {
                 (async () => {
                     const userInfoResponse = await fetch(
                         `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id,name,picture.type(large)`
                     );
+                    authFacebook(response.authentication.accessToken)
                     const userInfo = await userInfoResponse.json();
                     setUser(userInfo);
                 })();
@@ -128,7 +131,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, Accordion })
             </View>
 
             <SocialIcon title="Continuar con Facebook" button type="facebook" onPress={async () => handlePressAsync('Facebook')} />
-            <SocialIcon title="Continuar con Google" button type="google" light onPress={async () => handlePressAsync('Google')} />
+            <ButtonsGoogle onPress={() => handlePressAsync('Google')} />
             <Text style={AuthStyle.textDonAccount}>¿No tienes una cuenta?</Text>
             <View style={{ marginBottom: 15, padding: 10 }}>
                 <Button

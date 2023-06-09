@@ -234,12 +234,62 @@ const passwordRecovery = (dispatch) => {
         }
     }
 }
+
+const authFacebook = (dispatch) => {
+    return async (token) => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            const response = await httpClient.get(`auth/login/facebook?accessToken=${token}`, email)
+            if (response.status) {
+                const user = {
+                    userData: {
+                        id: response.user.id,
+                        role_id: response.user.role_id,
+                        name: response.user.name,
+                        paternal_surname: response.user.paternal_surname,
+                        maternal_surname: response.user.maternal_surname,
+                        picture: response.user.picture,
+                        email: response.user.email
+                    },
+                    token: response.token
+                }
+                await AsyncStorage.setItem('user', JSON.stringify(user))
+                dispatch({ type: 'SIGNIN', payload: { user } });
+                rootNavigation.navigate('WrapperInnerScreens')
+            } else {
+                dispatch({
+                    type: 'SET_RESPONSE_ERROR',
+                    payload: {
+                        error: true,
+                        message: 'Los accesos son incorrectos, favor de verificarlos.'
+                    }
+                });
+            }
+        } catch (error) {
+            Alert.alert(
+                "Ha ocurrido un error",
+                error,
+                [{
+                    text: "Aceptar"
+                }]
+            )
+            dispatch({
+                type: 'SET_RESPONSE_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Error al llenar los campos.'
+                }
+            });
+        }
+    }
+}
 export const { Context, Provider } = createDataContext(
     loginReducer,
     {
         signin,
         signout,
         tryLocalSignin,
+        authFacebook,
         register,
         setStateView,
         passwordRecovery,

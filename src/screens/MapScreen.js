@@ -18,6 +18,7 @@ const MapScreen = () => {
     const { state, isVisibleModal } = useContext(RegistrationContext);
     const [location, setLocation] = useState(null);
     const [currentCoords, setCurrentCoords] = useState(null);
+    const [currentAddress, setCurrentAddress] = useState(null);
     let initial = {
         latitude: 25.659832,
         longitude: -100.250516,
@@ -53,8 +54,21 @@ const MapScreen = () => {
         })();
     }, []);
 
-    const handleMapPress = (e) => {
+    const handleMapPress = async (e) => {
         setCurrentCoords(e.nativeEvent.coordinate);
+        const reverseGeocode = await Location.reverseGeocodeAsync({
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude
+        });
+
+        if (reverseGeocode && reverseGeocode.length > 0) {
+            const address = reverseGeocode[0].street;
+            console.log(JSON.stringify(reverseGeocode, null, 2));
+            setCurrentAddress(address);
+        } else {
+            setCurrentAddress(null);
+        }
+      
     };
 
     return (
@@ -64,7 +78,7 @@ const MapScreen = () => {
                     <MapView
                         style={styles.map}
                         initialRegion={initial}
-                        onPress={handleMapPress} >
+                        onPress={(e) => handleMapPress(e)} >
                         {
                             currentCoords && (
                                 points.map((e) => (
