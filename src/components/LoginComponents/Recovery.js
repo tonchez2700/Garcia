@@ -8,10 +8,9 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { RecoverySchema } from "../../config/schemas";
 import useHandleOnChangeTextInput from "../../hooks/useHandleOnChangeTextInput";
 
-const Recovery = ({ onChangeText, signin, fetchingData, id, stateView }) => {
+const Recovery = ({ signin, fetchingData, id, stateView }) => {
 
     const navigation = useNavigation();
-    const [showPassword, setShowPassword] = useState(false);
     const { state, passwordRecovery } = useContext(AuthContext);
     const [inputState, handleInputChange] = useHandleOnChangeTextInput(RecoverySchema);
 
@@ -24,7 +23,7 @@ const Recovery = ({ onChangeText, signin, fetchingData, id, stateView }) => {
                 style={AuthStyle.inputR}
                 keyboardType="email-address"
                 placeholder="Introduce tu correo"
-                onChangeText={(value) => onChangeText(value, "email")}
+                onChangeText={(value) => handleInputChange(value, "email")}
             />
             <Button
                 title={'Enviar'}

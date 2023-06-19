@@ -13,74 +13,44 @@ import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from 'expo-web-browser';
 
 WebBrowser.maybeCompleteAuthSession();
-const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook }) => {
+const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook, authGoogle }) => {
 
-    const [token, setToken] = useState("");
     const [request, response, promptAsync] = Facebook.useAuthRequest({ clientId: "605649451337245", });
     const [requestG, responseG, promptAsyncG] = Google.useAuthRequest({
         clientId: '898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com',
         androidClientId: "898724339858-pv8prlium7ga3o3kg204emc9ftmbvq6h.apps.googleusercontent.com",
         iosClientId: "898724339858-lkm2u5h93u6em3b0869og5lq85e1i2tp.apps.googleusercontent.com",
-
     });
-    const [user, setUser] = useState(null);
     const navigation = useNavigation();
     const [showPassword, setShowPassword] = useState(false);
     const [typeAuth, settypeAuth] = useState()
 
-    const getUserInfo = async () => {
-        try {
-            const response = await fetch(
-                "https://www.googleapis.com/userinfo/v2/me",
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-
-            const user = await response.json();
-            setUser(user);
-            console.log(JSON.stringify(user, null, 2));
-        } catch (error) {
-            // Add your own error handler here
-        }
-    };
     useEffect(() => {
         if (typeAuth == "Facebook") {
-
             if (response && response.type === "success" && response.authentication) {
                 (async () => {
                     const userInfoResponse = await fetch(
                         `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id,name,picture.type(large)`
                     );
-                    authFacebook(response.authentication.accessToken)
                     const userInfo = await userInfoResponse.json();
-                    setUser(userInfo);
+                    authFacebook(userInfo)
                 })();
             }
         } else {
             if (responseG?.type === "success") {
-                setToken(responseG.authentication.accessToken);
-                getUserInfo();
+                (async () => {
+                    const userInfoResponseG = await fetch(
+                        "https://www.googleapis.com/userinfo/v2/me",
+                        {
+                            headers: { Authorization: `Bearer ${responseG.authentication.accessToken}` },
+                        }
+                    );
+                    const userInfoG = await userInfoResponseG.json();
+                    authGoogle(userInfoG)
+                })();
             }
         }
-
-    }, [response, responseG, token]);
-
-    const Profile = ({ user }) => (
-        typeAuth == "Facebook"
-            ?
-            <View style={styles.profile}>
-                <Image source={{ uri: user.picture.data.url }} style={styles.image} />
-                <Text style={styles.name}>{user.name}</Text>
-                <Text>ID: {responseG.authentication.accessToken}</Text>
-            </View>
-            :
-            <View style={styles.profile}>
-                <Image source={{ uri: user.picture }} style={styles.image} />
-                <Text style={styles.name}>{user.email}</Text>
-                <Text>ID: {user.name}</Text>
-            </View>
-    );
+    }, [response, responseG]);
 
     const handlePressAsync = async (type) => {
         settypeAuth(type)
@@ -95,12 +65,10 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
         }
 
     };
+    
     return (
         <View style={{ flex: 1, width: '100%' }}>
             <Text style={[AuthStyle.TextAuth, { fontSize: 18, marginBottom: 27 }]}>¡Hola!, Bienvenido</Text>
-            {user ? (
-                <Profile user={user} />
-            ) : null}
             <Image source={Images.garciaLogo} style={AuthStyle.ImagenLogo} />
             <Text style={[AuthStyle.TextAuth, { fontSize: 14, marginBottom: 20 }]}>Iniciar sesión</Text>
             <InputForm

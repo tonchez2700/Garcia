@@ -25,13 +25,9 @@
       "bundleIdentifier": "com.tonchez2700.Garciaalaorden"
     },
     "android": {
-      "config": {
-        "googleSignIn": {
-          "expoClientId": "8720423194133449956"
-        }
-      },
       "permissions": [
         "CAMERA",
+        "RECORD_AUDIO",
         "READ_EXTERNAL_STORAGE"
       ],
       "versionCode": 1,
@@ -45,7 +41,7 @@
       "favicon": "./assets/favicon.png"
     },
     "scheme": [
-      "Garcia",
+      "garcia",
       "fb605649451337245"
     ],
     "extra": {

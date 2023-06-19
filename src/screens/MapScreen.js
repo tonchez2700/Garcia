@@ -68,7 +68,7 @@ const MapScreen = () => {
         } else {
             setCurrentAddress(null);
         }
-      
+
     };
 
     return (

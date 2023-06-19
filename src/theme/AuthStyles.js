@@ -11,7 +11,7 @@ export const AuthStyle = StyleSheet.create({
         left: 0,
         top: 0,
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height + 50,
     },
     ContainerWhite: {
         position: "absolute",

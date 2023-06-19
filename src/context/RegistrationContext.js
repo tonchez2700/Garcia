@@ -11,8 +11,8 @@ const initialState = {
     message: null,
     isVisible: false,
     fetchingData: false,
-    isVisibleIncident:false,
-    catalog: [],
+    isVisibleIncident: false,
+    reportList: [],
     listPatients: [],
     file_number: '',
     dataFrom: [],
@@ -34,7 +34,6 @@ const RegistrationReducer = (state = initialState, action) => {
                 error: false,
                 message: null,
                 fetchingData: false,
-                dataFrom: [],
             }
         case 'SET_REQUEST_ERROR':
             return {
@@ -53,37 +52,19 @@ const RegistrationReducer = (state = initialState, action) => {
                 fetchingData: false,
                 [visibleType]: visibleCheck
             }
-        case 'SET_CATALOG':
-            return {
-                ...state,
-                error: false,
-                message: '',
-                fetchingData: false,
-                catalog: action.payload.data,
-                file_number: action.payload.file_number,
-            }
-        case 'SET_CATALOG':
-            return {
-                ...state,
-                error: false,
-                message: '',
-                fetchingData: false,
-                catalog: action.payload.data,
-                file_number: action.payload.file_number,
-            }
         case 'SET_MASK':
             let type = action.payload.typedata
             return {
                 ...state,
                 [type]: action.payload.value,
             }
-        case 'SET_PATIENTS':
+        case 'SET_REPORTS_LIST':
             return {
                 ...state,
                 error: false,
                 message: '',
                 fetchingData: false,
-                listPatients: action.payload.response
+                reportList: action.payload.response
             }
         case 'SET_DATA':
             let typedata = action.payload.typedata
@@ -127,10 +108,7 @@ const RegistrationReducer = (state = initialState, action) => {
 }
 
 
-// dataFrom: {
-//     ...state.dataFrom,
-//     [category]: { ...category, [typedata]: action.payload.value }
-// }
+
 const clearState = (dispatch) => {
     return () => {
         dispatch({ type: 'CLEAR_STATE' });
@@ -138,10 +116,10 @@ const clearState = (dispatch) => {
 }
 
 const isVisibleModal = (dispatch) => {
-    return async (type,message) => {
+    return async (type, message) => {
         dispatch({
             type: 'CHANGE_VISIBLE_MODAL',
-            payload: { type,message }
+            payload: { type, message }
         })
     }
 }
@@ -156,114 +134,7 @@ const handleInputChange = (dispatch) => {
     }
 }
 
-const handleInputChangeMask = (dispatch) => {
-    return async (value, typedata) => {
 
-        dispatch({
-            type: 'SET_MASK',
-            payload: { value, typedata, }
-        })
-    }
-}
-
-const getCatalog = (dispatch) => {
-    return async () => {
-        try {
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
-            const user = JSON.parse(await AsyncStorage.getItem('user'));
-            const token = user.token
-
-            const countries = await httpClient
-                .get(`countries`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            const genders = await httpClient
-                .get(`genders`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            const relations = await httpClient
-                .get(`relations`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            const documents = await httpClient
-                .get(`documents`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            const civil_statuses = await httpClient
-                .get(`civil_statuses`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            const file_number = await httpClient
-                .get(`file_number`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            const data = {
-                countries,
-                genders,
-                relations,
-                documents,
-                civil_statuses,
-            }
-            if (data != '') {
-                dispatch({
-                    type: 'SET_CATALOG',
-                    payload: { data, file_number }
-                });
-            } else {
-                dispatch({
-                    type: 'SET_REQUEST_ERROR',
-                    payload: {
-                        error: true,
-                        message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
-                    }
-                });
-            }
-        } catch (error) {
-            console.log(error);
-            dispatch({
-                type: 'SET_REQUEST_ERROR',
-                payload: {
-                    error: true,
-                    message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
-                }
-            });
-        }
-    }
-
-}
-const getPatients = (dispatch) => {
-    return async () => {
-        try {
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
-            const user = JSON.parse(await AsyncStorage.getItem('user'));
-            const token = user.token
-            const response = await httpClient
-                .get(`px_patients`, {
-                    'Authorization': `Bearer ${token}`,
-                }
-                );
-            dispatch({
-                type: 'SET_PATIENTS',
-                payload: { response }
-            })
-        } catch (error) {
-            console.log(error);
-            dispatch({
-                type: 'SET_REQUEST_ERROR',
-                payload: {
-                    error: true,
-                    message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
-                }
-            });
-        }
-    }
-}
 
 
 const ScanIdCard = (dispatch) => {
@@ -328,36 +199,27 @@ const handleVisibility = (dispatch) => {
 }
 
 
-const storePxPatients = (dispatch) => {
-    return async (data) => {
+const getReports = (dispatch) => {
+    return async () => {
         try {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
-            // const validated = validateData(data)
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
+            console.log(user.userData.id);
             const response = await httpClient
-                .post(`px_patients`, data, {
+                .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
-            if (response.status) {
-                Alert.alert(
-                    "Correcto",
-                    "Se agrego paciente correctamente",
-                    [{
-                        text: "Aceptar",
-                    }]
-                )
-                dispatch({ type: 'SET_CLEAR' });
-                rootNavigation.navigate('HomeScreen')
+            if (response.status != false || response.message != 'reports.no_reports_registered') {
+                dispatch({
+                    type: 'SET_REPORTS_LIST',
+                    payload: { response }
+                })
             } else {
-                Alert.alert(
-                    "Error ",
-                    response.message,
-                    [{
-                        text: "Aceptar",
-                    }]
-                )
-                dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
+                dispatch({
+                    type: 'SET_REPORTS_LIST',
+                    payload: { response: { message: 'No tiene reportes registrados' } }
+                })
             }
         } catch (error) {
             console.log(error);
@@ -408,11 +270,8 @@ export const { Context, Provider } = createDataContext(
         handleVisibility,
         isVisibleModal,
         handleInputChange,
-        handleInputChangeMask,
         ScanIdCard,
-        storePxPatients,
-        getPatients,
-        getCatalog
+        getReports,
 
     },
     initialState

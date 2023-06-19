@@ -1,12 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { TouchableOpacity, Image, Text } from 'react-native';
 import { Header, Icon } from 'react-native-elements';
-import { Context as AuthContext } from '../context/AuthContext';
 import Logo from './Logo';
 import Images from '@assets/images';
+import { View } from 'react-native-web';
 
 const NavBar = (navigation) => {
-    const { signout } = useContext(AuthContext);
+
+
+
 
     const open = () => {
         navigation.navigation.openDrawer();
@@ -14,14 +16,14 @@ const NavBar = (navigation) => {
 
     return (
         <Header
-            backgroundColor="#012B54"
+            backgroundColor="#1E0554"
             barStyle="default"
-            containerStyle={{ height: 93 }}
+            containerStyle={{ height: 110 }}
             leftContainerStyle={{ justifyContent: 'center' }}
             rightContainerStyle={{ justifyContent: 'center' }}
-            centerComponent={<Image source={Images.logo_header} style={{
-                width: '50%',
-                height: 55,
+            centerComponent={<Image source={Images.garciaLogoBlanco} style={{
+                width: '65%',
+                height: 40,
             }} />}
             leftComponent={
                 <TouchableOpacity

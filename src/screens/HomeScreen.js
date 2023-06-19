@@ -12,8 +12,7 @@ import MenuItem from '../components/MenuItem';
 import moment from 'moment';
 
 const HomeScreen = () => {
-
-
+   
     const navigation = useNavigation();
     const { state, handleInputChange } = useContext(RegistrationContext);
 

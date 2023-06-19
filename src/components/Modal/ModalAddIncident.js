@@ -1,25 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, TextInput, View, Modal, ScrollView, Dimensions, Image } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Modal, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Context as RegistrationContext } from '../../context/RegistrationContext';
-import tw from 'tailwind-react-native-classnames'
-import { Icon, Button, Input } from 'react-native-elements'
-import { color, log } from 'react-native-reanimated';
+import Images from "@assets/images";
+import { Icon, Button } from 'react-native-elements'
+import { insert } from 'formik';
 
 
 const { width } = Dimensions.get("window");
 const ModalAddIncident = () => {
 
     const navigation = useNavigation();
-    const { state, clearState, isVisibleModal } = useContext(RegistrationContext);
+    const { state, clearState, isVisibleModal,  } = useContext(RegistrationContext);
 
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            clearState()
-        });
-        return unsubscribe;
-    }, [navigation]);
     let points = [
         { type: 'Semáforo roto', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 1 },
         { type: 'Accidente Automovilístico', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 2 },
@@ -46,9 +40,9 @@ const ModalAddIncident = () => {
                                 name={'remove'}
                                 onPress={() => isVisibleModal('isVisibleIncident')}
                                 type='font-awesome'
-                                color={'red'} />
+                                color={'#4267B2'} />
                         </View>
-                        <Text style={styles.text}>Mis Reportes</Text>
+                        <Text style={styles.text}>Nuevo reporte</Text>
                         <ScrollView style={{ flex: 1, marginBottom: 10, width: '100%' }}>
                             <View style={{ flex: 1, flexDirection: 'column' }}>
                                 <TextInput
@@ -59,23 +53,30 @@ const ModalAddIncident = () => {
                                     style={styles.input}
                                     placeholder="Incidente"
                                 />
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Fotos/video"
-                                />
+                                <TouchableOpacity style={[{}]} onPress={() => { navigation.navigate('PhotoScreen'), isVisibleModal('isVisibleIncident') }}>
+                                    <TextInput
+                                        style={styles.input}
+                                        editable={false}
+                                        placeholder="Fotos/video"
+                                    />
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.imageContainer}>
                                 <Image
                                     style={styles.image}
-                                    source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+                                    source={Images.accidente1}
                                 />
                                 <Image
                                     style={styles.image}
-                                    source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+                                    source={Images.accidente2}
                                 />
                                 <Image
                                     style={styles.image}
-                                    source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+                                    source={Images.accidente3}
+                                />
+                                <Image
+                                    style={styles.image}
+                                    source={Images.accidente4}
                                 />
                             </View>
                             <Button
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
     },
     modalView: {
         padding: 10,
@@ -127,31 +128,34 @@ const styles = StyleSheet.create({
         { translateY: -90 }],
         height: '70%',
         width: width * 0.8,
-        backgroundColor: "#fff",
+        backgroundColor: "rgba(255, 255, 255, .9)",
         borderRadius: 7,
     },
     input: {
-        backgroundColor: '#fff',
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#A5A5A5',
-        borderRadius: 20,
-        padding: 9,
-        elevation: 2,
-        marginBottom: 30,
+        backgroundColor: "#FFFFFF",
+        borderWidth: 0.2,
+        borderColor: "#707070B3",
+        borderBottomWidth: 0,
+        paddingLeft: 15,
+        paddingVertical: 8,
+        borderRadius: 40,
+        marginBottom: 22,
+
     },
     imageContainer: {
         flex: 1,
         flexWrap: 'wrap',
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
         marginBottom: 20
     },
     image: {
-        width: 75,
-        height: 75,
+        width: 65,
+        height: 65,
         marginLeft: 5,
-        resizeMode: 'contain',
+        resizeMode: 'stretch',
+        marginBottom: 8,
+
     },
     buttonContainer: {
         borderRadius: 20,

@@ -2,39 +2,36 @@ import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View, Modal, ScrollView, Dimensions, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Context as RegistrationContext } from '../../context/RegistrationContext';
-import tw from 'tailwind-react-native-classnames'
+import * as Location from 'expo-location';
 import { Icon, Button, Input } from 'react-native-elements'
-import { color } from 'react-native-reanimated';
+import Images from "@assets/images";
 
 
 const { width } = Dimensions.get("window");
 const ModalList = () => {
 
     const navigation = useNavigation();
-    const { state, clearState, isVisibleModal } = useContext(RegistrationContext);
+    const { state, clearState, isVisibleModal, getReports } = useContext(RegistrationContext);
+    const [street, setStreet] = useState('');
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             clearState()
+            getReports()
         });
         return unsubscribe;
     }, [navigation]);
-    let points = [
-        { type: 'Semáforo roto', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 1 },
-        { type: 'Accidente Automovilístico', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 2 },
-        { type: 'Bache', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 2 },
-        { type: 'Asalto', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 3 },
-    ]
+
     const getColorState = (estado) => {
         let textColor;
         let numeroTexto;
         let icon;
         switch (estado) {
             case 1:
-                textColor = '#8E0000';
-                numeroTexto = 'Con retraso';
-                icon = 'warning';
+                textColor = '#008E00';
+                numeroTexto = 'Completado';
+                icon = 'check-circle';
                 break;
             case 2:
                 textColor = '#FFC700';
@@ -42,9 +39,9 @@ const ModalList = () => {
                 icon = 'cog';
                 break;
             case 3:
-                textColor = '#008E00';
-                numeroTexto = 'Completado';
-                icon = 'check-circle';
+                textColor = '#8E0000';
+                numeroTexto = 'Con retraso';
+                icon = 'warning';
                 break;
             default:
                 textColor = 'black';
@@ -52,7 +49,9 @@ const ModalList = () => {
                 icon = 'warning';
         }
         return { color: textColor, numeroTexto, icon };
+
     };
+
     return (
         <View style={styles.body}>
             <Modal
@@ -72,26 +71,26 @@ const ModalList = () => {
                                 name={'remove'}
                                 onPress={() => isVisibleModal('isVisible')}
                                 type='font-awesome'
-                                color={'red'} />
+                                color={'#4267B2'} />
                         </View>
                         <Text style={styles.text}>Mis Reportes</Text>
                         <ScrollView style={{ flex: 1, width: '100%', marginBottom: 10 }}>
                             {
-                                points.map((e) => (
-                                    <View key={e.type} style={{
+                                state.reportList.map((e) => (
+                                    <View key={e.id} style={{
                                         flex: 1, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderWidth: .3,
                                         borderColor: 'gray', marginBottom: 20, borderRadius: 5, elevation: 5
                                     }}>
                                         <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', padding: 10 }}>
-                                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e.type}</Text>
-                                            <Text style={{ fontSize: 12, }}>{e.direccion}</Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.report?.incident.name}</Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>32423423</Text>
                                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                                                 <Icon
                                                     size={25}
-                                                    name={getColorState(e.estado).icon}
+                                                    name={getColorState(e?.report_status.id).icon}
                                                     type='font-awesome'
-                                                    color={getColorState(e.estado).color} />
-                                                <Text style={[{ color: getColorState(e.estado).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.estado).numeroTexto}</Text>
+                                                    color={getColorState(e.report_status.id).color} />
+                                                <Text style={[{ color: getColorState(e.report_status.id).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.report_status.id).numeroTexto}</Text>
                                             </View>
 
                                         </View>
@@ -99,10 +98,13 @@ const ModalList = () => {
                                             style={{
                                                 flex: 1,
                                                 width: '20%',
+                                                height: '100%',
+                                                borderTopRightRadius: 5,
+                                                borderBottomRightRadius: 5,
                                                 resizeMode: 'stretch',
                                             }}
                                             source={{
-                                                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                                uri: `https://cpxproject.com/garcia/${e?.resources[0].url}`,
                                             }}
                                         />
                                     </View>
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
         { translateY: -90 }],
         height: '70%',
         width: width * 0.8,
-        backgroundColor: "#fff",
+        backgroundColor: "rgba(255, 255, 255, .9)",
         borderRadius: 7,
     },
 })

@@ -236,20 +236,33 @@ const passwordRecovery = (dispatch) => {
 }
 
 const authFacebook = (dispatch) => {
-    return async (token) => {
+    return async (info) => {
         try {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
-            const response = await httpClient.get(`auth/login/facebook?accessToken=${token}`, email)
+            const data = {
+                facebook_id: info.id,
+                name: info.name,
+                email: info.email,
+                picture: info.picture.data.url
+            }
+            const response = await httpClient.get(`auth/login/facebook`, data)
             if (response.status) {
                 const user = {
                     userData: {
                         id: response.user.id,
                         role_id: response.user.role_id,
                         name: response.user.name,
+                        full_name: response.user.full_name,
                         paternal_surname: response.user.paternal_surname,
                         maternal_surname: response.user.maternal_surname,
                         picture: response.user.picture,
+                        facebook_id: response.user.facebook_id,
+                        google_id: response.user.google_id,
+                        phone: response.user.phone,
+                        address: response.user.address,
+                        postal_code: response.user.postal_code,
                         email: response.user.email
+
                     },
                     token: response.token
                 }
@@ -283,6 +296,69 @@ const authFacebook = (dispatch) => {
         }
     }
 }
+
+const authGoogle = (dispatch) => {
+    return async (info) => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            const data = {
+                google_id: info.id,
+                name: info.name,
+                email: info.email,
+                picture: info.picture
+            }
+            const response = await httpClient.post(`auth/login/google`, data)
+            if (response.status) {
+                const user = {
+                    userData: {
+                        id: response.user.id,
+                        role_id: response.user.role_id,
+                        name: response.user.name,
+                        full_name: response.user.full_name,
+                        paternal_surname: response.user.paternal_surname,
+                        maternal_surname: response.user.maternal_surname,
+                        picture: response.user.picture,
+                        facebook_id: response.user.facebook_id,
+                        google_id: response.user.google_id,
+                        phone: response.user.phone,
+                        address: response.user.address,
+                        postal_code: response.user.postal_code,
+                        email: response.user.email
+
+                    },
+                    token: response.token
+                }
+                await AsyncStorage.setItem('user', JSON.stringify(user))
+                dispatch({ type: 'SIGNIN', payload: { user } });
+                rootNavigation.navigate('WrapperInnerScreens')
+            } else {
+                dispatch({
+                    type: 'SET_RESPONSE_ERROR',
+                    payload: {
+                        error: true,
+                        message: 'Los accesos son incorrectos, favor de verificarlos.'
+                    }
+                });
+            }
+        } catch (error) {
+            Alert.alert(
+                "Ha ocurrido un error",
+                error,
+                [{
+                    text: "Aceptar"
+                }]
+            )
+            dispatch({
+                type: 'SET_RESPONSE_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Error al llenar los campos.'
+                }
+            });
+        }
+    }
+}
+
 export const { Context, Provider } = createDataContext(
     loginReducer,
     {
@@ -290,6 +366,7 @@ export const { Context, Provider } = createDataContext(
         signout,
         tryLocalSignin,
         authFacebook,
+        authGoogle,
         register,
         setStateView,
         passwordRecovery,

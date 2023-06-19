@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet, Alert, Platform, SafeAreaView,
-  ImageBackground, ScrollView
+  ImageBackground, ScrollView, KeyboardAvoidingView
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { Context as AuthContext } from "../context/AuthContext";
@@ -17,7 +17,7 @@ import SimpleNavBar from '../components/SimpleNavBar'
 
 const AuthScreen = () => {
   const navigation = useNavigation();
-  const { state, signin, clearState, setStateView, authFacebook } = useContext(AuthContext);
+  const { state, signin, clearState, setStateView, authFacebook, authGoogle } = useContext(AuthContext);
   const [inputState, handleInputChange] = useHandleOnChangeTextInput(AuthSchema);
 
 
@@ -31,6 +31,7 @@ const AuthScreen = () => {
             fetchingData={state.fetchingData}
             signin={() => signin(inputState)}
             authFacebook={(value) => authFacebook(value)}
+            authGoogle={(value) => authGoogle(value)}
             onChangeText={(value, typedata) => handleInputChange(value, typedata)}
             stateView={(value) => setStateView(value)} />
         )
@@ -49,7 +50,6 @@ const AuthScreen = () => {
             id={inputState}
             fetchingData={state.fetchingData}
             signin={() => signin(inputState)}
-            onChangeText={(value, typedata) => handleInputChange(value, typedata)}
             stateView={(value) => setStateView(value)} />
         )
       default:
@@ -73,15 +73,21 @@ const AuthScreen = () => {
       <ImageBackground
         source={Images.garciaBackgraund}
         style={AuthStyle.ImageBackGraund}>
-        <ScrollView
-          nestedScrollEnabled
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior="automatic"
-          contentContainerStyle={tw`items-center`}
-          style={[AuthStyle.ContainerWhite, state.stateView === 1 || state.stateView === 2 ? { height: '80%' } : { flex: 1 }]}>
-          {getViewCase(state.stateView)}
-        </ScrollView>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}>
+          <ScrollView
+            nestedScrollEnabled
+            persistentScrollbar={true}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            contentInsetAdjustmentBehavior="automatic"
+            contentContainerStyle={tw`items-center`}
+            style={[AuthStyle.ContainerWhite, state.stateView === 1 || state.stateView === 2 ? { height: '80%', top: "20%" } : { flex: 1, top: "30%" }]}>
+
+            {getViewCase(state.stateView)}
+          </ScrollView>
+        </KeyboardAvoidingView>
       </ImageBackground>
       {
         state.error === true

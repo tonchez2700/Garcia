@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { Input, Button, Icon } from 'react-native-elements';
 import { useNavigation, } from '@react-navigation/native';
+import CameraRoll from '@react-native-community/cameraroll';
 import { useEffect, useRef, useState, useContext } from 'react';
 import { Camera } from 'expo-camera';
+import { Ionicons } from '@expo/vector-icons';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,134 +14,123 @@ import tw from 'tailwind-react-native-classnames';
 
 const PhotoScreen = () => {
 
-    let cameraRef = useRef();
-    const navigation = useNavigation();
-    const { state, ScanIdCard, isVisibleModal } = useContext(RegistrationContext);
-    const [hasCameraPermission, setHasCameraPermission] = useState();
-    const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
-    const [photo, setPhoto] = useState();
-    const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
+    const [hasCameraPermission, setHasCameraPermission] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
+    const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+    const [capturedPhotos, setCapturedPhotos] = useState([]);
+    const [isRecording, setIsRecording] = useState(false);
+    const [recording, setRecording] = useState(null);
 
+    const cameraRef = useRef(null);
 
     useEffect(() => {
         (async () => {
-            const cameraPermission = await Camera.requestCameraPermissionsAsync();
-            const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
-            setHasCameraPermission(cameraPermission.status === "granted");
-            setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            setHasCameraPermission(status === 'granted');
         })();
     }, []);
 
-    if (hasCameraPermission === undefined) {
-        return <Text>Requesting permissions...</Text>
-    } else if (!hasCameraPermission) {
-        return <Text>Permisos de la camara no permitido. Por favor de cambiar la configuracion.</Text>
-    }
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: false,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            const base64 = await FileSystem.readAsStringAsync(result.assets, {
-                encoding: FileSystem.EncodingType.Base64,
-            });
-            ScanIdCard(`${base64}`)
-            isVisibleModal();
-            navigation.goBack();
+    const takePicture = async () => {
+        if (cameraRef.current) {
+            const { uri } = await cameraRef.current.takePictureAsync();
+            saveMedia(uri, 'photo');
         }
     };
-    let takePic = async () => {
-        let options = {
-            quality: 1,
-            base64: true,
-            exif: false
-        };
 
-        let newPhoto = await cameraRef.current.takePictureAsync(options);
-        setPhoto(newPhoto);
-
+    const startRecording = async () => {
+        if (cameraRef.current) {
+            const { uri, codec = 'mp4' } = await cameraRef.current.recordAsync();
+            setRecording({ uri, codec });
+            setIsRecording(true);
+        }
     };
 
-    if (photo) {
+    const stopRecording = () => {
+        if (cameraRef.current && isRecording) {
+            cameraRef.current.stopRecording();
+            setIsRecording(false);
+        }
+    };
 
-        let savePhoto = () => {
-            ScanIdCard(`${photo.base64}`)
-            isVisibleModal();
-            MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-                setPhoto(undefined);
+    const saveMedia = async (mediaUri, mediaType) => {
+        try {
+            await CameraRoll.save(mediaUri, mediaType);
+            if (mediaType === 'photo') {
+                setCapturedPhotos((prevPhotos) => [...prevPhotos, mediaUri]);
+            }
+        } catch (error) {
+            console.log('Error saving media: ', error);
+        }
+    };
 
-            });
-
-
-        };
-
-        return (
-            <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-
-                <View style={[{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: '3%' }]}>
-                    <Button
-                        title="Cancelar"
-                        titleStyle={{ fontSize: 24 }}
-                        containerStyle={{ width: '45%' }}
-                        buttonStyle={{ backgroundColor: '#848484' }}
-                        onPress={() => setPhoto(undefined)} />
-                    {hasMediaLibraryPermission
-                        ?
-                        <Button
-                            title="Guardar"
-                            titleStyle={{ fontSize: 24 }}
-                            containerStyle={{ width: '45%' }}
-                            buttonStyle={{ backgroundColor: '#004480' }}
-                            onPress={() => savePhoto()} />
-                        :
-                        undefined
-                    }
-                </View>
-            </SafeAreaView>
+    const toggleCameraType = () => {
+        setType((prevType) =>
+            prevType === Camera.Constants.Type.back
+                ? Camera.Constants.Type.front
+                : Camera.Constants.Type.back
         );
+    };
+
+    const toggleFlashMode = () => {
+        setFlashMode((prevMode) =>
+            prevMode === Camera.Constants.FlashMode.off
+                ? Camera.Constants.FlashMode.on
+                : Camera.Constants.FlashMode.off
+        );
+    };
+
+    if (hasCameraPermission === null) {
+        return <View />;
+    } else if (hasCameraPermission === false) {
+        return <Text>No access to camera</Text>;
     }
 
     return (
-        <Camera style={styles.container} ref={cameraRef}>
-            <View style={styles.buttonContainer}>
-                <View style={[{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: '3%' }]}>
-                    <Button
-                        title="Galeria"
-                        titleStyle={{ fontSize: 24 }}
-                        containerStyle={{ width: '45%' }}
-                        buttonStyle={{ backgroundColor: '#004480' }}
-                        onPress={() => pickImage()} />
-                    <Button
-                        title="Tomar Fotografia"
-                        titleStyle={{ fontSize: 24 }}
-                        containerStyle={{ width: '45%' }}
-                        buttonStyle={{ backgroundColor: '#848484' }}
-                        onPress={() => takePic()} />
+        <View style={styles.container}>
+            <Camera style={styles.camera} type={type} flashMode={flashMode} ref={cameraRef}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={toggleFlashMode}>
+                        <Ionicons
+                            name={flashMode === Camera.Constants.FlashMode.on ? 'flash' : 'flash-off'}
+                            size={30}
+                            color="white"
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={isRecording ? stopRecording : startRecording}>
+                        <Ionicons
+                            name={isRecording ? 'videocam-off' : 'videocam'}
+                            size={30}
+                            color={isRecording ? 'red' : 'white'}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={takePicture}>
+                        <Ionicons name="camera" size={30} color="white" />
+                    </TouchableOpacity>
                 </View>
-            </View>
-        </Camera>
+            </Camera>
+            {/* Resto del código */}
+        </View>
     );
-}
+};
 
 export default PhotoScreen
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        alignContent: 'center',
+        flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'black'
+    },
+    camera: {
+        flex: 1,
     },
     buttonContainer: {
-        top: '40%',
-        alignSelf: 'center'
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: 20,
     },
-    preview: {
-        alignSelf: 'stretch',
-        flex: 1
-    }
+    button: {
+        padding: 10,
+    },
 });

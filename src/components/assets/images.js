@@ -11,6 +11,11 @@ const images = {
     iconGoogle: require('./img/icono_google.png'),
     garciaBackgraund: require('./img/garciaBackgraund.png'),
     garciaLogo: require('./img/garciaLogo.png'),
+    garciaLogoBlanco: require('./img/Garcia_logoWhite.png'),
+    accidente1: require('./img/accidente1.png'),
+    accidente2: require('./img/accidente2.png'),
+    accidente3: require('./img/accidente3.png'),
+    accidente4: require('./img/accidente4.png'),
 
 
 }
