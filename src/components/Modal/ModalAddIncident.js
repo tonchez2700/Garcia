@@ -11,7 +11,7 @@ const { width } = Dimensions.get("window");
 const ModalAddIncident = () => {
 
     const navigation = useNavigation();
-    const { state, clearState, isVisibleModal,  } = useContext(RegistrationContext);
+    const { state, clearState, isVisibleModal, } = useContext(RegistrationContext);
 
 
     let points = [
@@ -53,13 +53,15 @@ const ModalAddIncident = () => {
                                     style={styles.input}
                                     placeholder="Incidente"
                                 />
-                                <TouchableOpacity style={[{}]} onPress={() => { navigation.navigate('PhotoScreen'), isVisibleModal('isVisibleIncident') }}>
-                                    <TextInput
-                                        style={styles.input}
-                                        editable={false}
-                                        placeholder="Fotos/video"
+                                <View style={{ alignItems: 'center', marginBottom: 10 }}>
+                                    <Button
+                                        buttonStyle={{ borderRadius: 100, width: 50, height: 50, backgroundColor: '#1E0554' }}
+                                        loadingProps={{ color: '#000000' }}
+                                        onPress={() => { navigation.navigate('PhotoScreen'), isVisibleModal('isVisibleIncident') }}
+                                        icon={<Icon size={25} name={'camera'} type='font-awesome' color={'white'} />}
+                                        disabled={false}
                                     />
-                                </TouchableOpacity>
+                                </View>
                             </View>
                             <View style={styles.imageContainer}>
                                 <Image

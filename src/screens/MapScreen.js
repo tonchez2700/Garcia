@@ -25,15 +25,6 @@ const MapScreen = () => {
         latitudeDelta: 0.09,
         longitudeDelta: 0.035
     }
-    // 25.660026, -100.248864
-    // 25.662250, -100.250495
-    // 25.660161, -100.252705
-    // 25.664822, -100.251503
-
-
-
-
-
     let points = [
         { latitude: 25.660026, longitude: -100.248864, weight: 1 },
         { latitude: 25.662250, longitude: -100.250495, weight: 1 },
@@ -78,6 +69,7 @@ const MapScreen = () => {
                     <MapView
                         style={styles.map}
                         initialRegion={initial}
+                        
                         onPress={(e) => handleMapPress(e)} >
                         {
                             currentCoords && (
@@ -94,16 +86,16 @@ const MapScreen = () => {
                     <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, paddingBottom: 14 }}>
                         <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}
                             onPress={() => { console.log('peluche'); }} >
-                            <Image source={Images.iconSalida} style={{ width: 39, height: 41 }} />
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Salir{'\n'}</Text>
+                            <Icon type='simple-line-icon' name='action-undo' color={'white'} size={35} />
+                            <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>Salir{'\n'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisible') }} >
-                            <Image source={Images.iconMisReportes} style={{ width: 39, height: 41 }} />
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Mis{'\n'}Reportes</Text>
+                            <Icon type='simple-line-icon' name='docs' color={'white'} size={35} solid={false}/>
+                            <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>Mis{'\n'}Reportes</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisibleIncident') }} >
-                            <Image source={Images.iconAddReportes} style={{ width: 39, height: 41 }} />
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Nuevo{'\n'}Reporte</Text>
+                            <Icon type='simple-line-icon' name='note' color={'white'} size={35} solid={false}/>
+                            <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>Nuevo{'\n'}Reporte</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
