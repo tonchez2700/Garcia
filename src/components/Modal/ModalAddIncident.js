@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, TextInput, View, Modal, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Context as RegistrationContext } from '../../context/RegistrationContext';
+import DropD from '../DropD';
+import { Video } from 'expo-av';
 import Images from "@assets/images";
 import { Icon, Button } from 'react-native-elements'
 import { insert } from 'formik';
@@ -11,16 +13,12 @@ const { width } = Dimensions.get("window");
 const ModalAddIncident = () => {
 
     const navigation = useNavigation();
-    const { state, clearState, isVisibleModal, } = useContext(RegistrationContext);
+    const { state, clearState, isVisibleModal, setReportInfo, getReportList } = useContext(RegistrationContext);
 
-
-    let points = [
-        { type: 'Semáforo roto', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 1 },
-        { type: 'Accidente Automovilístico', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 2 },
-        { type: 'Bache', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 2 },
-        { type: 'Asalto', direccion: 'Heberto Castillo Martínez 571, Sin Nombre de Col 1, 66004 García, N.L.', estado: 3 },
-    ]
-
+    useEffect(() => {
+        getReportList()
+    }, []);
+    console.log(state.dataReport);
     return (
         <View style={styles.body}>
             <Modal
@@ -47,11 +45,15 @@ const ModalAddIncident = () => {
                             <View style={{ flex: 1, flexDirection: 'column' }}>
                                 <TextInput
                                     style={styles.input}
+                                    value={state.dataReport?.city}
                                     placeholder="Ubicación"
+                                    onChangeText={(value) => setReportInfo(value, 'city')}
                                 />
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Incidente"
+                                <DropD
+                                    data={state.reportTypeList}
+                                    type={'Incidente'}
+                                    value={state.dataReport?.incident_id}
+                                    fun={(item) => setReportInfo(item, 'incident_id')}
                                 />
                                 <View style={{ alignItems: 'center', marginBottom: 10 }}>
                                     <Button
@@ -64,22 +66,34 @@ const ModalAddIncident = () => {
                                 </View>
                             </View>
                             <View style={styles.imageContainer}>
-                                <Image
-                                    style={styles.image}
-                                    source={Images.accidente1}
-                                />
-                                <Image
-                                    style={styles.image}
-                                    source={Images.accidente2}
-                                />
-                                <Image
-                                    style={styles.image}
-                                    source={Images.accidente3}
-                                />
-                                <Image
-                                    style={styles.image}
-                                    source={Images.accidente4}
-                                />
+                                {
+                                    state.dataReport.images != undefined
+                                        ?
+                                        state.dataReport.images.map((e) => (
+                                            <Image
+                                                key={e}
+                                                style={styles.image}
+                                                source={{ uri: "data:image/jpg;base64," + e }} />
+                                        ))
+                                        :
+                                        null
+                                }
+                                {
+                                    state.dataReport.videos != undefined
+                                        ?
+                                        state.dataReport.videos.map((e) => (
+                                            <Video
+                                                key={e}
+                                                style={styles.image}
+                                                source={{ uri: "data:video/mp4;base64," + e, overrideFileExtensionAndroid: 'mp4' }}
+                                                useNativeControls
+                                                resizeMode='cover'
+                                                isLooping
+                                            />
+                                        ))
+                                        :
+                                        null
+                                }
                             </View>
                             <Button
                                 containerStyle={styles.buttonContainer}

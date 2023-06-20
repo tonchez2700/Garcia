@@ -11,13 +11,12 @@ const { width } = Dimensions.get("window");
 const ModalList = () => {
 
     const navigation = useNavigation();
-    const { state, clearState, isVisibleModal, getReports } = useContext(RegistrationContext);
+    const { state, isVisibleModal, getReports } = useContext(RegistrationContext);
     const [street, setStreet] = useState('');
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            clearState()
             getReports()
         });
         return unsubscribe;

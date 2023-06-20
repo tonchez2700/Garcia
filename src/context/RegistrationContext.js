@@ -12,11 +12,12 @@ const initialState = {
     isVisible: false,
     fetchingData: false,
     isVisibleIncident: false,
+    reportTypeList: [],
     reportList: [],
     listPatients: [],
     file_number: '',
     dataFrom: [],
-    dateB: '',
+    dataReport: [],
 }
 
 const RegistrationReducer = (state = initialState, action) => {
@@ -52,12 +53,6 @@ const RegistrationReducer = (state = initialState, action) => {
                 fetchingData: false,
                 [visibleType]: visibleCheck
             }
-        case 'SET_MASK':
-            let type = action.payload.typedata
-            return {
-                ...state,
-                [type]: action.payload.value,
-            }
         case 'SET_REPORTS_LIST':
             return {
                 ...state,
@@ -65,20 +60,6 @@ const RegistrationReducer = (state = initialState, action) => {
                 message: '',
                 fetchingData: false,
                 reportList: action.payload.response
-            }
-        case 'SET_DATA':
-            let typedata = action.payload.typedata
-            let category = action.payload.category
-            return {
-                ...state,
-                fetchingData: false,
-                dataFrom: {
-                    ...state.dataFrom,
-                    [category]: {
-                        ...state.dataFrom[category],
-                        [typedata]: action.payload.value
-                    }
-                }
             }
         case 'SET_SCAN':
             return {
@@ -96,9 +77,42 @@ const RegistrationReducer = (state = initialState, action) => {
                         document_id: (action.payload.response.result.classInfo.type == 'TYPE_VOTER_ID' ? 2 : ''),
                         document_number: action.payload.response.result.documentAdditionalNumber,
                         age: action.payload.response.result.age,
-
-
                     }
+                }
+            }
+        case 'SET_TYPE_REPORTS_LIST':
+            return {
+                ...state,
+                error: false,
+                message: '',
+                fetchingData: false,
+                reportTypeList: action.payload.response
+            }
+        case 'SET_REPORTS':
+            let typedata = action.payload.type
+            return {
+                ...state,
+                error: false,
+                message: '',
+                fetchingData: false,
+                dataReport: {
+                    ...state.dataReport,
+                    [typedata]: action.payload.value,
+                }
+            }
+        case 'SET_REPORTS_I/V':
+            let typeMedia = action.payload.media
+            return {
+                ...state,
+                error: false,
+                message: '',
+                fetchingData: false,
+                dataReport: {
+                    ...state.dataReport,
+                    [typeMedia]: state.dataReport[typeMedia] ? [
+                        ...state.dataReport[typeMedia],
+                        action.payload.value
+                    ] : [action.payload.value]
                 }
             }
         default:
@@ -123,17 +137,6 @@ const isVisibleModal = (dispatch) => {
         })
     }
 }
-
-const handleInputChange = (dispatch) => {
-    return async (value, typedata, category) => {
-
-        dispatch({
-            type: 'SET_DATA',
-            payload: { value, typedata, category }
-        })
-    }
-}
-
 
 
 
@@ -184,6 +187,68 @@ const ScanIdCard = (dispatch) => {
 
 }
 
+const getReportList = (dispatch) => {
+    return async () => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const token = user.token
+            const response = await httpClient
+                .get(`incidents`, {
+                    'Authorization': `Bearer ${token}`,
+                });
+            if (response.status === false) {
+                dispatch({
+                    type: 'SET_REQUEST_ERROR',
+                    payload: {
+                        error: true,
+                        message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                    }
+                });
+            } else {
+                dispatch({
+                    type: 'SET_TYPE_REPORTS_LIST',
+                    payload: {
+                        response
+                    }
+                })
+            }
+        } catch (error) {
+            dispatch({
+                type: 'SET_REQUEST_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                }
+            });
+        }
+    }
+
+}
+
+const setReportInfo = (dispatch) => {
+    return async (value, type) => {
+        dispatch({
+            type: 'SET_REPORTS',
+            payload: {
+                value, type
+            }
+        })
+    }
+
+}
+
+const setReportMedia = (dispatch) => {
+    return async (value, media) => {
+        dispatch({
+            type: 'SET_REPORTS_I/V',
+            payload: {
+                value, media
+            }
+        })
+    }
+
+}
 
 
 const handleVisibility = (dispatch) => {
@@ -205,7 +270,6 @@ const getReports = (dispatch) => {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
-            console.log(user.userData.id);
             const response = await httpClient
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
@@ -269,9 +333,11 @@ export const { Context, Provider } = createDataContext(
         clearState,
         handleVisibility,
         isVisibleModal,
-        handleInputChange,
         ScanIdCard,
         getReports,
+        setReportInfo,
+        setReportMedia,
+        getReportList,
 
     },
     initialState

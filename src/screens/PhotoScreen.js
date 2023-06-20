@@ -20,7 +20,7 @@ const PhotoScreen = () => {
     const navigation = useNavigation();
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-    const { state, isVisibleModal } = useContext(RegistrationContext);
+    const { state, isVisibleModal, setReportMedia } = useContext(RegistrationContext);
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
     const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
@@ -43,6 +43,13 @@ const PhotoScreen = () => {
         return <Text>Permission for camera not granted.</Text>
     }
 
+    const toggleFlashMode = () => {
+        if (flashMode === Camera.Constants.FlashMode.off) {
+            setFlashMode(Camera.Constants.FlashMode.on);
+        } else {
+            setFlashMode(Camera.Constants.FlashMode.off);
+        }
+    };
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -72,7 +79,9 @@ const PhotoScreen = () => {
 
     if (photo) {
         let savePhoto = () => {
-            isVisibleModal();
+            isVisibleModal('isVisibleIncident')
+            setReportMedia(`${photo.base64}`, 'images')
+            navigation.navigate('Mapa')
             MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
                 setPhoto(undefined);
             });
@@ -107,7 +116,6 @@ const PhotoScreen = () => {
         setIsRecording(true);
         let options = {
             quality: "1080p",
-            base64: true,
             maxDuration: 60,
             mute: false
         };
@@ -128,10 +136,19 @@ const PhotoScreen = () => {
             });
         };
 
-        let saveVideo = () => {
-            MediaLibrary.saveToLibraryAsync(video.uri).then(() => {
-                setVideo(undefined);
-            });
+        let saveVideo = async () => {
+            try {
+                const videoBase64 = await FileSystem.readAsStringAsync(video.uri, {
+                    encoding: FileSystem.EncodingType.Base64,
+                });
+                isVisibleModal('isVisibleIncident')
+                setReportMedia(`${videoBase64}`, 'videos')
+                navigation.navigate('Mapa')
+                setVideo(undefined)
+            } catch (error) {
+                console.log('Error al convertir el video a base64:', error);
+                setVideo(undefined)
+            }
         };
 
         return (
@@ -151,7 +168,7 @@ const PhotoScreen = () => {
                             titleStyle={{ fontSize: 24 }}
                             containerStyle={{ width: '45%' }}
                             buttonStyle={{ backgroundColor: '#848484' }}
-                            onPress={saveVideo} />
+                            onPress={() => setVideo(undefined)} />
                         :
                         undefined
                     }
@@ -160,7 +177,8 @@ const PhotoScreen = () => {
                         titleStyle={{ fontSize: 24 }}
                         containerStyle={{ width: '45%' }}
                         buttonStyle={{ backgroundColor: '#1E0554' }}
-                        onPress={() => setVideo(undefined)} />
+                        onPress={saveVideo} />
+
                 </View>
             </SafeAreaView>
         );
@@ -169,13 +187,13 @@ const PhotoScreen = () => {
         <View style={styles.container}>
             <Camera style={styles.camera} type={type} flashMode={flashMode} ref={cameraRef}>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => pickImage()}>
+                    {/* <TouchableOpacity style={styles.button} onPress={() => pickImage()}>
                         <Icon
                             name="md-images"
                             size={30}
                             type='ionicon'
                             color="white" />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity style={styles.button} onPress={() => toggleFlashMode()}>
                         <Icon
                             size={30}

@@ -18,7 +18,7 @@ const DrawerNavigator = props => {
     }
     getLocalUser()
   }, [])
-  // console.log(user);
+  
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <DrawerContentScrollView
