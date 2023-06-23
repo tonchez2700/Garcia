@@ -4,13 +4,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import httpClient from '../services/httpClient'
 import httpClientId from '../services/httpClientId';
 import { Base64 } from 'js-base64';
+import * as Location from 'expo-location';
 import * as rootNavigation from '../helpers/rootNavigation';
 
 const initialState = {
     error: false,
     message: null,
-    isVisible: false,
     fetchingData: false,
+    isVisible: false,
+    isVisibleAlert: false,
     isVisibleIncident: false,
     reportTypeList: [],
     reportList: [],
@@ -29,12 +31,13 @@ const RegistrationReducer = (state = initialState, action) => {
             }
         case 'FETCHING_DATA':
             return { ...state, fetchingData: action.payload.fetchingData }
-        case 'SET_CLEAR':
+        case 'SET_CLEAR_FROM':
             return {
                 ...state,
                 error: false,
                 message: null,
                 fetchingData: false,
+                dataReport: [],
             }
         case 'SET_REQUEST_ERROR':
             return {
@@ -52,6 +55,14 @@ const RegistrationReducer = (state = initialState, action) => {
                 message: '',
                 fetchingData: false,
                 [visibleType]: visibleCheck
+            }
+        case 'CHANGE_ERROR':
+            return {
+                ...state,
+                error: false,
+                message: action.payload.message,
+                fetchingData: false,
+                isVisibleAlert: true
             }
         case 'SET_REPORTS_LIST':
             return {
@@ -128,6 +139,12 @@ const clearState = (dispatch) => {
         dispatch({ type: 'CLEAR_STATE' });
     }
 }
+const clearStateFrom = (dispatch) => {
+    return () => {
+        dispatch({ type: 'SET_CLEAR_FROM' });
+    }
+}
+
 
 const isVisibleModal = (dispatch) => {
     return async (type, message) => {
@@ -197,7 +214,7 @@ const getReportList = (dispatch) => {
                 .get(`incidents`, {
                     'Authorization': `Bearer ${token}`,
                 });
-            if (response.status === false) {
+            if (response.status === false || response.message == 'Unauthenticated.') {
                 dispatch({
                     type: 'SET_REQUEST_ERROR',
                     payload: {
@@ -205,6 +222,7 @@ const getReportList = (dispatch) => {
                         message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
                     }
                 });
+
             } else {
                 dispatch({
                     type: 'SET_TYPE_REPORTS_LIST',
@@ -263,7 +281,6 @@ const handleVisibility = (dispatch) => {
 
 }
 
-
 const getReports = (dispatch) => {
     return async () => {
         try {
@@ -274,16 +291,83 @@ const getReports = (dispatch) => {
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
-            if (response.status != false || response.message != 'reports.no_reports_registered') {
-                dispatch({
-                    type: 'SET_REPORTS_LIST',
-                    payload: { response }
-                })
+            if (response.status != false) {
+                if (response.message != 'reports.no_reports_registered') {
+                    dispatch({
+                        type: 'SET_REPORTS_LIST',
+                        payload: { response }
+                    })
+                } else {
+                    dispatch({
+                        type: 'SET_REPORTS_LIST',
+                        payload: { response: { message: 'No tiene reportes registrados' } }
+                    })
+                }
             } else {
                 dispatch({
-                    type: 'SET_REPORTS_LIST',
-                    payload: { response: { message: 'No tiene reportes registrados' } }
+                    type: 'SET_REQUEST_ERROR',
+                    payload: {
+                        error: true,
+                        message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                    }
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: 'SET_REQUEST_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                }
+            });
+        }
+    }
+
+}
+
+
+const store = (dispatch) => {
+    return async (data) => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const token = user.token
+            const separatedData = {
+                user_id: user.userData.id,
+                latitude: data.coords.latitude.toString(),
+                longitude: data.coords.longitude.toString(),
+                postalCode: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[2].trim() : '',
+                city: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[3].trim() : '',
+                street: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[0].trim() : '',
+                disctrict: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[1].trim() : '',
+                incident_id: data.incident_id,
+                resource: {
+                    images: (data.images && data.images.length > 0) ? data.images : [],
+                    videos: (data.videos && data.videos.length > 0) ? data.videos : [],
+                }
+            };
+            const response = await httpClient
+                .post(`reports`, separatedData,
+                    {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                )
+            if (response.status != false) {
+                dispatch({ type: 'SET_CLEAR_FROM' });
+                dispatch({
+                    type: 'CHANGE_VISIBLE_MODAL',
+                    payload: { type: 'isVisibleIncident', }
                 })
+            } else {
+                const errorKey = Object.keys(response.message)[0];
+                const errorMessage = response.message[errorKey][0];
+                dispatch({
+                    type: 'CHANGE_ERROR',
+                    payload: {
+                        message: errorMessage
+                    }
+                });
             }
         } catch (error) {
             console.log(error);
@@ -331,6 +415,7 @@ export const { Context, Provider } = createDataContext(
     RegistrationReducer,
     {
         clearState,
+        clearStateFrom,
         handleVisibility,
         isVisibleModal,
         ScanIdCard,
@@ -338,6 +423,7 @@ export const { Context, Provider } = createDataContext(
         setReportInfo,
         setReportMedia,
         getReportList,
+        store,
 
     },
     initialState

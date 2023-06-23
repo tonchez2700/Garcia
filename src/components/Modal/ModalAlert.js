@@ -1,45 +1,52 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View, Modal, Pressable, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Context as AccountDataContext } from '../../context/RegistrationContext';
-import tw from 'tailwind-react-native-classnames'
+import { Context as RegistrationContext } from '../../context/RegistrationContext';
 import { Icon, Button } from 'react-native-elements'
 
 
 const { width } = Dimensions.get("window");
-const ModalAlert = () => {
+const ModalAlert = ({ message }) => {
 
     const navigation = useNavigation();
 
     const { state,
         clearState,
         isVisibleModal,
-    } = useContext(AccountDataContext);
+    } = useContext(RegistrationContext);
 
 
     return (
         <View style={styles.body}>
             <Modal
-                visible={state.isVisible}
+                visible={state.isVisibleAlert}
                 hardwareAccelerated
-                animationType="slide"
+                animationType="fade"
                 transparent
                 presentationStyle="overFullScreen"
                 onRequestClose={() =>
-                    isVisibleModal()
+                    isVisibleModal('isVisibleAlert')
                 }>
                 <View style={styles.viewWrapper}>
                     <View style={styles.modalView}>
-                        <Text style={styles.text}>Lorem Ipsum</Text>
-                        <Text style={styles.textbody}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Text>
-                        <View >
+                        <View style={{ alignSelf: 'flex-end' }}>
+                            <Icon
+                                size={25}
+                                name={'remove'}
+                                onPress={() => isVisibleModal('isVisibleAlert')}
+                                type='font-awesome'
+                                color={'#4267B2'} />
+                        </View>
+                        <Text style={styles.text}>Error</Text>
+                        <Text style={styles.textbody}>{state.message}</Text>
+                        <View style={{ alignItems: 'center', }}>
                             <Button
                                 onPress={() => {
-                                    isVisibleModal()
+                                    isVisibleModal('isVisibleAlert')
                                 }}
                                 titleStyle={{ fontSize: 17 }}
                                 title={'Aceptar'}
-                                buttonStyle={{ backgroundColor: '#004480', borderRadius: 9, width: '100%' }}
+                                buttonStyle={{ backgroundColor: '#1E0554', borderRadius: 30, paddingHorizontal: 32, paddingVertical: 10 }}
                             />
                         </View>
                     </View>
@@ -54,17 +61,17 @@ export default ModalAlert
 const styles = StyleSheet.create({
 
     text: {
-        color: '#000000',
+        color: '#393939',
         fontWeight: 'bold',
         fontWeight: '700',
-        textAlign: 'left',
+        textAlign: 'center',
         fontSize: 19.36,
     },
     textbody: {
-        color: 'black',
-        textAlign: 'left',
-        fontWeight: '400',
-        fontSize: 14.52,
+        color: '#1E0554',
+        textAlign: 'center',
+        fontWeight: '700',
+        fontSize: 16.52,
     },
     body: {
         flex: 1,
@@ -96,6 +103,6 @@ const styles = StyleSheet.create({
         height: 200,
         width: width * 0.8,
         backgroundColor: "#fff",
-        borderRadius: 7,
+        borderRadius: 26,
     },
 })

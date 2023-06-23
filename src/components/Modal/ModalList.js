@@ -10,47 +10,45 @@ import Images from "@assets/images";
 const { width } = Dimensions.get("window");
 const ModalList = () => {
 
-    const navigation = useNavigation();
     const { state, isVisibleModal, getReports } = useContext(RegistrationContext);
-    const [street, setStreet] = useState('');
-
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            getReports()
-        });
-        return unsubscribe;
-    }, [navigation]);
-
     const getColorState = (estado) => {
         let textColor;
         let numeroTexto;
         let icon;
         switch (estado) {
             case 1:
+                textColor = '#F8B933';
+                numeroTexto = 'Pendiente';
+                icon = 'cog';
+                break;
+            case 2:
+                textColor = '#FF8200';
+                numeroTexto = 'Atendiendo';
+                icon = 'cog';
+                break;
+            case 3:
                 textColor = '#008E00';
                 numeroTexto = 'Completado';
                 icon = 'check-circle';
                 break;
-            case 2:
-                textColor = '#FFC700';
-                numeroTexto = 'En proceso';
-                icon = 'cog';
+            case 4:
+                textColor = '#008E00';
+                numeroTexto = 'Cancelado por ciudadano';
+                icon = 'check-circle';
                 break;
-            case 3:
-                textColor = '#8E0000';
-                numeroTexto = 'Con retraso';
-                icon = 'warning';
+            case 5:
+                textColor = '#008E00';
+                numeroTexto = 'No valido';
+                icon = 'check-circle';
                 break;
             default:
-                textColor = 'black';
-                numeroTexto = 'En proceso';
-                icon = 'warning';
+                textColor = '#FF7A00';
+                numeroTexto = 'Pendiente';
+                icon = 'cog';
         }
         return { color: textColor, numeroTexto, icon };
 
     };
-
     return (
         <View style={styles.body}>
             <Modal
@@ -75,39 +73,46 @@ const ModalList = () => {
                         <Text style={styles.text}>Mis Reportes</Text>
                         <ScrollView style={{ flex: 1, width: '100%', marginBottom: 10 }}>
                             {
-                                state.reportList.map((e) => (
-                                    <View key={e.id} style={{
-                                        flex: 1, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderWidth: .3,
-                                        borderColor: 'gray', marginBottom: 20, borderRadius: 5, elevation: 5
-                                    }}>
-                                        <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', padding: 10 }}>
-                                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.report?.incident.name}</Text>
-                                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>32423423</Text>
-                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                                <Icon
-                                                    size={25}
-                                                    name={getColorState(e?.report_status.id).icon}
-                                                    type='font-awesome'
-                                                    color={getColorState(e.report_status.id).color} />
-                                                <Text style={[{ color: getColorState(e.report_status.id).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.report_status.id).numeroTexto}</Text>
+                                state.reportList != []
+                                    ?
+                                    state.reportList.map((e) => (
+                                        <View key={e.id} style={{
+                                            flex: 1, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderWidth: .3,
+                                            borderColor: 'gray', marginBottom: 20, borderRadius: 5, elevation: 5
+                                        }}>
+                                            <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', padding: 10 }}>
+                                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.incident.name}</Text>
+                                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.street},{e?.suburb.name},{e?.suburb.postal_code.code},{e?.suburb.municipality.name}</Text>
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Icon
+                                                        size={25}
+                                                        name={getColorState(e?.report_status.id).icon}
+                                                        type='font-awesome'
+                                                        color={getColorState(e.report_status.id).color} />
+                                                    <Text style={[{ color: getColorState(e.report_status.id).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.report_status.id).numeroTexto}</Text>
+                                                </View>
                                             </View>
-
+                                            {
+                                                e?.resources != []
+                                                    ?
+                                                    <Image
+                                                        style={{
+                                                            flex: 1,
+                                                            width: '20%',
+                                                            height: '100%',
+                                                            borderTopRightRadius: 5,
+                                                            borderBottomRightRadius: 5,
+                                                            resizeMode: 'stretch',
+                                                        }}
+                                                        source={Images.accidente3}
+                                                    />
+                                                    :
+                                                    null
+                                            }
                                         </View>
-                                        <Image
-                                            style={{
-                                                flex: 1,
-                                                width: '20%',
-                                                height: '100%',
-                                                borderTopRightRadius: 5,
-                                                borderBottomRightRadius: 5,
-                                                resizeMode: 'stretch',
-                                            }}
-                                            source={{
-                                                uri: `https://cpxproject.com/garcia/${e?.resources[0].url}`,
-                                            }}
-                                        />
-                                    </View>
-                                ))
+                                    ))
+                                    :
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', color: '#4267B2' }}>No hay reportes</Text>
                             }
                         </ScrollView>
                     </View>

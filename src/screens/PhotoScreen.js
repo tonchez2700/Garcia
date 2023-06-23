@@ -80,7 +80,7 @@ const PhotoScreen = () => {
     if (photo) {
         let savePhoto = () => {
             isVisibleModal('isVisibleIncident')
-            setReportMedia(`${photo.base64}`, 'images')
+            setReportMedia(`data:image/jpeg;base64,${photo.base64}`, 'images')
             navigation.navigate('Mapa')
             MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
                 setPhoto(undefined);
@@ -88,7 +88,7 @@ const PhotoScreen = () => {
         };
         return (
             <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+                <Image style={styles.preview} source={{ uri: "data:image/jpeg;base64," + photo.base64 }} />
 
                 <View style={[{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: '3%' }]}>
                     <Button
@@ -142,7 +142,7 @@ const PhotoScreen = () => {
                     encoding: FileSystem.EncodingType.Base64,
                 });
                 isVisibleModal('isVisibleIncident')
-                setReportMedia(`${videoBase64}`, 'videos')
+                setReportMedia(`data:video/mp4;base64,${videoBase64}`, 'videos')
                 navigation.navigate('Mapa')
                 setVideo(undefined)
             } catch (error) {

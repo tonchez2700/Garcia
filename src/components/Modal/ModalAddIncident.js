@@ -6,19 +6,14 @@ import DropD from '../DropD';
 import { Video } from 'expo-av';
 import Images from "@assets/images";
 import { Icon, Button } from 'react-native-elements'
-import { insert } from 'formik';
 
 
 const { width } = Dimensions.get("window");
-const ModalAddIncident = () => {
+const ModalAddIncident = ({ fun }) => {
+
 
     const navigation = useNavigation();
-    const { state, clearState, isVisibleModal, setReportInfo, getReportList } = useContext(RegistrationContext);
-
-    useEffect(() => {
-        getReportList()
-    }, []);
-    console.log(state.dataReport);
+    const { state, isVisibleModal, setReportInfo, } = useContext(RegistrationContext);
     return (
         <View style={styles.body}>
             <Modal
@@ -45,9 +40,9 @@ const ModalAddIncident = () => {
                             <View style={{ flex: 1, flexDirection: 'column' }}>
                                 <TextInput
                                     style={styles.input}
-                                    value={state.dataReport?.city}
+                                    value={state.dataReport?.adresse}
                                     placeholder="Ubicación"
-                                    onChangeText={(value) => setReportInfo(value, 'city')}
+                                    onChangeText={(value) => setReportInfo(value, 'adresse')}
                                 />
                                 <DropD
                                     data={state.reportTypeList}
@@ -73,7 +68,7 @@ const ModalAddIncident = () => {
                                             <Image
                                                 key={e}
                                                 style={styles.image}
-                                                source={{ uri: "data:image/jpg;base64," + e }} />
+                                                source={{ uri: e }} />
                                         ))
                                         :
                                         null
@@ -85,7 +80,7 @@ const ModalAddIncident = () => {
                                             <Video
                                                 key={e}
                                                 style={styles.image}
-                                                source={{ uri: "data:video/mp4;base64," + e, overrideFileExtensionAndroid: 'mp4' }}
+                                                source={{ uri: e, overrideFileExtensionAndroid: 'mp4' }}
                                                 useNativeControls
                                                 resizeMode='cover'
                                                 isLooping
@@ -98,7 +93,7 @@ const ModalAddIncident = () => {
                             <Button
                                 containerStyle={styles.buttonContainer}
                                 loadingProps={{ color: '#000000' }}
-                                onPress={() => console.log('oato')}
+                                onPress={() => fun(state.dataReport)}
                                 title="Enviar"
                                 disabled={false} // Agrega la propiedad disabled si deseas deshabilitar el botón
                             />
@@ -152,7 +147,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.2,
         borderColor: "#707070B3",
         borderBottomWidth: 0,
-        paddingLeft: 15,
+        paddingHorizontal: 15,
         paddingVertical: 8,
         borderRadius: 40,
         marginBottom: 22,
