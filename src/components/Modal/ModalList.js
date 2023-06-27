@@ -104,7 +104,7 @@ const ModalList = () => {
                                                             borderBottomRightRadius: 5,
                                                             resizeMode: 'stretch',
                                                         }}
-                                                        source={Images.accidente3}
+                                                        source={{uri: `https://cpxproject.com/garcia/${e.resources[0].url}`,}}
                                                     />
                                                     :
                                                     null

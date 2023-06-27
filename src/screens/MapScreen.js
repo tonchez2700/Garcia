@@ -1,22 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 import {
-    StyleSheet, View, ActivityIndicator,
-    Text, TouchableOpacity, KeyboardAvoidingView
+    StyleSheet,
+    View,
+    ActivityIndicator,
+    Text,
+    TouchableOpacity,
+    KeyboardAvoidingView,
 } from 'react-native';
-import MapView, { Marker, } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { Icon, Button } from 'react-native-elements';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
 import { useNavigation } from '@react-navigation/native';
 import ModalList from '../components/Modal/ModalList';
 import ModalAddIncident from '../components/Modal/ModalAddIncident';
 import ModalAlert from '../components/Modal/ModalAlert';
+import CardIncident from '../components/CardIncident';
 import * as Location from 'expo-location';
-import Images from "@assets/images";
-
-
+import Images from '@assets/images';
 
 const MapScreen = () => {
-
     const navigation = useNavigation();
     const {
         state,
@@ -25,18 +27,26 @@ const MapScreen = () => {
         getReports,
         getReportList,
         setReportInfo,
-        store } = useContext(RegistrationContext);
+        store,
+    } = useContext(RegistrationContext);
     const [location, setLocation] = useState(null);
+    const [markCard, setmarkCard] = useState('');
     const [locationAddress, setLocationAddress] = useState('');
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             getLocationAsync();
-            getReports()
-            getReportList()
+            getReports();
+            getReportList();
         });
-        return unsubscribe
-    }, [navigation, location]);
+        return unsubscribe;
+    }, [navigation]);
+
+    const getRandomColor = () => {
+        const colors = ['#FF0000', '#FFFF00', '#00FF00'];
+        const randomIndex = Math.floor(Math.random() * colors.length);
+        return colors[randomIndex];
+    }
 
     const getLocationAsync = async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -44,7 +54,22 @@ const MapScreen = () => {
             console.log('Permission to access location was denied');
             return;
         }
-        Location.watchPositionAsync(
+        const locationData = await Location.getCurrentPositionAsync();
+        setLocation(locationData.coords);
+
+        try {
+            const address = await Location.reverseGeocodeAsync(locationData.coords);
+            if (address.length > 0) {
+                const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}`;
+                setLocationAddress(locationAddress);
+                setReportInfo(locationData.coords, 'coords');
+                setReportInfo(locationAddress, 'address');
+            }
+        } catch (error) {
+            console.log('Error fetching address: ', error);
+        }
+
+        const locationSubscription = Location.watchPositionAsync(
             {
                 accuracy: Location.Accuracy.High,
                 distanceInterval: 10,
@@ -56,14 +81,19 @@ const MapScreen = () => {
                     if (address.length > 0) {
                         const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}`;
                         setLocationAddress(locationAddress);
-                        setReportInfo(coords, 'coords')
-                        setReportInfo(locationAddress, 'adresse')
+                        setReportInfo(coords, 'coords');
+                        setReportInfo(locationAddress, 'adresse');
                     }
                 } catch (error) {
                     console.log('Error fetching address: ', error);
                 }
             }
         );
+        return () => {
+            if (locationSubscription) {
+                locationSubscription.remove();
+            }
+        };
     };
 
     const renderContent = () => {
@@ -74,85 +104,118 @@ const MapScreen = () => {
                         <MapView
                             style={styles.map}
                             showsUserLocation={true}
+                            showsPointsOfInterest={false}
+                            showsIndoors={false}
                             initialRegion={{
                                 latitude: location.latitude,
                                 longitude: location.longitude,
                                 latitudeDelta: 0.005,
                                 longitudeDelta: 0.005,
-                            }}>
-                            {
-                                state.reportList != []
-                                    ?
-                                    state.reportList.map((marker) =>
-                                    (
-                                        <Marker
-                                            title={marker.incident.name}
-                                            key={marker.key}
-                                            coordinate={{
-                                                latitude: parseFloat(marker.latitudmarker),
-                                                longitude: parseFloat(marker.longitude),
-                                            }}
-                                        />
-                                    ))
-                                    : null
-                            }
+                            }}
+                        >
+                            {state.reportList !== [] &&
+                                state.reportList.map((marker) => (
+
+                                    <Marker
+                                        title={marker.incident.name}
+                                        key={marker.id}
+                                        pinColor={getRandomColor()}
+                                        coordinate={{
+                                            latitude: parseFloat(marker.latitude),
+                                            longitude: parseFloat(marker.longitude),
+                                        }}
+                                        onPress={() => setmarkCard(marker)}
+                                    />
+                                ))}
                         </MapView>
-                        <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, paddingBottom: 14, }}>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}
-                                onPress={() => { console.log('peluche'); }} >
-                                <Icon type='simple-line-icon' name='action-undo' color={'white'} size={35} />
-                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>Salir{'\n'}</Text>
+                        <View
+                            style={{
+                                backgroundColor: '#1E0554',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingTop: 14,
+                                paddingBottom: 14,
+                            }}
+                        >
+                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2, }}
+                                onPress={() => {
+                                    console.log('peluche');
+                                }}
+                            >
+                                <Icon type='simple-line-icon' name='action-undo' color={'white'} size={35} solid={false} />
+                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}  >
+                                    Salir{'\n'}
+                                </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisible') }} >
+                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2, }}
+                                onPress={() => {
+                                    isVisibleModal('isVisible');
+                                }} >
                                 <Icon type='simple-line-icon' name='docs' color={'white'} size={35} solid={false} />
-                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>Mis{'\n'}Reportes</Text>
+                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }} >
+                                    Mis{'\n'}
+                                    Reportes
+                                </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { clearStateFrom(), isVisibleModal('isVisibleIncident'), getLocationAsync() }} >
+                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2, }}
+                                onPress={() => {
+                                    clearStateFrom();
+                                    isVisibleModal('isVisibleIncident');
+                                    getLocationAsync();
+                                }}>
                                 <Icon type='simple-line-icon' name='note' color={'white'} size={35} solid={false} />
-                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>Nuevo{'\n'}Reporte</Text>
+                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }} >
+                                    Nuevo{'\n'}
+                                    Reporte
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 ) : (
                     <Text style={styles.loadingText}>Cargando mapa...</Text>
                 )}
+                {
+                    markCard != ''
+                        ?
+                        <CardIncident data={markCard} />
+                        : null
+                }
                 <View style={{ flex: 0 }}>
                     <ModalList />
                     <ModalAddIncident fun={(value) => store(value)} />
                     <ModalAlert />
                 </View>
-            </View >
+            </View>
         );
-    }
-    return (
-        !state.fetchingData
-            ?
-            !state.error
-                ?
-                renderContent()
-                :
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ textAlign: 'center' }}>
-                        {state.message}
-                    </Text>
-                    <Button
-                        containerStyle={{ width: 120 }}
-                        buttonStyle={[{ backgroundColor: '#1E0554' }]}
-                        title="Actualizar"
-                        onPress={() => navigation.navigate("AuthScreen")}
-                    />
-                </View>
-            :
-            <ActivityIndicator size="large" color="#118EA6" style={{ marginTop: 5 }} />
-    )
-}
+    };
 
-export default MapScreen
+    return !state.fetchingData ? (
+        !state.error ? (
+            renderContent()
+        ) : (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ textAlign: 'center' }}>{state.message}</Text>
+                <Button
+                    containerStyle={{ width: 120 }}
+                    buttonStyle={[{ backgroundColor: '#1E0554' }]}
+                    title='Actualizar'
+                    onPress={() => navigation.navigate('AuthScreen')}
+                />
+            </View>
+        )
+    ) : (
+        <ActivityIndicator size='large' color='#118EA6' style={{ marginTop: 5 }} />
+    );
+};
+
+export default MapScreen;
+
 const styles = StyleSheet.create({
-
     container: {
         flex: 2,
-        position: 'relative'
+        position: 'relative',
     },
     map: {
         flex: 9,
@@ -165,4 +228,4 @@ const styles = StyleSheet.create({
     markerText: {
         fontWeight: 'bold',
     },
-})
+});

@@ -40,9 +40,9 @@ const ModalAddIncident = ({ fun }) => {
                             <View style={{ flex: 1, flexDirection: 'column' }}>
                                 <TextInput
                                     style={styles.input}
-                                    value={state.dataReport?.adresse}
+                                    value={state.dataReport?.address}
                                     placeholder="Ubicación"
-                                    onChangeText={(value) => setReportInfo(value, 'adresse')}
+                                    onChangeText={(value) => setReportInfo(value, 'address')}
                                 />
                                 <DropD
                                     data={state.reportTypeList}

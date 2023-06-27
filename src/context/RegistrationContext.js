@@ -281,6 +281,63 @@ const handleVisibility = (dispatch) => {
 
 }
 
+const PutUSerProfile = (dispatch) => {
+    return async (data) => {
+        try {
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const token = user.token
+            const response = await httpClient
+                .put(`users/${user.userData.id}`, data,
+                    {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                )
+            if (response.status == true) {
+                const user = {
+                    userData: {
+                        id: response.user.id,
+                        role_id: response.user.role_id,
+                        name: response.user.name,
+                        full_name: response.user.full_name,
+                        paternal_surname: response.user.paternal_surname,
+                        maternal_surname: response.user.maternal_surname,
+                        picture: response.user.picture,
+                        facebook_id: response.user.facebook_id,
+                        google_id: response.user.google_id,
+                        phone: response.user.phone,
+                        address: response.user.address,
+                        postal_code: response.user.postal_code,
+                        email: response.user.email
+
+                    },
+                    token: token
+                }
+                await AsyncStorage.setItem('user', JSON.stringify(user))
+                dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
+            } else {
+                dispatch({
+                    type: 'SET_REQUEST_ERROR',
+                    payload: {
+                        error: true,
+                        message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                    }
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: 'SET_REQUEST_ERROR',
+                payload: {
+                    error: true,
+                    message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                }
+            });
+        }
+    }
+
+}
+
 const getReports = (dispatch) => {
     return async () => {
         try {
@@ -291,16 +348,11 @@ const getReports = (dispatch) => {
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
-            if (response.status != false) {
+            if (response.status == true) {
                 if (response.message != 'reports.no_reports_registered') {
                     dispatch({
                         type: 'SET_REPORTS_LIST',
                         payload: { response }
-                    })
-                } else {
-                    dispatch({
-                        type: 'SET_REPORTS_LIST',
-                        payload: { response: { message: 'No tiene reportes registrados' } }
                     })
                 }
             } else {
@@ -337,10 +389,10 @@ const store = (dispatch) => {
                 user_id: user.userData.id,
                 latitude: data.coords.latitude.toString(),
                 longitude: data.coords.longitude.toString(),
-                postalCode: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[2].trim() : '',
-                city: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[3].trim() : '',
-                street: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[0].trim() : '',
-                disctrict: (data.adresse && typeof data.adresse === 'string') ? data.adresse.split(',')[1].trim() : '',
+                postalCode: (data.address && typeof data.address === 'string') ? data.address.split(',')[2].trim() : '',
+                city: (data.address && typeof data.address === 'string') ? data.address.split(',')[3].trim() : '',
+                street: (data.address && typeof data.address === 'string') ? data.address.split(',')[0].trim() : '',
+                disctrict: (data.address && typeof data.address === 'string') ? data.address.split(',')[1].trim() : '',
                 incident_id: data.incident_id,
                 resource: {
                     images: (data.images && data.images.length > 0) ? data.images : [],
@@ -423,6 +475,7 @@ export const { Context, Provider } = createDataContext(
         setReportInfo,
         setReportMedia,
         getReportList,
+        PutUSerProfile,
         store,
 
     },
