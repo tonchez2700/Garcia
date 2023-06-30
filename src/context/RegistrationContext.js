@@ -348,7 +348,8 @@ const getReports = (dispatch) => {
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
-            if (response.status == true) {
+
+            if (response.length != 0) {
                 if (response.message != 'reports.no_reports_registered') {
                     dispatch({
                         type: 'SET_REPORTS_LIST',
@@ -382,7 +383,7 @@ const getReports = (dispatch) => {
 const store = (dispatch) => {
     return async (data) => {
         try {
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
             const separatedData = {
@@ -411,6 +412,28 @@ const store = (dispatch) => {
                     type: 'CHANGE_VISIBLE_MODAL',
                     payload: { type: 'isVisibleIncident', }
                 })
+
+                const response = await httpClient
+                    .get(`reports?user_id=${user.userData.id}`, {
+                        'Authorization': `Bearer ${token}`,
+                    });
+
+                if (response.length != 0) {
+                    if (response.message != 'reports.no_reports_registered') {
+                        dispatch({
+                            type: 'SET_REPORTS_LIST',
+                            payload: { response }
+                        })
+                    }
+                } else {
+                    dispatch({
+                        type: 'SET_REQUEST_ERROR',
+                        payload: {
+                            error: true,
+                            message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                        }
+                    });
+                }
             } else {
                 const errorKey = Object.keys(response.message)[0];
                 const errorMessage = response.message[errorKey][0];

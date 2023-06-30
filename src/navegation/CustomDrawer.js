@@ -7,6 +7,7 @@ import DrawerNavigator from './DrawerNavigator';
 import MapScreen from '../screens/MapScreen';
 import UserScreen from '../screens/UserScreen';
 import NavBar from '../components/NavBar';
+import Pruebas from '../screens/Pruebas';
 import HomeScreen from './../screens/HomeScreen'
 
 const Drawer = createDrawerNavigator();
@@ -35,6 +36,7 @@ const CustomDrawer = () => {
             useLegacyImplementation>
             <Drawer.Screen name="Mapa" component={MapScreen} />
             <Drawer.Screen name='Perfil' component={UserScreen} />
+            <Drawer.Screen name='Pruebas' component={Pruebas} />
 
         </Drawer.Navigator>
     )

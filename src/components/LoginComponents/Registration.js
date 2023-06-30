@@ -30,14 +30,14 @@ const Registration = ({ fetchingData, id, stateView }) => {
                 maxLength={15}
                 value={inputState.paternal_surname}
                 style={AuthStyle.inputR}
-                placeholder="Nombre Paterno"
+                placeholder="Primer apellido"
                 onChangeText={(value) => handleInputChange(value, "paternal_surname")}
             />
             <TextInput
                 maxLength={15}
                 value={inputState.maternal_surname}
                 style={AuthStyle.inputR}
-                placeholder="Nombre Materno"
+                placeholder="Segundo apellido"
                 onChangeText={(value) => handleInputChange(value, "maternal_surname")}
             />
             <TextInput
@@ -91,7 +91,7 @@ const Registration = ({ fetchingData, id, stateView }) => {
                     onPress={() => { register(inputState) }} />
             </View>
             <Text style={{ fontSize: 16, fontWeight: "600", textAlign: 'center' }}>
-                ¿Tienes una cuenta?, Inicia sesión
+                ¿Tienes una cuenta?
             </Text>
             <View style={{ marginBottom: 40, padding: 10 }}>
                 <Button

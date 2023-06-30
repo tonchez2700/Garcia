@@ -8,15 +8,17 @@ export const UserSytles = StyleSheet.create({
         alignItems: "center",
         padding: 20,
         backgroundColor: "#1E0554",
+        display: 'flex'
     },
     text: {
         fontSize: 24,
+        textAlign: 'center',
         fontWeight: "bold",
         color: "#fff",
     },
     userImage: {
-        width: 100,
-        height: 100,
+        width: 130,
+        height: 130,
         borderRadius: 50,
         margin: 20,
     },
@@ -24,7 +26,7 @@ export const UserSytles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: 14,
         color: "#fff",
-        marginTop: 10
+        marginTop: 15
     },
     input: {
         backgroundColor: "white",
@@ -35,7 +37,7 @@ export const UserSytles = StyleSheet.create({
         borderColor: "#707070B3",
     },
     button: {
-        marginVertical: 20,
+        marginVertical: 50,
         borderRadius: 20
     }
 })

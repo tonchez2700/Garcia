@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, TextInput, View, Modal, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Context as RegistrationContext } from '../../context/RegistrationContext';
+import { UserSytles } from '../../theme/UserSytles';
 import DropD from '../DropD';
 import { Video } from 'expo-av';
 import Images from "@assets/images";
@@ -37,13 +38,16 @@ const ModalAddIncident = ({ fun }) => {
                         </View>
                         <Text style={styles.text}>Nuevo reporte</Text>
                         <ScrollView style={{ flex: 1, marginBottom: 10, width: '100%' }}>
-                            <View style={{ flex: 1, flexDirection: 'column' }}>
+                            <View style={{ flex: 1, flexDirection: 'column', padding: 8 }}>
+                                <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Ubicación</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={state.dataReport?.address}
                                     placeholder="Ubicación"
+                                    multiline={true}
                                     onChangeText={(value) => setReportInfo(value, 'address')}
                                 />
+                                <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Tipo de reporte</Text>
                                 <DropD
                                     data={state.reportTypeList}
                                     type={'Incidente'}
@@ -58,6 +62,7 @@ const ModalAddIncident = ({ fun }) => {
                                         icon={<Icon size={25} name={'camera'} type='font-awesome' color={'white'} />}
                                         disabled={false}
                                     />
+                                    <Text style={{ color: '#1E0554', marginBottom: 5, fontWeight: '700' }}>Tomar fotografía o video</Text>
                                 </View>
                             </View>
                             <View style={styles.imageContainer}>
@@ -92,6 +97,7 @@ const ModalAddIncident = ({ fun }) => {
                             </View>
                             <Button
                                 containerStyle={styles.buttonContainer}
+                                loading={state.fetchingData ? true : false}
                                 loadingProps={{ color: '#000000' }}
                                 onPress={() => fun(state.dataReport)}
                                 title="Enviar"
@@ -99,7 +105,7 @@ const ModalAddIncident = ({ fun }) => {
                             />
                         </ScrollView>
                     </View>
-                </View>
+                </View >
             </Modal >
         </View >
     )

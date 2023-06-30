@@ -124,9 +124,15 @@ const tryAuth = async (email, password, dispatch) => {
                 id: response.user.id,
                 role_id: response.user.role_id,
                 name: response.user.name,
+                full_name: response.user.full_name,
                 paternal_surname: response.user.paternal_surname,
                 maternal_surname: response.user.maternal_surname,
                 picture: response.user.picture,
+                facebook_id: response.user.facebook_id,
+                google_id: response.user.google_id,
+                phone: response.user.phone,
+                address: response.user.address,
+                postal_code: response.user.postal_code,
                 email: response.user.email
             },
             token: response.token

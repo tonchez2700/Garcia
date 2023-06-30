@@ -8,6 +8,7 @@ import { Context as RegistrationContext } from "../context/RegistrationContext";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { UserSytles } from "../theme/UserSytles";
+import Images from "@assets/images";
 
 const UserScreen = () => {
   const navigation = useNavigation();
@@ -18,7 +19,6 @@ const UserScreen = () => {
     const fetchUserData = async () => {
       try {
         const userData = await AsyncStorage.getItem("user");
-        console.log(userData);
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setUser(parsedUser.userData);
@@ -28,9 +28,8 @@ const UserScreen = () => {
         console.log("Error al obtener los datos del usuario:", error);
       }
     };
-
     fetchUserData();
-  }, []);
+  }, [user]);
 
   const handleInputChange = (fieldName, value) => {
     setEditedData((prevState) => ({
@@ -43,10 +42,9 @@ const UserScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={UserSytles.container} >
-      <Text style={[UserSytles.text, { fontSize: 24 }]}> {user && user.full_name ? user.full_name : ''}</Text>
       {user.picture != null ?
         <Image style={UserSytles.userImage} source={{ uri: user.picture }} />
-        : null}
+        : <Image style={UserSytles.userImage} source={Images.perfil} />}
       <Text style={[UserSytles.text, { fontSize: 20, }]}>Nombre</Text>
       <Text style={[UserSytles.text, { fontSize: 20, }]}>
         {user && user.full_name ? user.full_name : ''}

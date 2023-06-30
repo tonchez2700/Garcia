@@ -92,7 +92,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
                 handleSubmit={() => signin(id)}
                 loading={fetchingData ? true : false}
             />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                 <View style={{ backgroundColor: 'black', height: 1, flex: 1, alignSelf: 'center' }} />
                 <Text style={{ alignSelf: 'center', paddingHorizontal: 5, fontWeight: '700', fontSize: 14 }}>o</Text>
                 <View style={{ backgroundColor: 'black', height: 1, flex: 1, alignSelf: 'center' }} />

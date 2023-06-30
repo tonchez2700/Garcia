@@ -5,11 +5,12 @@ import {
     ActivityIndicator,
     Text,
     TouchableOpacity,
-    KeyboardAvoidingView,
+    Image,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Icon, Button } from 'react-native-elements';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
+import { Context as AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import ModalList from '../components/Modal/ModalList';
 import ModalAddIncident from '../components/Modal/ModalAddIncident';
@@ -29,18 +30,19 @@ const MapScreen = () => {
         setReportInfo,
         store,
     } = useContext(RegistrationContext);
-    const [location, setLocation] = useState(null);
+    const { signout } = useContext(AuthContext);
+    const [location, setLocation] = useState('');
     const [markCard, setmarkCard] = useState('');
     const [locationAddress, setLocationAddress] = useState('');
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
+        const unsubscribe = navigation.addListener('state', () => {
             getLocationAsync();
             getReports();
             getReportList();
         });
         return unsubscribe;
-    }, [navigation]);
+    }, [navigation, location]);
 
     const getRandomColor = () => {
         const colors = ['#FF0000', '#FFFF00', '#00FF00'];
@@ -55,6 +57,7 @@ const MapScreen = () => {
             return;
         }
         const locationData = await Location.getCurrentPositionAsync();
+        // console.log(locationData);
         setLocation(locationData.coords);
 
         try {
@@ -95,118 +98,84 @@ const MapScreen = () => {
             }
         };
     };
+    return (
+        <View style={styles.container}>
+            {location ? (
+                <View style={{ flex: 1 }}>
+                    <MapView
+                        style={styles.map}
+                        showsUserLocation={true}
+                        showsPointsOfInterest={false}
+                        showsIndoors={false}
+                        initialRegion={{
+                            latitude: location.latitude,
+                            longitude: location.longitude,
+                            latitudeDelta: 0.005,
+                            longitudeDelta: 0.005,
+                        }}
+                    >
+                        {state.reportList !== [] &&
+                            state.reportList.map((marker) => (
 
-    const renderContent = () => {
-        return (
-            <View style={styles.container}>
-                {location ? (
-                    <View style={{ flex: 1 }}>
-                        <MapView
-                            style={styles.map}
-                            showsUserLocation={true}
-                            showsPointsOfInterest={false}
-                            showsIndoors={false}
-                            initialRegion={{
-                                latitude: location.latitude,
-                                longitude: location.longitude,
-                                latitudeDelta: 0.005,
-                                longitudeDelta: 0.005,
-                            }}
-                        >
-                            {state.reportList !== [] &&
-                                state.reportList.map((marker) => (
-
-                                    <Marker
-                                        title={marker.incident.name}
-                                        key={marker.id}
-                                        pinColor={getRandomColor()}
-                                        coordinate={{
-                                            latitude: parseFloat(marker.latitude),
-                                            longitude: parseFloat(marker.longitude),
-                                        }}
-                                        onPress={() => setmarkCard(marker)}
-                                    />
-                                ))}
-                        </MapView>
-                        <View
-                            style={{
-                                backgroundColor: '#1E0554',
-                                flex: 1,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                paddingTop: 14,
-                                paddingBottom: 14,
-                            }}
-                        >
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2, }}
-                                onPress={() => {
-                                    console.log('peluche');
-                                }}
-                            >
-                                <Icon type='simple-line-icon' name='action-undo' color={'white'} size={35} solid={false} />
-                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}  >
-                                    Salir{'\n'}
-                                </Text>
+                                <Marker
+                                    title={marker.incident.name}
+                                    key={marker.id}
+                                    pinColor={getRandomColor()}
+                                    coordinate={{
+                                        latitude: parseFloat(marker.latitude),
+                                        longitude: parseFloat(marker.longitude),
+                                    }}
+                                    onPress={() => setmarkCard(marker)}
+                                />
+                            ))}
+                    </MapView>
+                    <View
+                        style={{
+                            backgroundColor: '#1E0554',
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingTop: 14,
+                            paddingBottom: 14,
+                        }}
+                    >
+                        <View style={{ backgroundColor: '#1E0554', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, paddingBottom: 14 }}>
+                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }}
+                                onPress={() => { signout(); }} >
+                                <Image source={Images.iconSalida} style={{ width: 39, height: 41 }} />
+                                <Text style={{ color: 'white', textAlign: 'center' }}>Salir{'\n'}</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2, }}
-                                onPress={() => {
-                                    isVisibleModal('isVisible');
-                                }} >
-                                <Icon type='simple-line-icon' name='docs' color={'white'} size={35} solid={false} />
-                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }} >
-                                    Mis{'\n'}
-                                    Reportes
-                                </Text>
+                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => { isVisibleModal('isVisible') }} >
+                                <Image source={Images.iconMisReportes} style={{ width: 39, height: 41 }} />
+                                <Text style={{ color: 'white', textAlign: 'center' }}>Mis{'\n'}Reportes</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2, }}
-                                onPress={() => {
-                                    clearStateFrom();
-                                    isVisibleModal('isVisibleIncident');
-                                    getLocationAsync();
-                                }}>
-                                <Icon type='simple-line-icon' name='note' color={'white'} size={35} solid={false} />
-                                <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }} >
-                                    Nuevo{'\n'}
-                                    Reporte
-                                </Text>
+                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 2 }} onPress={() => {
+                                clearStateFrom();
+                                isVisibleModal('isVisibleIncident');
+                                getLocationAsync();
+                            }}>
+                                <Image source={Images.iconAddReportes} style={{ width: 39, height: 41 }} />
+                                <Text style={{ color: 'white', textAlign: 'center' }}>Nuevo{'\n'}Reporte</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                ) : (
-                    <Text style={styles.loadingText}>Cargando mapa...</Text>
-                )}
-                {
-                    markCard != ''
-                        ?
-                        <CardIncident data={markCard} />
-                        : null
-                }
-                <View style={{ flex: 0 }}>
-                    <ModalList />
-                    <ModalAddIncident fun={(value) => store(value)} />
-                    <ModalAlert />
                 </View>
+            ) : (
+                <Text style={styles.loadingText}>Cargando mapa...</Text>
+            )}
+            {
+                markCard != ''
+                    ?
+                    <CardIncident data={markCard} fun={(value) => setmarkCard(value)} />
+                    : null
+            }
+            <View style={{ flex: 0 }}>
+                <ModalList />
+                <ModalAddIncident fun={(value) => store(value)} />
+                <ModalAlert />
             </View>
-        );
-    };
-
-    return !state.fetchingData ? (
-        !state.error ? (
-            renderContent()
-        ) : (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ textAlign: 'center' }}>{state.message}</Text>
-                <Button
-                    containerStyle={{ width: 120 }}
-                    buttonStyle={[{ backgroundColor: '#1E0554' }]}
-                    title='Actualizar'
-                    onPress={() => navigation.navigate('AuthScreen')}
-                />
-            </View>
-        )
-    ) : (
-        <ActivityIndicator size='large' color='#118EA6' style={{ marginTop: 5 }} />
+        </View>
     );
 };
 

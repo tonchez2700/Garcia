@@ -11,6 +11,7 @@ const { width } = Dimensions.get("window");
 const ModalList = () => {
 
     const { state, isVisibleModal, getReports } = useContext(RegistrationContext);
+
     const getColorState = (estado) => {
         let textColor;
         let numeroTexto;
@@ -38,7 +39,7 @@ const ModalList = () => {
                 break;
             case 5:
                 textColor = '#008E00';
-                numeroTexto = 'No valido';
+                numeroTexto = 'Completado';
                 icon = 'check-circle';
                 break;
             default:
@@ -73,25 +74,13 @@ const ModalList = () => {
                         <Text style={styles.text}>Mis Reportes</Text>
                         <ScrollView style={{ flex: 1, width: '100%', marginBottom: 10 }}>
                             {
-                                state.reportList != []
+                                state.reportList.length != 0
                                     ?
                                     state.reportList.map((e) => (
                                         <View key={e.id} style={{
                                             flex: 1, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderWidth: .3,
                                             borderColor: 'gray', marginBottom: 20, borderRadius: 5, elevation: 5
                                         }}>
-                                            <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', padding: 10 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.incident.name}</Text>
-                                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.street},{e?.suburb.name},{e?.suburb.postal_code.code},{e?.suburb.municipality.name}</Text>
-                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Icon
-                                                        size={25}
-                                                        name={getColorState(e?.report_status.id).icon}
-                                                        type='font-awesome'
-                                                        color={getColorState(e.report_status.id).color} />
-                                                    <Text style={[{ color: getColorState(e.report_status.id).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.report_status.id).numeroTexto}</Text>
-                                                </View>
-                                            </View>
                                             {
                                                 e?.resources != []
                                                     ?
@@ -104,11 +93,23 @@ const ModalList = () => {
                                                             borderBottomRightRadius: 5,
                                                             resizeMode: 'stretch',
                                                         }}
-                                                        source={{uri: `https://cpxproject.com/garcia/${e.resources[0].url}`,}}
+                                                        source={{ uri: `https://cpxproject.com/garcia/${e.resources[0].url}`, }}
                                                     />
                                                     :
                                                     null
                                             }
+                                            <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', padding: 10 }}>
+                                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.incident.name}</Text>
+                                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.street},{e?.suburb.name},{e?.suburb.postal_code.code},{e?.suburb.municipality.name}</Text>
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Icon
+                                                        size={25}
+                                                        name={getColorState(e?.report_status.id).icon}
+                                                        type='font-awesome'
+                                                        color={getColorState(e.report_status.id).color} />
+                                                    <Text style={[{ color: getColorState(e.report_status.id).color, fontWeight: 'bold', marginLeft: 5 }]}>{getColorState(e.report_status.id).numeroTexto}</Text>
+                                                </View>
+                                            </View>
                                         </View>
                                     ))
                                     :
