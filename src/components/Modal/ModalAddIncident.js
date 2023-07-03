@@ -95,6 +95,14 @@ const ModalAddIncident = ({ fun }) => {
                                         null
                                 }
                             </View>
+                            <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Nota</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={state.dataReport?.note}
+                                placeholder="Notas"
+                                multiline={true}
+                                onChangeText={(value) => setReportInfo(value, 'note')}
+                            />
                             <Button
                                 containerStyle={styles.buttonContainer}
                                 loading={state.fetchingData ? true : false}

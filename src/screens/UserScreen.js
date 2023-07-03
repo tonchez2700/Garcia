@@ -29,7 +29,7 @@ const UserScreen = () => {
       }
     };
     fetchUserData();
-  }, [user]);
+  }, []);
 
   const handleInputChange = (fieldName, value) => {
     setEditedData((prevState) => ({

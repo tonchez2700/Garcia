@@ -388,6 +388,7 @@ const store = (dispatch) => {
             const token = user.token
             const separatedData = {
                 user_id: user.userData.id,
+                note: data.note,
                 latitude: data.coords.latitude.toString(),
                 longitude: data.coords.longitude.toString(),
                 postalCode: (data.address && typeof data.address === 'string') ? data.address.split(',')[2].trim() : '',

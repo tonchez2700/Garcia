@@ -25,7 +25,6 @@
       "bundleIdentifier": "com.tonchez2700.Garciaalaorden"
     },
     "android": {
-      "keyboardAvoidingViewBehavior": "padding",
       "permissions": [
         "CAMERA",
         "RECORD_AUDIO",
