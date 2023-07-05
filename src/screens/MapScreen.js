@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Image,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Icon, Button } from 'react-native-elements';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -37,8 +37,8 @@ const MapScreen = () => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('state', () => {
             getLocationAsync();
-            // getReports();
-            // getReportList();
+            getReports();
+            getReportList();
         });
         return unsubscribe;
     }, [navigation, location]);
@@ -102,6 +102,7 @@ const MapScreen = () => {
                 <View style={{ flex: 1 }}>
                     <MapView
                         style={styles.map}
+                        provider={PROVIDER_GOOGLE}
                         showsUserLocation={true}
                         showsPointsOfInterest={false}
                         showsIndoors={false}
@@ -114,7 +115,6 @@ const MapScreen = () => {
                     >
                         {state.reportList !== [] &&
                             state.reportList.map((marker) => (
-
                                 <Marker
                                     title={marker.incident.name}
                                     key={marker.id}
@@ -169,9 +169,9 @@ const MapScreen = () => {
                     : null
             }
             <View style={{ flex: 0 }}>
-                {/* <ModalList />
+                <ModalList />
                 <ModalAddIncident fun={(value) => store(value)} />
-                <ModalAlert /> */}
+                <ModalAlert />
             </View>
         </View>
     );

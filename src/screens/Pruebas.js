@@ -28,7 +28,7 @@ const Pruebas = () => {
                         },
                     ]}
                 >
-                    <Image source={{ uri: 'https://static.nationalgeographic.es/files/styles/image_3200/public/940.jpg?w=1900&h=1427' }} style={styles.planetImage} />
+                 
                 </Animated.View>
             </TouchableOpacity>
         </View>

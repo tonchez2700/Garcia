@@ -30,7 +30,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
             if (response && response.type === "success" && response.authentication) {
                 (async () => {
                     const userInfoResponse = await fetch(
-                        `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id,name,picture.type(large)`
+                        `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id,name,email,picture.type(large)`
                     );
                     const userInfo = await userInfoResponse.json();
                     authFacebook(userInfo)
@@ -65,7 +65,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
         }
 
     };
-    
+
     return (
         <View style={{ flex: 1, width: '100%' }}>
             <Text style={[AuthStyle.TextAuth, { fontSize: 18, marginBottom: 27 }]}>¡Hola!, Bienvenido</Text>

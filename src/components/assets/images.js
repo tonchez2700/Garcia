@@ -11,6 +11,7 @@ const images = {
     iconGoogle: require('./img/icono-google.png'),
     garciaBackgraund: require('./img/garciaBackgraund.png'),
     garciaLogo: require('./img/garciaLogo.png'),
+    garciaLogoBlanco: require('./img/Garcia_logoWhite.png'),
     perfil: require('./img/userProfile.png'),
 
 

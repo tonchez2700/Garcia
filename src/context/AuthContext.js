@@ -244,14 +244,14 @@ const passwordRecovery = (dispatch) => {
 const authFacebook = (dispatch) => {
     return async (info) => {
         try {
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
             const data = {
                 facebook_id: info.id,
                 name: info.name,
                 email: info.email,
                 picture: info.picture.data.url
             }
-            const response = await httpClient.get(`auth/login/facebook`, data)
+            const response = await httpClient.post(`auth/login/facebook`, data)
             if (response.status) {
                 const user = {
                     userData: {

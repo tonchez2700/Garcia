@@ -14,6 +14,7 @@ const initialState = {
     isVisibleIncident: false,
     reportTypeList: [],
     reportList: [],
+    location: [],
     listPatients: [],
     file_number: '',
     dataFrom: [],
@@ -43,6 +44,15 @@ const RegistrationReducer = (state = initialState, action) => {
                 error: true,
                 message: action.payload.message,
                 fetchingData: false
+            }
+        case 'CHANGE_VALUE_STATE':
+            let Type = action.payload.type;
+            return {
+                ...state,
+                error: false,
+                message: '',
+                fetchingData: false,
+                [Type]: action.payload.value
             }
         case 'CHANGE_VISIBLE_MODAL':
             let visibleType = action.payload.type;
@@ -122,6 +132,15 @@ const clearStateFrom = (dispatch) => {
     }
 }
 
+
+const handaleChangeValue = (dispatch) => {
+    return async (type, value) => {
+        dispatch({
+            type: 'CHANGE_VALUE_STATE',
+            payload: { type, value }
+        })
+    }
+}
 const isVisibleModal = (dispatch) => {
     return async (type, message) => {
         dispatch({
@@ -362,6 +381,7 @@ const store = (dispatch) => {
                     });
                 }
             } else {
+                console.log(response);
                 const errorKey = Object.keys(response.message)[0];
                 const errorMessage = response.message[errorKey][0];
                 dispatch({
@@ -425,6 +445,7 @@ export const { Context, Provider } = createDataContext(
         setReportMedia,
         getReportList,
         PutUSerProfile,
+        handaleChangeValue,
         store,
 
     },
