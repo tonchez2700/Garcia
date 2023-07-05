@@ -7,17 +7,11 @@ const images = {
     iconCompletado: require('./img/icono-completado.png'),
     iconMisReportes: require('./img/Iconoreportes.png'),
     iconAddReportes: require('./img/iconoAddreportes.png'),
-    salida: require('./img/salida.svg'),
     iconSalida: require('./img/salida.png'),
-    iconGoogle: require('./img/icono_google.png'),
+    iconGoogle: require('./img/icono-google.png'),
     garciaBackgraund: require('./img/garciaBackgraund.png'),
-    perfil: require('./img/userProfile.png'),
     garciaLogo: require('./img/garciaLogo.png'),
-    garciaLogoBlanco: require('./img/Garcia_logoWhite.png'),
-    accidente1: require('./img/accidente1.png'),
-    accidente2: require('./img/accidente2.png'),
-    accidente3: require('./img/accidente3.png'),
-    accidente4: require('./img/accidente4.png'),
+    perfil: require('./img/userProfile.png'),
 
 
 }

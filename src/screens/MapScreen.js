@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
     StyleSheet,
     View,
-    ActivityIndicator,
     Text,
     TouchableOpacity,
     Image,
@@ -38,8 +37,8 @@ const MapScreen = () => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('state', () => {
             getLocationAsync();
-            getReports();
-            getReportList();
+            // getReports();
+            // getReportList();
         });
         return unsubscribe;
     }, [navigation, location]);
@@ -57,7 +56,6 @@ const MapScreen = () => {
             return;
         }
         const locationData = await Location.getCurrentPositionAsync();
-        // console.log(locationData);
         setLocation(locationData.coords);
 
         try {
@@ -171,9 +169,9 @@ const MapScreen = () => {
                     : null
             }
             <View style={{ flex: 0 }}>
-                <ModalList />
+                {/* <ModalList />
                 <ModalAddIncident fun={(value) => store(value)} />
-                <ModalAlert />
+                <ModalAlert /> */}
             </View>
         </View>
     );

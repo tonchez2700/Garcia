@@ -2,8 +2,6 @@ import { Alert } from 'react-native'
 import createDataContext from './createDataContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import httpClient from '../services/httpClient'
-import httpClientId from '../services/httpClientId';
-import { Base64 } from 'js-base64';
 import * as Location from 'expo-location';
 import * as rootNavigation from '../helpers/rootNavigation';
 
@@ -72,25 +70,6 @@ const RegistrationReducer = (state = initialState, action) => {
                 fetchingData: false,
                 reportList: action.payload.response
             }
-        case 'SET_SCAN':
-            return {
-                ...state,
-                error: false,
-                message: '',
-                fetchingData: false,
-                dataFrom: {
-                    patient: {
-                        name: action.payload.response.result.fullName,
-                        paternal_surname: action.payload.response.result.fathersName,
-                        maternal_surname: action.payload.response.result.mothersName,
-                        gender_id: (action.payload.response.result.sex == 'H' ? 1 : 2),
-                        birthdate: action.payload.response.result.dateOfBirth.originalString,
-                        document_id: (action.payload.response.result.classInfo.type == 'TYPE_VOTER_ID' ? 2 : ''),
-                        document_number: action.payload.response.result.documentAdditionalNumber,
-                        age: action.payload.response.result.age,
-                    }
-                }
-            }
         case 'SET_TYPE_REPORTS_LIST':
             return {
                 ...state,
@@ -132,8 +111,6 @@ const RegistrationReducer = (state = initialState, action) => {
 
 }
 
-
-
 const clearState = (dispatch) => {
     return () => {
         dispatch({ type: 'CLEAR_STATE' });
@@ -145,7 +122,6 @@ const clearStateFrom = (dispatch) => {
     }
 }
 
-
 const isVisibleModal = (dispatch) => {
     return async (type, message) => {
         dispatch({
@@ -153,55 +129,6 @@ const isVisibleModal = (dispatch) => {
             payload: { type, message }
         })
     }
-}
-
-
-
-const ScanIdCard = (dispatch) => {
-    return async (Image) => {
-        try {
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
-            const user = JSON.parse(await AsyncStorage.getItem('user'));
-            const data = {
-                returnFullDocumentImage: false,
-                returnFaceImage: false,
-                returnSignatureImage: false,
-                allowBlurFilter: false,
-                allowUnparsedMrzResults: false,
-                allowUnverifiedMrzResults: true,
-                validateResultCharacters: true,
-                anonymizationMode: "FULL_RESULT",
-                anonymizeImage: true,
-                ageLimit: 0,
-                imageSource: Image,
-                scanCroppedDocumentImage: false,
-            }
-            const apiKey = '6a29f1c02df5452fabbb1fc7fa0ba16c';
-            const apiSecret = '293d80d9-777d-40bc-9354-692affb2aaed';
-            const authHeader = Base64.encode(apiKey + ':' + apiSecret);
-            const response = await httpClientId
-                .post(`recognizers/blinkid`, data,
-                    {
-                        'Authorization': `Bearer ${authHeader}`,
-                    }
-                )
-            dispatch({
-                type: 'SET_SCAN',
-                payload: { response }
-            })
-            rootNavigation.navigate('RegisterScreen')
-        } catch (error) {
-            console.log(error);
-            dispatch({
-                type: 'SET_REQUEST_ERROR',
-                payload: {
-                    error: true,
-                    message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
-                }
-            });
-        }
-    }
-
 }
 
 const getReportList = (dispatch) => {
@@ -267,7 +194,6 @@ const setReportMedia = (dispatch) => {
     }
 
 }
-
 
 const handleVisibility = (dispatch) => {
     return async () => {
@@ -366,7 +292,7 @@ const getReports = (dispatch) => {
                 });
             }
         } catch (error) {
-            console.log(error);
+            rootNavigation.navigate("AuthScreen")
             dispatch({
                 type: 'SET_REQUEST_ERROR',
                 payload: {
@@ -388,7 +314,7 @@ const store = (dispatch) => {
             const token = user.token
             const separatedData = {
                 user_id: user.userData.id,
-                note: data.note,
+                notes_citizen: data.note,
                 latitude: data.coords.latitude.toString(),
                 longitude: data.coords.longitude.toString(),
                 postalCode: (data.address && typeof data.address === 'string') ? data.address.split(',')[2].trim() : '',
@@ -494,7 +420,6 @@ export const { Context, Provider } = createDataContext(
         clearStateFrom,
         handleVisibility,
         isVisibleModal,
-        ScanIdCard,
         getReports,
         setReportInfo,
         setReportMedia,
