@@ -52,8 +52,17 @@ const MapScreen = () => {
     const getLocationAsync = async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
-            console.log('Permission to access location was denied');
-            return;
+            return (
+                <View>
+                    <Text style={{ textAlign: 'center', fontSize: 21 }}>No tiene los permisos para el uso de la ubicacion</Text>
+                    <Button
+                        buttonStyle={{ backgroundColor: '#1E0554' }}
+                        title="Permitir localización"
+                        onPress={() => getLocationAsync()}
+
+                    />
+                </View>
+            )
         }
         const locationData = await Location.getCurrentPositionAsync();
         setLocation(locationData.coords);
@@ -160,7 +169,15 @@ const MapScreen = () => {
                     </View>
                 </View>
             ) : (
-                <Text style={styles.loadingText}>Cargando mapa...</Text>
+                <View style={{padding: 20}}>
+                    <Text style={{ textAlign: 'center', fontSize: 21 }}>No tiene los permisos para el uso de la ubicacion</Text>
+                    <Button
+                        buttonStyle={{ backgroundColor: '#1E0554' }}
+                        title="Permitir localización"
+                        onPress={() => getLocationAsync()}
+
+                    />
+                </View>
             )}
             {
                 markCard != ''

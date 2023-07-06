@@ -19,7 +19,6 @@ export default function App() {
         <RegistrationProvider>
           <Stack.Navigator
             initialRouteName="LoadingScreen"
-
             screenOptions={{ headerShown: false }}>
             <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
             <Stack.Screen name="WrapperInnerScreens" component={WrapperInnerScreens} options={{ animation: 'slide_from_right' }} />

@@ -33,7 +33,7 @@ const CustomDrawer = () => {
             }}
             drawerContent={props => <DrawerNavigator {...props} />}
             initialRouteName='Mapa'
-            
+
             useLegacyImplementation>
             <Drawer.Screen name="Mapa" component={MapScreen} />
             <Drawer.Screen name='Perfil' component={UserScreen} />

@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
-import { SafeAreaView, View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
+import { SafeAreaView, StyleSheet } from 'react-native'
+import { createDrawerNavigator, } from '@react-navigation/drawer';
 import { navigationRef } from '../helpers/rootNavigation';
 import { Icon } from 'react-native-elements';
-import { Provider as RegistrationProvider } from '../context/RegistrationContext';
+import { Provider as LocationProvider } from '../context/LocationContext';
 import { Context as AuthContext } from '../context/AuthContext';
 import CustomDrawer from '../navegation/CustomDrawer';
-
 import tw from 'tailwind-react-native-classnames';
 
 const Drawer = createDrawerNavigator();
@@ -17,7 +16,9 @@ const WrapperInnerScreens = () => {
 
     return (
         <SafeAreaView style={[tw`flex-1 `]}>
-            <CustomDrawer />
+            <LocationProvider>
+                <CustomDrawer />
+            </LocationProvider>
         </SafeAreaView>
     )
 }

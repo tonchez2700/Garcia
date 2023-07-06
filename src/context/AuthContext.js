@@ -182,9 +182,16 @@ const register = (dispatch) => {
                     }]
                 )
             } else {
+                let errorMessage = "";
+                if (typeof response.message === "object") {
+                    const errorKey = Object.keys(response.message)[0];
+                    errorMessage = response.message[errorKey][0];
+                } else if (typeof response.message === "string") {
+                    errorMessage = response.message;
+                }
                 Alert.alert(
                     "Ha ocurrido un error",
-                    "Error al llenar los campos.",
+                    errorMessage,
                     [{
                         text: "Aceptar"
                     }]
@@ -252,6 +259,7 @@ const authFacebook = (dispatch) => {
                 picture: info.picture.data.url
             }
             const response = await httpClient.post(`auth/login/facebook`, data)
+            console.log(response);
             if (response.status) {
                 const user = {
                     userData: {

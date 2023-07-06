@@ -100,6 +100,18 @@ const RegistrationReducer = (state = initialState, action) => {
                     [typedata]: action.payload.value,
                 }
             }
+        case 'SET_COORDS_REPORTS':
+            return {
+                ...state,
+                error: false,
+                message: '',
+                fetchingData: false,
+                dataReport: {
+                    ...state.dataReport,
+                    coords: action.payload.ubi,
+                    address: action.payload.locationAddress
+                }
+            }
         case 'SET_REPORTS_I/V':
             let typeMedia = action.payload.media
             return {
@@ -126,12 +138,12 @@ const clearState = (dispatch) => {
         dispatch({ type: 'CLEAR_STATE' });
     }
 }
+
 const clearStateFrom = (dispatch) => {
     return () => {
         dispatch({ type: 'SET_CLEAR_FROM' });
     }
 }
-
 
 const handaleChangeValue = (dispatch) => {
     return async (type, value) => {
@@ -141,6 +153,17 @@ const handaleChangeValue = (dispatch) => {
         })
     }
 }
+const locationRevers = (dispatch) => {
+    return async (ubi) => {
+        const address = await Location.reverseGeocodeAsync(ubi.coords);
+        const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}`
+        dispatch({
+            type: 'SET_COORDS_REPORTS',
+            payload: { locationAddress, ubi }
+        })
+    }
+}
+
 const isVisibleModal = (dispatch) => {
     return async (type, message) => {
         dispatch({
@@ -148,6 +171,42 @@ const isVisibleModal = (dispatch) => {
             payload: { type, message }
         })
     }
+}
+
+const setReportInfo = (dispatch) => {
+    return async (value, type) => {
+        dispatch({
+            type: 'SET_REPORTS',
+            payload: {
+                value, type
+            }
+        })
+    }
+
+}
+
+const setReportMedia = (dispatch) => {
+    return async (value, media) => {
+        dispatch({
+            type: 'SET_REPORTS_I/V',
+            payload: {
+                value, media
+            }
+        })
+    }
+
+}
+
+const handleVisibility = (dispatch) => {
+    return async () => {
+        dispatch({
+            type: 'SET_VISIBILITY_STATE',
+            payload: {
+                isVisible: true,
+            }
+        })
+    }
+
 }
 
 const getReportList = (dispatch) => {
@@ -186,42 +245,6 @@ const getReportList = (dispatch) => {
                 }
             });
         }
-    }
-
-}
-
-const setReportInfo = (dispatch) => {
-    return async (value, type) => {
-        dispatch({
-            type: 'SET_REPORTS',
-            payload: {
-                value, type
-            }
-        })
-    }
-
-}
-
-const setReportMedia = (dispatch) => {
-    return async (value, media) => {
-        dispatch({
-            type: 'SET_REPORTS_I/V',
-            payload: {
-                value, media
-            }
-        })
-    }
-
-}
-
-const handleVisibility = (dispatch) => {
-    return async () => {
-        dispatch({
-            type: 'SET_VISIBILITY_STATE',
-            payload: {
-                isVisible: true,
-            }
-        })
     }
 
 }
@@ -381,9 +404,13 @@ const store = (dispatch) => {
                     });
                 }
             } else {
-                console.log(response);
-                const errorKey = Object.keys(response.message)[0];
-                const errorMessage = response.message[errorKey][0];
+                let errorMessage = "";
+                if (typeof response.message === "object") {
+                    const errorKey = Object.keys(response.message)[0];
+                    errorMessage = response.message[errorKey][0];
+                } else if (typeof response.message === "string") {
+                    errorMessage = response.message;
+                }
                 dispatch({
                     type: 'CHANGE_ERROR',
                     payload: {
@@ -404,7 +431,6 @@ const store = (dispatch) => {
     }
 
 }
-
 
 const validateData = (data) => {
     let result = { error: false }
@@ -445,7 +471,7 @@ export const { Context, Provider } = createDataContext(
         setReportMedia,
         getReportList,
         PutUSerProfile,
-        handaleChangeValue,
+        locationRevers,
         store,
 
     },

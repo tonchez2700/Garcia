@@ -11,10 +11,10 @@ import { Icon, Button } from 'react-native-elements'
 
 const { width } = Dimensions.get("window");
 const ModalAddIncident = ({ fun }) => {
-
-
     const navigation = useNavigation();
     const { state, isVisibleModal, setReportInfo, } = useContext(RegistrationContext);
+
+
     return (
         <View style={styles.body}>
             <Modal
@@ -108,8 +108,7 @@ const ModalAddIncident = ({ fun }) => {
                                 loading={state.fetchingData ? true : false}
                                 loadingProps={{ color: '#000000' }}
                                 onPress={() => fun(state.dataReport)}
-                                title="Enviar"
-                                disabled={false} // Agrega la propiedad disabled si deseas deshabilitar el botón
+                                title="Enviar" // Agrega la propiedad disabled si deseas deshabilitar el botón
                             />
                         </ScrollView>
                     </View>
