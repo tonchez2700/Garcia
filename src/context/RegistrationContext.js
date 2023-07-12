@@ -36,7 +36,10 @@ const RegistrationReducer = (state = initialState, action) => {
                 error: false,
                 message: null,
                 fetchingData: false,
-                dataReport: [],
+                dataReport: {
+                    coords: state.dataReport.coords,
+                    address: state.dataReport.address
+                },
             }
         case 'SET_REQUEST_ERROR':
             return {
@@ -155,12 +158,18 @@ const handaleChangeValue = (dispatch) => {
 }
 const locationRevers = (dispatch) => {
     return async (ubi) => {
-        const address = await Location.reverseGeocodeAsync(ubi.coords);
-        const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}`
-        dispatch({
-            type: 'SET_COORDS_REPORTS',
-            payload: { locationAddress, ubi }
-        })
+        try {
+            const address = await Location.reverseGeocodeAsync(ubi);
+            const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}, ${address[0].region}`;
+            console.log(address);
+            dispatch({
+                type: 'SET_COORDS_REPORTS',
+                payload: { locationAddress, ubi }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 }
 
@@ -318,7 +327,7 @@ const getReports = (dispatch) => {
                 });
 
             if (response.length != 0) {
-                if (response.message != 'reports.no_reports_registered') {
+                if (response.message != 'Reporte no registrado') {
                     dispatch({
                         type: 'SET_REPORTS_LIST',
                         payload: { response }
@@ -351,7 +360,8 @@ const getReports = (dispatch) => {
 const store = (dispatch) => {
     return async (data) => {
         try {
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
+
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
             const separatedData = {
@@ -359,10 +369,10 @@ const store = (dispatch) => {
                 notes_citizen: data.note,
                 latitude: data.coords.latitude.toString(),
                 longitude: data.coords.longitude.toString(),
-                postalCode: (data.address && typeof data.address === 'string') ? data.address.split(',')[2].trim() : '',
-                city: (data.address && typeof data.address === 'string') ? data.address.split(',')[3].trim() : '',
-                street: (data.address && typeof data.address === 'string') ? data.address.split(',')[0].trim() : '',
-                disctrict: (data.address && typeof data.address === 'string') ? data.address.split(',')[1].trim() : '',
+                postalCode: (data.address && typeof data.address === 'string') ? data.address.split(',')[2]?.trim() || '' : '',
+                city: (data.address && typeof data.address === 'string') ? data.address.split(',')[3]?.trim() || '' : '',
+                street: (data.address && typeof data.address === 'string') ? data.address.split(',')[0]?.trim() || '' : '',
+                disctrict: (data.address && typeof data.address === 'string') ? data.address.split(',')[1]?.trim() || '' : '',
                 incident_id: data.incident_id,
                 resource: {
                     images: (data.images && data.images.length > 0) ? data.images : [],
@@ -375,6 +385,7 @@ const store = (dispatch) => {
                         'Authorization': `Bearer ${token}`,
                     }
                 )
+
             if (response.status != false) {
                 dispatch({ type: 'SET_CLEAR_FROM' });
                 dispatch({
@@ -388,7 +399,7 @@ const store = (dispatch) => {
                     });
 
                 if (response.length != 0) {
-                    if (response.message != 'reports.no_reports_registered') {
+                    if (response.message != 'Reporte no registrado') {
                         dispatch({
                             type: 'SET_REPORTS_LIST',
                             payload: { response }

@@ -58,6 +58,16 @@
       "fb605649451337245"
     ],
     "extra": {
+      "google": {
+        "oauth": {
+          "scopes": [
+            "profile",
+            "email"
+          ],
+          "webClientId": "898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com",
+          "redirectUrl": "com.tonchez2700.Garciaalaorden:/oauthredirect"
+        }
+      },
       "eas": {
         "projectId": "61d46014-8a2e-4da2-9d91-7e6cb1e43812"
       }

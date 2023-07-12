@@ -5,7 +5,7 @@ import tw from 'tailwind-react-native-classnames'
 
 const PermissionWarningDenied = (props) => {
     return (
-        <View>
+        <View style={{ flex: 1, padding: 20 }}>
             <Text style={tw`text-lg text-center mb-8`}>{props.message}</Text>
             <Button
                 buttonStyle={{ backgroundColor: '#1E0554' }}

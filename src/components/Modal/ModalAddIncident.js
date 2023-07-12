@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, TextInput, View, Modal, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Modal, ScrollView, Dimensions, Image, } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Context as RegistrationContext } from '../../context/RegistrationContext';
 import { UserSytles } from '../../theme/UserSytles';
@@ -12,7 +12,7 @@ import { Icon, Button } from 'react-native-elements'
 const { width } = Dimensions.get("window");
 const ModalAddIncident = ({ fun }) => {
     const navigation = useNavigation();
-    const { state, isVisibleModal, setReportInfo, } = useContext(RegistrationContext);
+    const { state, isVisibleModal, setReportInfo, clearStateFrom, store } = useContext(RegistrationContext);
 
 
     return (
@@ -32,27 +32,35 @@ const ModalAddIncident = ({ fun }) => {
                             <Icon
                                 size={25}
                                 name={'remove'}
-                                onPress={() => isVisibleModal('isVisibleIncident')}
+                                onPress={() => { isVisibleModal('isVisibleIncident'), clearStateFrom() }}
                                 type='font-awesome'
                                 color={'#4267B2'} />
                         </View>
                         <Text style={styles.text}>Nuevo reporte</Text>
-                        <ScrollView style={{ flex: 1, marginBottom: 10, width: '100%' }}>
+                        <ScrollView style={{ flex: 1, marginBottom: 10, width: '100%', }}>
                             <View style={{ flex: 1, flexDirection: 'column', padding: 8 }}>
                                 <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Ubicación</Text>
                                 <TextInput
                                     style={styles.input}
                                     value={state.dataReport?.address}
-                                    placeholder="Ubicación"
+                                    placeholder="Ubicación del incidente"
                                     multiline={true}
                                     onChangeText={(value) => setReportInfo(value, 'address')}
                                 />
                                 <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Tipo de reporte</Text>
                                 <DropD
                                     data={state.reportTypeList}
-                                    type={'Incidente'}
+                                    type={'Selecciona el tipo de reporte'}
                                     value={state.dataReport?.incident_id}
                                     fun={(item) => setReportInfo(item, 'incident_id')}
+                                />
+                                <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Nota</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={state.dataReport?.note}
+                                    placeholder="Describe la situación (opcional)"
+                                    multiline={true}
+                                    onChangeText={(value) => setReportInfo(value, 'note')}
                                 />
                                 <View style={{ alignItems: 'center', marginBottom: 10 }}>
                                     <Button
@@ -64,6 +72,7 @@ const ModalAddIncident = ({ fun }) => {
                                     />
                                     <Text style={{ color: '#1E0554', marginBottom: 5, fontWeight: '700' }}>Tomar fotografía o video</Text>
                                 </View>
+
                             </View>
                             <View style={styles.imageContainer}>
                                 {
@@ -95,19 +104,11 @@ const ModalAddIncident = ({ fun }) => {
                                         null
                                 }
                             </View>
-                            <Text style={[{ fontWeight: '400', color: '#393939', marginBottom: 10 }]}>Nota</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={state.dataReport?.note}
-                                placeholder="Notas"
-                                multiline={true}
-                                onChangeText={(value) => setReportInfo(value, 'note')}
-                            />
                             <Button
                                 containerStyle={styles.buttonContainer}
                                 loading={state.fetchingData ? true : false}
                                 loadingProps={{ color: '#000000' }}
-                                onPress={() => fun(state.dataReport)}
+                                onPress={() => store(state.dataReport)}
                                 title="Enviar" // Agrega la propiedad disabled si deseas deshabilitar el botón
                             />
                         </ScrollView>

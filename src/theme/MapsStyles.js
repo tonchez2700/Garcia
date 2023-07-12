@@ -4,7 +4,29 @@ const { width } = Dimensions.get("window");
 
 export const MapsStyles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 2,
+        position: 'relative',
+    },
+    Map: {
+        flex: 9
+    },
+    seach: {
+        textInputContainer: {
+        },
+        textInput: {
+            backgroundColor: "#FFFFFF",
+            borderWidth: 0.2,
+            borderColor: "#707070B3",
+            borderBottomWidth: 0,
+            paddingHorizontal: 15,
+            paddingVertical: 8,
+            borderRadius: 40,
+            marginBottom: 22,
+
+        },
+        predefinedPlacesDescription: {
+            color: '#1faadb',
+        },
     },
     containerBottonNavBar: {
         backgroundColor: '#1E0554',

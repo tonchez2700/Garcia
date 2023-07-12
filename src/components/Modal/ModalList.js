@@ -82,7 +82,7 @@ const ModalList = () => {
                                             borderColor: 'gray', marginBottom: 20, borderRadius: 5, elevation: 5
                                         }}>
                                             {
-                                                e?.resources != []
+                                                e?.resources[0]?.url != undefined
                                                     ?
                                                     <Image
                                                         style={{
@@ -93,10 +93,20 @@ const ModalList = () => {
                                                             borderBottomRightRadius: 5,
                                                             resizeMode: 'stretch',
                                                         }}
-                                                        source={{ uri: `https://cpxproject.com/garcia/${e.resources[0].url}`, }}
+                                                        source={{ uri: `https:cpxproject.com/garcia/${e.resources[0].url}`, }}
                                                     />
                                                     :
-                                                    null
+                                                    <Image
+                                                        style={{
+                                                            flex: 1,
+                                                            width: '20%',
+                                                            height: '100%',
+                                                            borderTopRightRadius: 5,
+                                                            borderBottomRightRadius: 5,
+                                                            resizeMode: 'stretch',
+                                                        }}
+                                                        source={Images.warnning}
+                                                    />
                                             }
                                             <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', padding: 10 }}>
                                                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{e?.incident.name}</Text>

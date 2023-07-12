@@ -15,7 +15,7 @@ const { width, height } = Dimensions.get('window');
 
 const CardIncident = ({ data, fun }) => {
 
-    // console.log(JSON.stringify(data.resources, null, 2));
+
     const [isExpanded, setIsExpanded] = useState(true);
     const toggleAccordion = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -32,12 +32,21 @@ const CardIncident = ({ data, fun }) => {
         <View style={CardSytles.container} >
 
             <View style={{ flex: 1 }}>
-                <Image
-                    style={CardSytles.image}
-                    source={{
-                        uri: `https://cpxproject.com/garcia/${data.resources[0].url}`,
-                    }}
-                />
+                {
+                    data?.resources[0]?.url != undefined
+                        ?
+                        <Image
+                            style={CardSytles.image}
+                            source={{
+                                uri: `https://cpxproject.com/garcia/${data.resources[0].url}`,
+                            }}
+                        />
+                        :
+                        <Image
+                            style={CardSytles.image}
+                            source={Images.warnning}
+                        />
+                }
             </View>
             <View style={{ flex: 1, paddingTop: 17, paddingLeft: 9 }}>
                 <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 5 }}>

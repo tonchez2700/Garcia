@@ -13,6 +13,8 @@ const images = {
     garciaLogo: require('./img/garciaLogo.png'),
     garciaLogoBlanco: require('./img/Garcia_logoWhite.png'),
     perfil: require('./img/userProfile.png'),
+    warnning: require('./img/warnning.jpg'),
+
 
 
 }
