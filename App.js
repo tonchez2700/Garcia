@@ -14,14 +14,14 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer ref={navigationRef} theme={{ colors: { background: 'white' } }}>
+    <NavigationContainer  ref={navigationRef} theme={{ colors: { background: 'white' } }} >
       <AuthProvider>
         <RegistrationProvider>
           <Stack.Navigator
             initialRouteName="LoadingScreen"
-            screenOptions={{ headerShown: false }}>
+            screenOptions={{ headerShown: false, gestureEnabled: false }}>
             <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-            <Stack.Screen name="WrapperInnerScreens" component={WrapperInnerScreens} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="WrapperInnerScreens" component={WrapperInnerScreens} options={{ animation: 'slide_from_right', gestureEnabled: false }} />
             <Stack.Screen name="AuthScreen" component={AuthScreen} />
             <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
           </Stack.Navigator>

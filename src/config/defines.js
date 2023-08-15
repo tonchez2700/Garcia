@@ -1,1 +1,1 @@
-export const apiUrlBase = 'https://cpxproject.com/garcia/api'
+export const apiUrlBase = 'https://garcia.pos3.com.mx/api'

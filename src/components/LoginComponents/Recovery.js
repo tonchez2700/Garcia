@@ -18,7 +18,6 @@ const Recovery = ({ signin, fetchingData, id, stateView }) => {
         <View style={{ width: "100%" }}>
             <Text style={AuthStyle.textSession}>Recuperar contraseña</Text>
             <TextInput
-                maxLength={15}
                 value={inputState.email}
                 style={AuthStyle.inputR}
                 keyboardType="email-address"
@@ -28,8 +27,10 @@ const Recovery = ({ signin, fetchingData, id, stateView }) => {
             <Button
                 title={'Enviar'}
                 titleStyle={{ color: '#FFF' }}
+                loading={fetchingData ? true : false}
                 buttonStyle={{ backgroundColor: '#629DF6', borderRadius: 23 }}
-                onPress={() => passwordRecovery(inputState)} />
+                onPress={() => passwordRecovery(inputState.email)} />
+
             <Text style={AuthStyle.textDonAccount}>Volver a inicio de sesión</Text>
             <View style={{ marginBottom: 15, marginTop: 45 }}>
                 <Text style={AuthStyle.textDonAccount}>¿No tienes una cuenta?</Text>

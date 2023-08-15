@@ -19,6 +19,7 @@ const DrawerNavigator = props => {
     }
     getLocalUser()
   }, [])
+
   const filteredState = props.state.routes.filter(
     route => route.name !== 'Pruebas'
   );
@@ -27,7 +28,9 @@ const DrawerNavigator = props => {
       <DrawerContentScrollView
         {...props}>
         <TouchableOpacity
-          style={{ alignItems: 'center' }}>
+          style={{ alignItems: 'center' }}
+          onPress={() => props.navigation.navigate('Perfil')}
+        >
           {user != ''
             ?
             <View>

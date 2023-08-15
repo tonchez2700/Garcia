@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "plugins": [
@@ -25,12 +25,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "Esta aplicación requiere acceso a la cámara para leer documentos de identidad.",
         "NSPhotoLibraryUsageDescription": "Esta aplicación requiere acceso a la galería para guardar las imágenes de los documentos de identidad."
       },
-      "bundleIdentifier": "com.tonchez2700.Garciaalaorden"
+      "bundleIdentifier": "com.tonchez2700.GarciaApp",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBdPFBYiQ0ltGb7745whZucrTMwCRb3uk0"
+      }
     },
     "android": {
       "package": "com.tonchez2700.Garciaalaorden",

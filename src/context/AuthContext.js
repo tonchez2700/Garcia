@@ -106,7 +106,7 @@ const signout = (dispatch) => {
     return async () => {
         await AsyncStorage.removeItem('user')
         dispatch({ type: 'SIGNOUT' });
-        rootNavigation.navigate('AuthScreen')
+        rootNavigation.reset()
     }
 }
 
@@ -176,7 +176,7 @@ const register = (dispatch) => {
                 })
                 Alert.alert(
                     "Correcto",
-                    "Se ha agregado correctamente la entrada.",
+                    "Usuario creado exitosamente.",
                     [{
                         text: "Aceptar"
                     }]
@@ -212,7 +212,7 @@ const passwordRecovery = (dispatch) => {
     return async (email) => {
         try {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
-            const response = await httpClient.get('auth/password_recovery', email)
+            const response = await httpClient.get(`auth/password_recovery?email=${email}`)
             if (response.status) {
                 dispatch({
                     type: 'SET_STATE_VIEW',
@@ -227,7 +227,9 @@ const passwordRecovery = (dispatch) => {
                         text: "Aceptar"
                     }]
                 )
+
             } else {
+                dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
                 Alert.alert(
                     "Ha ocurrido un error",
                     response.message,
@@ -235,6 +237,7 @@ const passwordRecovery = (dispatch) => {
                         text: "Aceptar"
                     }]
                 )
+
             }
         } catch (error) {
             dispatch({

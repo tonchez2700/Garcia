@@ -1,6 +1,11 @@
 import * as Yup from 'yup';
 
 
+export const AuthSchema = {
+    email: '',
+    password: '',
+};
+
 export const RegistrationSchema = {
     email: '',
     password: '',

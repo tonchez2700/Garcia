@@ -326,24 +326,36 @@ const getReports = (dispatch) => {
                     'Authorization': `Bearer ${token}`,
                 });
 
-            if (response.length != 0) {
-                if (response.message != 'Reporte no registrado') {
-                    dispatch({
-                        type: 'SET_REPORTS_LIST',
-                        payload: { response }
-                    })
-                }
+
+            if (response.message === 'Unauthenticated.') {
+                Alert.alert(
+                    "Tiempo agotado",
+                    "Lo sentimos, la sesión ha expirado",
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
+                await AsyncStorage.removeItem('user');
+                rootNavigation.navigate('AuthScreen');
             } else {
-                dispatch({
-                    type: 'SET_REQUEST_ERROR',
-                    payload: {
-                        error: true,
-                        message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                if (response.length != 0) {
+                    if (response.message != 'Reporte no registrado') {
+                        dispatch({
+                            type: 'SET_REPORTS_LIST',
+                            payload: { response }
+                        })
                     }
-                });
+                } else {
+                    dispatch({
+                        type: 'SET_REQUEST_ERROR',
+                        payload: {
+                            error: true,
+                            message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                        }
+                    });
+                }
             }
         } catch (error) {
-            rootNavigation.navigate("AuthScreen")
             dispatch({
                 type: 'SET_REQUEST_ERROR',
                 payload: {
@@ -385,7 +397,7 @@ const store = (dispatch) => {
                         'Authorization': `Bearer ${token}`,
                     }
                 )
-
+            console.log(response);
             if (response.status != false) {
                 dispatch({ type: 'SET_CLEAR_FROM' });
                 dispatch({

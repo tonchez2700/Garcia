@@ -18,12 +18,12 @@ const ModalList = () => {
         let icon;
         switch (estado) {
             case 1:
-                textColor = '#F8B933';
+                textColor = '#FF7A00';
                 numeroTexto = 'Pendiente';
                 icon = 'cog';
                 break;
             case 2:
-                textColor = '#FF8200';
+                textColor = '#FF7A00';
                 numeroTexto = 'Atendiendo';
                 icon = 'cog';
                 break;

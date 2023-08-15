@@ -19,6 +19,7 @@ const CustomDrawer = () => {
     return (
         <Drawer.Navigator
             screenOptions={{
+            
                 animationTypeForReplace: 'pop',
                 drawerActiveBackgroundColor: '#1E0554',
                 drawerInactiveBackgroundColor: '#FFFFFF',
@@ -33,7 +34,6 @@ const CustomDrawer = () => {
             }}
             drawerContent={props => <DrawerNavigator {...props} />}
             initialRouteName='Mapa'
-
             useLegacyImplementation>
             <Drawer.Screen name="Mapa" component={MapScreen} />
             <Drawer.Screen name='Perfil' component={UserScreen} />
