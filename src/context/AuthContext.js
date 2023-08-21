@@ -80,7 +80,7 @@ const tryLocalSignin = (dispatch) => {
             dispatch({ type: 'SIGNIN', payload: { user } });
             rootNavigation.navigate('WrapperInnerScreens')
         } else {
-            rootNavigation.navigate('AuthScreen')
+            rootNavigation.reset()
         }
     }
 }
@@ -118,6 +118,7 @@ const tryAuth = async (email, password, dispatch) => {
         password: password
     }
     const response = await httpClient.post('auth/login', data)
+    console.log(response);
     if (response.status) {
         const user = {
             userData: {

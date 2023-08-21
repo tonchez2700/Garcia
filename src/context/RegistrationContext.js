@@ -264,12 +264,14 @@ const PutUSerProfile = (dispatch) => {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
+            console.log();
             const response = await httpClient
                 .put(`users/${user.userData.id}`, data,
                     {
                         'Authorization': `Bearer ${token}`,
                     }
                 )
+            console.log(response);
             if (response.status == true) {
                 const user = {
                     userData: {
@@ -326,7 +328,7 @@ const getReports = (dispatch) => {
                     'Authorization': `Bearer ${token}`,
                 });
 
-
+            console.log(response);
             if (response.message === 'Unauthenticated.') {
                 Alert.alert(
                     "Tiempo agotado",
@@ -336,7 +338,7 @@ const getReports = (dispatch) => {
                     }]
                 )
                 await AsyncStorage.removeItem('user');
-                rootNavigation.navigate('AuthScreen');
+                rootNavigation.reset()
             } else {
                 if (response.length != 0) {
                     if (response.message != 'Reporte no registrado') {
@@ -404,7 +406,13 @@ const store = (dispatch) => {
                     type: 'CHANGE_VISIBLE_MODAL',
                     payload: { type: 'isVisibleIncident', }
                 })
-
+                Alert.alert(
+                    "Éxito",
+                    "Reporte agregado exitosamente.",
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
                 const response = await httpClient
                     .get(`reports?user_id=${user.userData.id}`, {
                         'Authorization': `Bearer ${token}`,

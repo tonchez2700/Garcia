@@ -93,7 +93,7 @@ const ModalList = () => {
                                                             borderBottomRightRadius: 5,
                                                             resizeMode: 'stretch',
                                                         }}
-                                                        source={{ uri: `https:cpxproject.com/garcia/${e.resources[0].url}`, }}
+                                                        source={{ uri: `https://www.appalaorden.garcia.gob.mx/garcia/${e.resources[0].url}`, }}
                                                     />
                                                     :
                                                     <Image

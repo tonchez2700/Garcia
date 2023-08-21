@@ -28,6 +28,7 @@ const CardIncident = ({ data, fun }) => {
     ) {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
+    console.log(data);
     return (
         <View style={CardSytles.container} >
 
@@ -38,7 +39,7 @@ const CardIncident = ({ data, fun }) => {
                         <Image
                             style={CardSytles.image}
                             source={{
-                                uri: `https://cpxproject.com/garcia/${data.resources[0].url}`,
+                                uri: `https://www.appalaorden.garcia.gob.mx/garcia/${data.resources[0].url}`,
                             }}
                         />
                         :

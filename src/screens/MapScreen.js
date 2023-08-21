@@ -5,7 +5,8 @@ import { Context as RegistrationContext } from '../context/RegistrationContext';
 import { Context as LocationContext } from '../context/LocationContext';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { MapsStyles } from '../theme/MapsStyles';
-import { Icon, Button } from 'react-native-elements';
+import CardAlert from '../components/CardAlert';
+import { Icon, Button, Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import PermissionWarningDenied from '../components/PermissionWarningDenied';
 import ModalList from '../components/Modal/ModalList';
@@ -13,8 +14,7 @@ import ModalAddIncident from '../components/Modal/ModalAddIncident';
 import ModalAlert from '../components/Modal/ModalAlert';
 import CardIncident from '../components/CardIncident';
 import * as Location from 'expo-location';
-import Images from '@assets/images';
-import { log } from 'react-native-reanimated';
+import Images from '@assets/images';r
 
 const MapScreen = () => {
     const navigation = useNavigation();
@@ -56,6 +56,8 @@ const MapScreen = () => {
                     requestForegroundPermissions={requestForegroundPermissions} />
                 :
                 <View style={{ flex: 1 }}>
+
+
                     {
                         stateLocation.location != ''
                             ?
@@ -99,6 +101,7 @@ const MapScreen = () => {
                     }
                 </View>
             }
+            <CardAlert />
             {
                 markCard != ''
                     ?

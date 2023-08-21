@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet, View, Text, TextInput, ScrollView,
-  Image, KeyboardAvoidingView, Platform,
+  Image, TouchableOpacity, Platform,
 } from "react-native";
+import ImagenPerfil from "../components/ImagenPerfil";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context as RegistrationContext } from "../context/RegistrationContext";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { UserSytles } from "../theme/UserSytles";
+
 import Images from "@assets/images";
 
 const UserScreen = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState('');
+  const [image, setImage] = useState(null);
   const [editedData, setEditedData] = useState({});
   const { state, PutUSerProfile } = useContext(RegistrationContext);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -37,19 +41,20 @@ const UserScreen = () => {
     }));
   };
 
+
+
+
   return (
     <ScrollView
       nestedScrollEnabled
       persistentScrollbar={true}
       keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
+      style={UserSytles.container}
       contentInsetAdjustmentBehavior="automatic">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={UserSytles.container} >
-        {user.picture != null ?
-          <Image style={UserSytles.userImage} source={{ uri: user.picture }} />
-          : <Image style={UserSytles.userImage} source={Images.perfil} />}
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        {/* <ImagenPerfil
+          picture={editedData.picture}
+          onChangeText={(value, typedata) => handleInputChange(value, typedata)} /> */}
         <Text style={[UserSytles.text, { fontSize: 20, }]}>Nombre</Text>
         <Text style={[UserSytles.text, { fontSize: 20, }]}>
           {user && user.full_name ? user.full_name : ''}
@@ -91,13 +96,6 @@ const UserScreen = () => {
             value={editedData.email}
             onChangeText={(value) => handleInputChange("email", value)}
           />
-          <Text style={UserSytles.textInput}>Dirección</Text>
-          <TextInput
-            style={UserSytles.input}
-            placeholder="Dirección"
-            value={editedData.address}
-            onChangeText={(value) => handleInputChange("address", value)}
-          />
           <Text style={UserSytles.textInput}>Código postal</Text>
           <TextInput
             style={UserSytles.input}
@@ -112,7 +110,7 @@ const UserScreen = () => {
             onPress={() => PutUSerProfile(editedData)}
           />
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </ScrollView>
   );
 };
@@ -121,12 +119,27 @@ export default UserScreen;
 
 const styles = StyleSheet.create({
 
-  defaultInput: {
-    color: "#333",
-    backgroundColor: "#f2f2f2",
+  container: {
+    elevation: 2,
+    height: 200,
+    width: 200,
+    backgroundColor: '#efefef',
+    position: 'relative',
+    borderRadius: 999,
+    overflow: 'hidden',
   },
-  editedInput: {
-    color: "blue",
-    backgroundColor: "#f2f2f2",
+  uploadBtnContainer: {
+    opacity: 0.7,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'lightgrey',
+    width: '100%',
+    height: '25%',
   },
+  uploadBtn: {
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: 'center'
+  }
 });

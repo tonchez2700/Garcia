@@ -5,10 +5,9 @@ const { width } = Dimensions.get("window");
 export const UserSytles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
         padding: 20,
         backgroundColor: "#1E0554",
-        display: 'flex'
+        display: 'flex',
     },
     text: {
         fontSize: 24,
@@ -17,10 +16,7 @@ export const UserSytles = StyleSheet.create({
         color: "#fff",
     },
     userImage: {
-        width: 130,
-        height: 130,
-        borderRadius: 50,
-        margin: 20,
+        width: 200, height: 200
     },
     textInput: {
         paddingLeft: 10,
