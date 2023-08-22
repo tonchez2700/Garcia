@@ -3,7 +3,7 @@ import {
     StyleSheet, View, Text, TextInput, ScrollView,
     Image, TouchableOpacity, Platform,
 } from "react-native";
-import { Input, Icon } from 'react-native-elements'
+import { Input, Button } from 'react-native-elements'
 import Images from "@assets/images";
 import * as ImagePicker from 'expo-image-picker';
 import { UserSytles } from "../theme/UserSytles";
@@ -11,6 +11,11 @@ import { UserSytles } from "../theme/UserSytles";
 const ImagenPerfil = ({ picture, onChangeText }) => {
 
     const [image, setImage] = useState(null);
+    const [imageChanged, setImageChanged] = useState(false);
+
+    useEffect(() => {
+        setImage(picture);
+    }, [picture]);
 
     const checkForCameraRollPermission = async () => {
         const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
@@ -28,42 +33,45 @@ const ImagenPerfil = ({ picture, onChangeText }) => {
             aspect: [4, 3],
             quality: 1,
         });
-        console.log(JSON.stringify(_image.assets[0]));
         if (!_image.canceled) {
-            onChangeText(`data:image/jpeg;base64,${_image.assets[0].base64}`, 'picture');
-            setImage(`data:image/jpeg;base64,${_image.assets[0].base64}`);
+            onChangeText('picture', `data:image/jpeg;base64,${_image.assets[0].base64}`);
+            setImage('data:image/jpeg;base64,' + _image.assets[0].base64);
         }
     };
 
     useEffect(() => {
         checkForCameraRollPermission()
-        setImage(picture)
     }, []);
 
-    return (
+    console.log(image);
 
-        image != null ?
-            <View style={styles.container}>
-                {
-                    <Image style={UserSytles.userImage} source={{ uri: image }} />
-                }
-                <View style={styles.uploadBtnContainer}>
-                    <TouchableOpacity onPress={() => addImage()} style={styles.uploadBtn} >
-                        <Text>Editar Imagen</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            :
-            <View style={styles.container}>
-                {
-                    <Image style={UserSytles.userImage} source={Images.perfil} />
-                }
-                <View style={styles.uploadBtnContainer}>
-                    <TouchableOpacity onPress={() => addImage()} style={styles.uploadBtn} >
-                        <Text>Editar Imagen</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+    return (
+        <View>
+            {
+                image != null && image != '' ?
+                    <View style={styles.container}>
+                        {
+                            <Image style={UserSytles.userImage} source={{ uri: image }} />
+                        }
+                        <View style={styles.uploadBtnContainer}>
+                            <TouchableOpacity onPress={() => addImage()} style={styles.uploadBtn} >
+                                <Text>Editar Imagen</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    :
+                    <View style={styles.container}>
+                        {
+                            <Image style={UserSytles.userImage} source={Images.perfil} />
+                        }
+                        <View style={styles.uploadBtnContainer}>
+                            <TouchableOpacity onPress={() => addImage()} style={styles.uploadBtn} >
+                                <Text>Editar Imagen</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+            }
+        </View>
 
     )
 }

@@ -33,25 +33,23 @@ const DrawerNavigator = props => {
         >
           {user != ''
             ?
-            <View>
+            <View style={{ alignItems: 'center' }}>
               {
                 user?.userData.picture == null
                   ?
                   <Image style={{
-                    width: 100,
-                    height: 100,
+                    width: 150, height: 150,
                     borderRadius: 50,
                     margin: 20,
                   }} source={Images.perfil} />
                   :
                   <Image style={{
-                    width: 100,
-                    height: 100,
+                    width: 150, height: 150,
                     borderRadius: 50,
                     margin: 20,
-                  }} source={{ uri: `${user?.userData.picture}` }} />
+                  }} source={{ uri: `https://www.appalaorden.garcia.gob.mx/garcia/${user?.userData.picture}` }} />
               }
-              <Text style={{ textAlign: 'center' }}> {user?.userData.full_name}</Text>
+              <Text style={{ textAlign: 'center', fontWeight: '500' }}> {user?.userData.full_name}</Text>
             </View>
             : null
           }

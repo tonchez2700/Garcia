@@ -63,7 +63,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "react-native-table-component": "^1.2.2",
-    "react-native-web": "~0.18.11",
+    "react-native-web": "~0.18.10",
     "react-native-webview": "11.26.0",
     "rn-pdf-reader-js": "^4.1.1",
     "tailwind-react-native-classnames": "^1.5.1",

@@ -3,6 +3,7 @@ import {
   StyleSheet, View, Text, TextInput, ScrollView,
   Image, TouchableOpacity, Platform,
 } from "react-native";
+import { Icon } from "react-native-elements";
 import ImagenPerfil from "../components/ImagenPerfil";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context as RegistrationContext } from "../context/RegistrationContext";
@@ -51,10 +52,18 @@ const UserScreen = () => {
       keyboardDismissMode="on-drag"
       style={UserSytles.container}
       contentInsetAdjustmentBehavior="automatic">
+      <View style={{ alignSelf: 'flex-end' }}>
+        <Icon
+          size={25}
+          name={'remove'}
+          onPress={() => navigation.navigate('Mapa')}
+          type='font-awesome'
+          color={'#FFFFFF'} />
+      </View>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        {/* <ImagenPerfil
-          picture={editedData.picture}
-          onChangeText={(value, typedata) => handleInputChange(value, typedata)} /> */}
+        <ImagenPerfil
+          picture={'https://www.appalaorden.garcia.gob.mx/garcia/' + user.picture}
+          onChangeText={(value, typedata) => handleInputChange(value, typedata)} />
         <Text style={[UserSytles.text, { fontSize: 20, }]}>Nombre</Text>
         <Text style={[UserSytles.text, { fontSize: 20, }]}>
           {user && user.full_name ? user.full_name : ''}

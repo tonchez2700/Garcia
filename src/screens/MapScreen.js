@@ -14,7 +14,7 @@ import ModalAddIncident from '../components/Modal/ModalAddIncident';
 import ModalAlert from '../components/Modal/ModalAlert';
 import CardIncident from '../components/CardIncident';
 import * as Location from 'expo-location';
-import Images from '@assets/images';r
+import Images from '@assets/images';
 
 const MapScreen = () => {
     const navigation = useNavigation();

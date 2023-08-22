@@ -264,7 +264,6 @@ const PutUSerProfile = (dispatch) => {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
-            console.log();
             const response = await httpClient
                 .put(`users/${user.userData.id}`, data,
                     {
