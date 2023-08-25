@@ -18,7 +18,7 @@ const DrawerNavigator = props => {
       setUser(localUser)
     }
     getLocalUser()
-  }, [])
+  }, [user])
 
   const filteredState = props.state.routes.filter(
     route => route.name !== 'Pruebas'
@@ -47,7 +47,12 @@ const DrawerNavigator = props => {
                     width: 150, height: 150,
                     borderRadius: 50,
                     margin: 20,
-                  }} source={{ uri: `https://www.appalaorden.garcia.gob.mx/garcia/${user?.userData.picture}` }} />
+                  }}
+                    source={{
+                      uri: user?.userData.picture.startsWith('http')
+                        ? user?.userData.picture
+                        : `https://www.appalaorden.garcia.gob.mx/garcia/${user?.userData.picture}`
+                    }} />
               }
               <Text style={{ textAlign: 'center', fontWeight: '500' }}> {user?.userData.full_name}</Text>
             </View>

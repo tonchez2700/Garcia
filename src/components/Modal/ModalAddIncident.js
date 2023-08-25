@@ -107,6 +107,7 @@ const ModalAddIncident = ({ fun }) => {
                             <Button
                                 containerStyle={styles.buttonContainer}
                                 loading={state.fetchingData ? true : false}
+                                disabled={state.fetchingData ? true : false}
                                 loadingProps={{ color: '#000000' }}
                                 onPress={() => store(state.dataReport)}
                                 title="Enviar" // Agrega la propiedad disabled si deseas deshabilitar el botón

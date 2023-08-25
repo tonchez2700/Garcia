@@ -21,19 +21,23 @@ const styles = StyleSheet.create({
         position: 'absolute',
         borderRadius: 3,
         backgroundColor: '#FFF',
-        height: '5.3%',
         width: '80%',
         left: "5%",
         top: "2%",
         justifyContent: 'center',
         alignItems: 'center',
+        paddingVertical: 12,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        paddingHorizontal: 8,
         elevation: 8,
     },
 
     text: {
         color: '#424242',
+        textAlign: 'center',
         lineHeight: 15,
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: '500',
     }
 })

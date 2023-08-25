@@ -36,8 +36,9 @@
       }
     },
     "android": {
-      "package": "com.tonchez2700.Garciaalaorden",
+      "package": "com.tonchez2700.GarciaApp",
       "versionCode": 1,
+      "useProxy": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
@@ -58,7 +59,7 @@
     },
     "scheme": [
       "Garcia",
-      "fb605649451337245"
+      "fb1025155802263573"
     ],
     "extra": {
       "google": {
@@ -68,7 +69,7 @@
             "email"
           ],
           "webClientId": "898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com",
-          "redirectUrl": "com.tonchez2700.Garciaalaorden:/oauthredirect"
+          "redirectUrl": "com.tonchez2700.GarciaApp:/oauthredirect"
         }
       },
       "eas": {

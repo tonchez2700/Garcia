@@ -43,7 +43,6 @@ const ImagenPerfil = ({ picture, onChangeText }) => {
         checkForCameraRollPermission()
     }, []);
 
-    console.log(image);
 
     return (
         <View>

@@ -62,7 +62,9 @@ const UserScreen = () => {
       </View>
       <View style={{ flex: 1, alignItems: 'center' }}>
         <ImagenPerfil
-          picture={'https://www.appalaorden.garcia.gob.mx/garcia/' + user.picture}
+          picture={user.picture?.startsWith('http')
+            ? user.picture
+            : `https://www.appalaorden.garcia.gob.mx/garcia/${user.picture}`}
           onChangeText={(value, typedata) => handleInputChange(value, typedata)} />
         <Text style={[UserSytles.text, { fontSize: 20, }]}>Nombre</Text>
         <Text style={[UserSytles.text, { fontSize: 20, }]}>
@@ -111,6 +113,13 @@ const UserScreen = () => {
             placeholder="Código postal"
             value={editedData.postal_code}
             onChangeText={(value) => handleInputChange("postal_code", value)}
+          />
+          <Text style={UserSytles.textInput}>Contraseña</Text>
+          <TextInput
+            style={UserSytles.input}
+            placeholder="Contraseña"
+            value={editedData.password}
+            onChangeText={(value) => handleInputChange("password", value)}
           />
           <Button
             title="Guardar cambios"

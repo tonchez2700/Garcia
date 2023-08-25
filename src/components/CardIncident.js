@@ -28,7 +28,6 @@ const CardIncident = ({ data, fun }) => {
     ) {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
-    console.log(data);
     return (
         <View style={CardSytles.container} >
 

@@ -118,7 +118,6 @@ const tryAuth = async (email, password, dispatch) => {
         password: password
     }
     const response = await httpClient.post('auth/login', data)
-    console.log(response);
     if (response.status) {
         const user = {
             userData: {
@@ -263,7 +262,6 @@ const authFacebook = (dispatch) => {
                 picture: info.picture.data.url
             }
             const response = await httpClient.post(`auth/login/facebook`, data)
-            console.log(response);
             if (response.status) {
                 const user = {
                     userData: {
@@ -376,6 +374,7 @@ const authGoogle = (dispatch) => {
         }
     }
 }
+
 
 export const { Context, Provider } = createDataContext(
     loginReducer,

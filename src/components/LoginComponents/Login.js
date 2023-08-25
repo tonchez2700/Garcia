@@ -15,7 +15,7 @@ import * as WebBrowser from 'expo-web-browser';
 WebBrowser.maybeCompleteAuthSession();
 const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook, authGoogle }) => {
 
-    const [request, response, promptAsync] = Facebook.useAuthRequest({ clientId: "605649451337245", });
+    const [request, response, promptAsync] = Facebook.useAuthRequest({ clientId: "1025155802263573", });
     const [requestG, responseG, promptAsyncG] = Google.useAuthRequest({
         clientId: '898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com',
         androidClientId: "898724339858-pv8prlium7ga3o3kg204emc9ftmbvq6h.apps.googleusercontent.com",
@@ -46,6 +46,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
                         }
                     );
                     const userInfoG = await userInfoResponseG.json();
+                    
                     authGoogle(userInfoG)
                 })();
             }
