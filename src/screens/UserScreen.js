@@ -43,6 +43,19 @@ const UserScreen = () => {
   };
 
 
+  const handleSaveChanges = async () => {
+    const changedData = {};
+
+    for (const key in editedData) {
+      if (editedData.hasOwnProperty(key) && editedData[key] !== user[key]) {
+        changedData[key] = editedData[key];
+      }
+    }
+
+    if (Object.keys(changedData).length > 0) {
+      await PutUSerProfile(changedData);
+    }
+  };
 
 
   return (
@@ -125,7 +138,7 @@ const UserScreen = () => {
             title="Guardar cambios"
             containerStyle={UserSytles.button}
             loading={state.fetchingData ? true : false}
-            onPress={() => PutUSerProfile(editedData)}
+            onPress={() => handleSaveChanges()}
           />
         </View>
       </View>

@@ -59,11 +59,12 @@ const requestForegroundPermissions = (dispatch) => {
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status === 'granted') {
             dispatch({ type: 'SET_SUCCESS_PERMISSION', payload: true })
-            let ubi = await Location.getCurrentPositionAsync();
-            dispatch({
-                type: 'SET_LOCATION',
-                payload: { ubi }
-            })
+            console.log(navigator.geolocatior);
+            // let ubi = await Location.getCurrentPositionAsync();
+            // dispatch({
+            //     type: 'SET_LOCATION',
+            //     payload: { ubi }
+            // })
         }
         else {
             dispatch({

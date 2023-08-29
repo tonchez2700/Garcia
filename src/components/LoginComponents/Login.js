@@ -7,7 +7,7 @@ import Images from "@assets/images";
 import ButtonFrom from "../Forms/ButtonFrom";
 import InputForm from "../Forms/InputForm";
 import ButtonsGoogle from "../ButtonsGoogle";
-import * as AuthSession from 'expo-auth-session';
+import { LoginButton, AccessToken } from "react-native-fbsdk-next";
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from 'expo-web-browser';
@@ -46,7 +46,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
                         }
                     );
                     const userInfoG = await userInfoResponseG.json();
-                    
+
                     authGoogle(userInfoG)
                 })();
             }
@@ -99,8 +99,25 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
                 <View style={{ backgroundColor: 'black', height: 1, flex: 1, alignSelf: 'center' }} />
             </View>
 
-            <SocialIcon title="Continuar con Facebook" button type="facebook" onPress={async () => handlePressAsync('Facebook')} />
-            <ButtonsGoogle onPress={() => handlePressAsync('Google')} />
+            {/*<SocialIcon title="Continuar con Facebook" button type="facebook" onPress={async () => handlePressAsync('Facebook')} />
+            <LoginButton
+                onLoginFinished={
+                    (error, result) => {
+                        if (error) {
+                            console.log("login has error: " + result.error);
+                        } else if (result.isCancelled) {
+                            console.log("login is cancelled.");
+                        } else {
+                            AccessToken.getCurrentAccessToken().then(
+                                (data) => {
+                                    console.log(data.accessToken.toString())
+                                }
+                            )
+                        }
+                    }
+                }
+                onLogoutFinished={() => console.log("logout.")} />
+            <ButtonsGoogle onPress={() => handlePressAsync('Google')} /> */}
             <Text style={AuthStyle.textDonAccount}>¿No tienes una cuenta?</Text>
             <View style={{ marginBottom: 15, padding: 10 }}>
                 <Button

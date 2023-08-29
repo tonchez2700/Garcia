@@ -56,49 +56,47 @@ const MapScreen = () => {
                     requestForegroundPermissions={requestForegroundPermissions} />
                 :
                 <View style={{ flex: 1 }}>
+                    <MapView
+                        style={MapsStyles.Map}
+                        provider={PROVIDER_GOOGLE}
+                        showsUserLocation={true}
+                        showsPointsOfInterest={false}
+                        showsIndoors={false}
+                        showsMyLocationButton={true}
+                        followsUserLocation={true}
+                        showsCompass={true}
+                        scrollEnabled={true}
+                        zoomEnabled={true}
+                        pitchEnabled={true}
+                        onPress={(e) => { locationRevers(e.nativeEvent.coordinate), setLocation(e.nativeEvent.coordinate) }}
+                        initialRegion={{
+                            latitude: 25.810530,
+                            longitude: -100.594123,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }}
+                    >
+                        {location && (
+                            <Marker
+                                draggable
+                                coordinate={location} >
+                            </Marker>
+                        )}
 
-
-                    {
-                        stateLocation.location != ''
-                            ?
-                            <MapView
-                                style={MapsStyles.Map}
-                                provider={PROVIDER_GOOGLE}
-                                showsUserLocation={true}
-                                showsPointsOfInterest={false}
-                                showsIndoors={false}
-                                onPress={(e) => { locationRevers(e.nativeEvent.coordinate), setLocation(e.nativeEvent.coordinate) }}
-                                initialRegion={{
-                                    latitude: stateLocation.location.latitude,
-                                    longitude: stateLocation.location.longitude,
-                                    latitudeDelta: 0.005,
-                                    longitudeDelta: 0.005,
-                                }}
-                            >
-                                {location && (
-                                    <Marker
-                                        draggable
-                                        coordinate={location} >
-                                    </Marker>
-                                )}
-
-                                {state.reportList !== [] &&
-                                    state.reportList.map((marker) => (
-                                        <Marker
-                                            title={marker.incident.name}
-                                            key={marker.id}
-                                            pinColor={getRandomColor()}
-                                            coordinate={{
-                                                latitude: parseFloat(marker.latitude),
-                                                longitude: parseFloat(marker.longitude),
-                                            }}
-                                            onPress={() => setmarkCard(marker)}
-                                        />
-                                    ))}
-                            </MapView>
-                            :
-                            null
-                    }
+                        {state.reportList !== [] &&
+                            state.reportList.map((marker) => (
+                                <Marker
+                                    title={marker.incident.name}
+                                    key={marker.id}
+                                    pinColor={getRandomColor()}
+                                    coordinate={{
+                                        latitude: parseFloat(marker.latitude),
+                                        longitude: parseFloat(marker.longitude),
+                                    }}
+                                    onPress={() => setmarkCard(marker)}
+                                />
+                            ))}
+                    </MapView>
                 </View>
             }
             <CardAlert />

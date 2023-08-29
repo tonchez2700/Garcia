@@ -12,6 +12,19 @@
     },
     "plugins": [
       [
+        "react-native-fbsdk-next",
+        {
+          "appID": "990701348808062",
+          "clientToken": "990a0d362e0570ab55f0efcd663537fb",
+          "displayName": "Garcia",
+          "scheme": "fb990701348808062",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ],
+      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
@@ -28,16 +41,25 @@
       "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "Esta aplicación requiere acceso a la cámara para leer documentos de identidad.",
-        "NSPhotoLibraryUsageDescription": "Esta aplicación requiere acceso a la galería para guardar las imágenes de los documentos de identidad."
+        "NSPhotoLibraryUsageDescription": "Esta aplicación requiere acceso a la galería para guardar las imágenes de los documentos de identidad.",
+        "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you.",
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
+          },
+          {
+            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          }
+        ]
       },
-      "bundleIdentifier": "com.tonchez2700.GarciaApp",
       "config": {
         "googleMapsApiKey": "AIzaSyBdPFBYiQ0ltGb7745whZucrTMwCRb3uk0"
-      }
+      },
+      "bundleIdentifier": "com.copixil.GarciaApp"
     },
     "android": {
-      "package": "com.tonchez2700.GarciaApp",
-      "versionCode": 1,
+      "package": "com.copixil.GarciaApp",
+      "versionCode": 3,
       "useProxy": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
@@ -46,7 +68,12 @@
       "permissions": [
         "CAMERA",
         "RECORD_AUDIO",
-        "READ_EXTERNAL_STORAGE"
+        "READ_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
       ],
       "config": {
         "googleMaps": {
@@ -57,10 +84,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": [
-      "Garcia",
-      "fb1025155802263573"
-    ],
     "extra": {
       "google": {
         "oauth": {
@@ -69,11 +92,11 @@
             "email"
           ],
           "webClientId": "898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com",
-          "redirectUrl": "com.tonchez2700.GarciaApp:/oauthredirect"
+          "redirectUrl": "com.copixil.GarciaApp:/oauthredirect"
         }
       },
       "eas": {
-        "projectId": "61d46014-8a2e-4da2-9d91-7e6cb1e43812"
+        "projectId": "c0c3b978-cd2a-45e9-b3f7-668d01a2d9b1"
       }
     }
   }
