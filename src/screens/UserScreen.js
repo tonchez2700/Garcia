@@ -108,6 +108,7 @@ const UserScreen = () => {
 
           <Text style={UserSytles.textInput}>Teléfono</Text>
           <TextInput
+           maxLength={10}
             style={UserSytles.input}
             placeholder="Teléfono"
             value={editedData.phone}
@@ -122,6 +123,7 @@ const UserScreen = () => {
           />
           <Text style={UserSytles.textInput}>Código postal</Text>
           <TextInput
+           maxLength={5}
             style={UserSytles.input}
             placeholder="Código postal"
             value={editedData.postal_code}

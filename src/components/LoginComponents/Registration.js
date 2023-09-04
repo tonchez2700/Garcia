@@ -76,7 +76,7 @@ const Registration = ({ fetchingData, id, stateView }) => {
                     onChangeText={(value) => handleInputChange(value, "password")}
                 />
                 <TextInput
-                    maxLength={15}
+                     maxLength={50}
                     value={inputState.password_confirmation}
                     style={AuthStyle.inputR}
                     placeholder="Confirmar contraseña"

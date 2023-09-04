@@ -161,7 +161,7 @@ const locationRevers = (dispatch) => {
         try {
             const address = await Location.reverseGeocodeAsync(ubi);
             const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}, ${address[0].region}`;
-            console.log(address);
+           
             dispatch({
                 type: 'SET_COORDS_REPORTS',
                 payload: { locationAddress, ubi }
@@ -271,7 +271,6 @@ const PutUSerProfile = (dispatch) => {
                         'Authorization': `Bearer ${token}`,
                     }
                 )
-            console.log(response);
             if (response.status == true) {
                 const user = {
                     userData: {
@@ -292,6 +291,13 @@ const PutUSerProfile = (dispatch) => {
                     },
                     token: token
                 }
+                Alert.alert(
+                    "Éxito",
+                    "Los cambios se aplicaron correctamente.",
+                    [{
+                        text: "Aceptar"
+                    }]
+                )
                 await AsyncStorage.setItem('user', JSON.stringify(user))
                 dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
             } else {
@@ -327,8 +333,6 @@ const getReports = (dispatch) => {
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
-
-            console.log(response);
             if (response.message === 'Unauthenticated.') {
                 Alert.alert(
                     "Tiempo agotado",
@@ -399,7 +403,6 @@ const store = (dispatch) => {
                         'Authorization': `Bearer ${token}`,
                     }
                 )
-            console.log(response);
             if (response.status != false) {
                 dispatch({ type: 'SET_CLEAR_FROM' });
                 dispatch({
