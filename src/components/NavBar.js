@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TouchableOpacity, Image, Text } from 'react-native';
+import { TouchableOpacity, Image, } from 'react-native';
 import { Header, Icon } from 'react-native-elements';
 import Logo from './Logo';
 import Images from '@assets/images';
-import { View } from 'react-native-web';
 
 const NavBar = (navigation) => {
 
@@ -20,11 +19,18 @@ const NavBar = (navigation) => {
             barStyle="default"
             containerStyle={{ height: 110 }}
             leftContainerStyle={{ justifyContent: 'center' }}
-            rightContainerStyle={{ justifyContent: 'center' }}
-            centerComponent={<Image source={Images.garciaLogoBlanco} style={{
-                width: '65%',
-                height: 40,
-            }} />}
+            rightComponent={
+                <Image source={Images.logoAdmin} style={{
+                    width: '100%',
+                    height: 40,
+                    resizeMode: 'stretch',
+                }} />}
+            centerComponent={
+                <Image source={Images.garciaLogoBlanco} style={{
+                    width: '65%',
+                    height: 40,
+                    resizeMode: 'stretch',
+                }} />}
             leftComponent={
                 <TouchableOpacity
                     onPress={() => open()}

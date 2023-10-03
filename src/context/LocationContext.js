@@ -1,4 +1,4 @@
-import { Alert } from 'react-native'
+import { Alert, Linking } from 'react-native'
 import createDataContext from './createDataContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import httpClient from '../services/httpClient'
@@ -57,6 +57,7 @@ const clearState = (dispatch) => {
 const requestForegroundPermissions = (dispatch) => {
     return async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
+        console.log(status);
         if (status === 'granted') {
             dispatch({ type: 'SET_SUCCESS_PERMISSION', payload: true })
             // let ubi = await Location.getCurrentPositionAsync();

@@ -94,14 +94,14 @@ const UserScreen = () => {
           <Text style={UserSytles.textInput}>Primer apellido</Text>
           <TextInput
             style={UserSytles.input}
-            placeholder="Nombre"
+            placeholder="Primer apellido"
             value={editedData.paternal_surname}
             onChangeText={(value) => handleInputChange("paternal_surname", value)}
           />
           <Text style={UserSytles.textInput}>Segundo apellido</Text>
           <TextInput
             style={UserSytles.input}
-            placeholder="Nombre"
+            placeholder="Segundo apellido"
             value={editedData.maternal_surname}
             onChangeText={(value) => handleInputChange("maternal_surname", value)}
           />

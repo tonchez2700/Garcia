@@ -3,10 +3,10 @@ import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-nativ
 import { Input, Icon } from 'react-native-elements'
 
 const CardAlert = () => {
-
+    const leftValue = Platform.OS === 'android' ? '5%' : '10%';
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { left: leftValue }]}>
             <Text style={styles.text}>Haz clic sobre el área que deseas reportar</Text>
         </View >
     )
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         backgroundColor: '#FFF',
         width: '80%',
-        left: "5%",
         top: "2%",
         justifyContent: 'center',
         alignItems: 'center',

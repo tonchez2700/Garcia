@@ -15,11 +15,9 @@ const WrapperInnerScreens = () => {
 
 
     return (
-        <SafeAreaView style={[tw`flex-1 `]}>
-            <LocationProvider>
-                <CustomDrawer />
-            </LocationProvider>
-        </SafeAreaView>
+        <LocationProvider>
+            <CustomDrawer />
+        </LocationProvider>
     )
 }
 

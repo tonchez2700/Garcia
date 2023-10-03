@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Linking } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import tw from 'tailwind-react-native-classnames'
 
@@ -10,7 +10,7 @@ const PermissionWarningDenied = (props) => {
             <Button
                 buttonStyle={{ backgroundColor: '#1E0554' }}
                 title="Permitir localización"
-                onPress={props.requestForegroundPermissions}
+                onPress={Linking.openSettings}
 
             />
         </View>
