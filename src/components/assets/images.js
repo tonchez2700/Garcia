@@ -14,7 +14,7 @@ const images = {
     garciaLogoBlanco: require('./img/Garcia_logoWhite.png'),
     perfil: require('./img/userProfile.png'),
     warnning: require('./img/warnning.jpg'),
-    logoAdmin: require('./img/logo-garcía.png'),
+    logoAdmin: require('./img/logo-garcia.png'),
 
 
 }

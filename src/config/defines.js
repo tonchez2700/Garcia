@@ -1,1 +1,1 @@
-export const apiUrlBase = 'https://www.appalaorden.garcia.gob.mx/garcia/api'
+export const apiUrlBase = 'https://www.sistema.appalaorden.garcia.gob.mx/api'
