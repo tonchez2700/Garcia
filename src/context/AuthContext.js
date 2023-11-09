@@ -256,10 +256,6 @@ const authFacebook = (dispatch) => {
         try {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
             const data = {
-                facebook_id: info.id,
-                name: info.name,
-                email: info.email,
-                picture: info.picture.data.url
             }
             const response = await httpClient.post(`auth/login/facebook`, data)
             if (response.status) {
@@ -318,11 +314,11 @@ const authGoogle = (dispatch) => {
         try {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const data = {
-                google_id: info.id,
-                name: info.name,
-                email: info.email,
-                picture: info.picture
-            }
+                google_id: info.user.id,
+                name: info.user.name,
+                email: info.user.email,
+                picture: info.user.photo
+            };
             const response = await httpClient.post(`auth/login/google`, data)
             if (response.status) {
                 const user = {
@@ -343,7 +339,9 @@ const authGoogle = (dispatch) => {
 
                     },
                     token: response.token
-                }
+                };
+                await AsyncStorage.removeItem('user')
+                dispatch({ type: 'SIGNOUT' });
                 await AsyncStorage.setItem('user', JSON.stringify(user))
                 dispatch({ type: 'SIGNIN', payload: { user } });
                 rootNavigation.navigate('WrapperInnerScreens')

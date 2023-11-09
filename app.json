@@ -2,7 +2,7 @@
   "expo": {
     "name": "Garcia",
     "slug": "Garcia",
-    "version": "2.0.0",
+    "version": "3.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -12,17 +12,7 @@
     },
     "plugins": [
       [
-        "react-native-fbsdk-next",
-        {
-          "appID": "990701348808062",
-          "clientToken": "990a0d362e0570ab55f0efcd663537fb",
-          "displayName": "Garcia",
-          "scheme": "fb990701348808062",
-          "advertiserIDCollectionEnabled": false,
-          "autoLogAppEventsEnabled": false,
-          "isAutoInitEnabled": true,
-          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
-        }
+        "@react-native-google-signin/google-signin"
       ],
       [
         "expo-location",
@@ -53,13 +43,14 @@
         ]
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyBdPFBYiQ0ltGb7745whZucrTMwCRb3uk0"
+        "googleMapsApiKey": "AIzaSyD9As-GqbZc_taGYaxm-w5UkOMcmLtXxRM",
+        "googleServicesFile": "./GoogleService-Info.plist"
       },
       "bundleIdentifier": "com.copixil.GarciaApp"
     },
     "android": {
       "package": "com.copixil.GarciaApp",
-      "versionCode": 6,
+      "versionCode": 11,
       "useProxy": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
@@ -76,8 +67,9 @@
         "android.permission.FOREGROUND_SERVICE"
       ],
       "config": {
+        "googleServicesFile": "./google-services.json",
         "googleMaps": {
-          "apiKey": "AIzaSyBdPFBYiQ0ltGb7745whZucrTMwCRb3uk0"
+          "apiKey": "AIzaSyD9As-GqbZc_taGYaxm-w5UkOMcmLtXxRM"
         }
       }
     },
@@ -85,16 +77,6 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "google": {
-        "oauth": {
-          "scopes": [
-            "profile",
-            "email"
-          ],
-          "webClientId": "898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com",
-          "redirectUrl": "com.copixil.GarciaApp:/oauthredirect"
-        }
-      },
       "eas": {
         "projectId": "c0c3b978-cd2a-45e9-b3f7-668d01a2d9b1"
       }

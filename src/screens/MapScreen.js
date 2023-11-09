@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
@@ -13,7 +13,6 @@ import ModalList from '../components/Modal/ModalList';
 import ModalAddIncident from '../components/Modal/ModalAddIncident';
 import ModalAlert from '../components/Modal/ModalAlert';
 import CardIncident from '../components/CardIncident';
-import * as Location from 'expo-location';
 import Images from '@assets/images';
 
 const MapScreen = () => {
@@ -28,17 +27,15 @@ const MapScreen = () => {
         store,
     } = useContext(RegistrationContext);
     const { state: stateLocation, requestForegroundPermissions } = useContext(LocationContext)
-    const { signout } = useContext(AuthContext);
+    const { state: stateAuth, signout } = useContext(AuthContext);
     const [markCard, setmarkCard] = useState('');
     const [location, setLocation] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            requestForegroundPermissions()
-            getReports();
-            getReportList();
-        });
-        return unsubscribe;
+        requestForegroundPermissions()
+        clearStateFrom();
+        getReports();
+        getReportList();
     }, [navigation]);
 
     const getRandomColor = () => {
@@ -57,13 +54,13 @@ const MapScreen = () => {
                 :
                 <View style={{ flex: 1 }}>
                     <MapView
+                        // showsUserLocation={true} // here is what I thought should show it
+                        showsMyLocationButton={true}
+                        zoomControlEnabled={true}
                         style={MapsStyles.Map}
                         provider={PROVIDER_GOOGLE}
-                        showsUserLocation={true}
                         showsPointsOfInterest={false}
                         showsIndoors={false}
-                        showsMyLocationButton={true}
-                        followsUserLocation={true}
                         showsCompass={true}
                         scrollEnabled={true}
                         zoomEnabled={true}

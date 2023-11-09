@@ -10,8 +10,8 @@ import { Context as RegistrationContext } from "../context/RegistrationContext";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { UserSytles } from "../theme/UserSytles";
-
 import Images from "@assets/images";
+
 
 const UserScreen = () => {
   const navigation = useNavigation();
@@ -56,7 +56,7 @@ const UserScreen = () => {
       await PutUSerProfile(changedData);
     }
   };
-
+ 
 
   return (
     <ScrollView
@@ -108,7 +108,7 @@ const UserScreen = () => {
 
           <Text style={UserSytles.textInput}>Teléfono</Text>
           <TextInput
-           maxLength={10}
+            maxLength={10}
             style={UserSytles.input}
             placeholder="Teléfono"
             value={editedData.phone}
@@ -123,7 +123,7 @@ const UserScreen = () => {
           />
           <Text style={UserSytles.textInput}>Código postal</Text>
           <TextInput
-           maxLength={5}
+            maxLength={5}
             style={UserSytles.input}
             placeholder="Código postal"
             value={editedData.postal_code}

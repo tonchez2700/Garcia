@@ -6,66 +6,34 @@ import { useNavigation } from "@react-navigation/native";
 import Images from "@assets/images";
 import ButtonFrom from "../Forms/ButtonFrom";
 import InputForm from "../Forms/InputForm";
-import ButtonsGoogle from "../ButtonsGoogle";
-import { LoginButton, AccessToken } from "react-native-fbsdk-next";
-import * as Facebook from 'expo-auth-session/providers/facebook';
-import * as Google from "expo-auth-session/providers/google";
-import * as WebBrowser from 'expo-web-browser';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-google-signin/google-signin';
 
-WebBrowser.maybeCompleteAuthSession();
+GoogleSignin.configure({
+    offlineAccess: true,
+    webClientId: '851474503024-h4eltil6qbffdr4tr99p040ek5ajhg6c.apps.googleusercontent.com',
+});
+
 const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook, authGoogle }) => {
 
-    const [request, response, promptAsync] = Facebook.useAuthRequest({ clientId: "1025155802263573", });
-    const [requestG, responseG, promptAsyncG] = Google.useAuthRequest({
-        clientId: '898724339858-fjg9pblpifmcc4f1q2a1nc17s0616qol.apps.googleusercontent.com',
-        androidClientId: "898724339858-pv8prlium7ga3o3kg204emc9ftmbvq6h.apps.googleusercontent.com",
-        iosClientId: "898724339858-lkm2u5h93u6em3b0869og5lq85e1i2tp.apps.googleusercontent.com",
-    });
     const navigation = useNavigation();
     const [showPassword, setShowPassword] = useState(false);
-    const [typeAuth, settypeAuth] = useState()
 
-    useEffect(() => {
-        if (typeAuth == "Facebook") {
-            if (response && response.type === "success" && response.authentication) {
-                (async () => {
-                    const userInfoResponse = await fetch(
-                        `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id,name,email,picture.type(large)`
-                    );
-                    const userInfo = await userInfoResponse.json();
-                    authFacebook(userInfo)
-                })();
-            }
-        } else {
-            if (responseG?.type === "success") {
-                (async () => {
-                    const userInfoResponseG = await fetch(
-                        "https://www.googleapis.com/userinfo/v2/me",
-                        {
-                            headers: { Authorization: `Bearer ${responseG.authentication.accessToken}` },
-                        }
-                    );
-                    const userInfoG = await userInfoResponseG.json();
 
-                    authGoogle(userInfoG)
-                })();
-            }
+    const handleGoogleSignIn = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            authGoogle(userInfo);
+            // Aquí puedes usar la información de usuario para iniciar sesión en tu aplicación.
+        } catch (error) {
+            console.error(error);
         }
-    }, [response, responseG]);
+    }
 
-    const handlePressAsync = async (type) => {
-        settypeAuth(type)
-        if (type == 'Facebook') {
-            const result = await promptAsync();
-            if (result.type !== "success") {
-                alert("Uh oh, something went wrong");
-                return;
-            }
-        } else {
-            promptAsyncG()
-        }
-
-    };
 
     return (
         <View style={{ flex: 1, width: '100%' }}>
@@ -98,26 +66,14 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
                 <Text style={{ alignSelf: 'center', paddingHorizontal: 5, fontWeight: '700', fontSize: 14 }}>o</Text>
                 <View style={{ backgroundColor: 'black', height: 1, flex: 1, alignSelf: 'center' }} />
             </View>
-
-            {/*<SocialIcon title="Continuar con Facebook" button type="facebook" onPress={async () => handlePressAsync('Facebook')} />
-            <LoginButton
-                onLoginFinished={
-                    (error, result) => {
-                        if (error) {
-                            console.log("login has error: " + result.error);
-                        } else if (result.isCancelled) {
-                            console.log("login is cancelled.");
-                        } else {
-                            AccessToken.getCurrentAccessToken().then(
-                                (data) => {
-                                    console.log(data.accessToken.toString())
-                                }
-                            )
-                        }
-                    }
-                }
-                onLogoutFinished={() => console.log("logout.")} />
-            <ButtonsGoogle onPress={() => handlePressAsync('Google')} /> */}
+            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                <GoogleSigninButton
+                    style={{ width: '90%', height: 40 }}
+                    size={GoogleSigninButton.Size.Icon}
+                    color={GoogleSigninButton.Color.Dark}
+                    onPress={handleGoogleSignIn}
+                />
+            </View>
             <Text style={AuthStyle.textDonAccount}>¿No tienes una cuenta?</Text>
             <View style={{ marginBottom: 15, padding: 10 }}>
                 <Button

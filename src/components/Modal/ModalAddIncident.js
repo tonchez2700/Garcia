@@ -43,6 +43,7 @@ const ModalAddIncident = ({ fun }) => {
                                 <TextInput
                                     style={styles.input}
                                     value={state.dataReport?.address}
+                                    editable={false}
                                     placeholder="Ubicación del incidente"
                                     multiline={true}
                                     onChangeText={(value) => setReportInfo(value, 'address')}
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: "#FFFFFF",
         borderWidth: 0.2,
+        color:'#393939',
         borderColor: "#707070B3",
         borderBottomWidth: 0,
         paddingHorizontal: 15,

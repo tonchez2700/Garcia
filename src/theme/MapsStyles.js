@@ -8,7 +8,7 @@ export const MapsStyles = StyleSheet.create({
         position: 'relative',
     },
     Map: {
-        flex: 9
+        flex: 1
     },
     seach: {
         textInputContainer: {

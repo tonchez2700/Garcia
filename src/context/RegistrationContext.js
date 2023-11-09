@@ -36,10 +36,7 @@ const RegistrationReducer = (state = initialState, action) => {
                 error: false,
                 message: null,
                 fetchingData: false,
-                dataReport: {
-                    coords: state.dataReport.coords,
-                    address: state.dataReport.address
-                },
+                dataReport: [],
             }
         case 'SET_REQUEST_ERROR':
             return {
@@ -161,7 +158,7 @@ const locationRevers = (dispatch) => {
         try {
             const address = await Location.reverseGeocodeAsync(ubi);
             const locationAddress = `${address[0].street}, ${address[0].district}, ${address[0].postalCode}, ${address[0].city}, ${address[0].region}`;
-           
+
             dispatch({
                 type: 'SET_COORDS_REPORTS',
                 payload: { locationAddress, ubi }
@@ -264,7 +261,6 @@ const PutUSerProfile = (dispatch) => {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
-            console.log('lo que envio yo: ', data);
             const response = await httpClient
                 .put(`users/${user.userData.id}`, data,
                     {
@@ -329,10 +325,12 @@ const getReports = (dispatch) => {
             dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
+
             const response = await httpClient
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
+            console.log(JSON.stringify(response, null, 2));
             if (response.message === 'Unauthenticated.') {
                 Alert.alert(
                     "Tiempo agotado",
@@ -349,6 +347,11 @@ const getReports = (dispatch) => {
                         dispatch({
                             type: 'SET_REPORTS_LIST',
                             payload: { response }
+                        })
+                    } else {
+                        dispatch({
+                            type: 'SET_REPORTS_LIST',
+                            payload: { response: [] }
                         })
                     }
                 } else {
@@ -397,60 +400,72 @@ const store = (dispatch) => {
                     videos: (data.videos && data.videos.length > 0) ? data.videos : [],
                 }
             };
+
             const response = await httpClient
                 .post(`reports`, separatedData,
                     {
                         'Authorization': `Bearer ${token}`,
                     }
                 )
-            if (response.status != false) {
-                dispatch({ type: 'SET_CLEAR_FROM' });
-                dispatch({
-                    type: 'CHANGE_VISIBLE_MODAL',
-                    payload: { type: 'isVisibleIncident', }
-                })
+            console.log(response);
+            if (response.exception) {
+                // Manejar el error de servidor y mostrar un mensaje genérico.
                 Alert.alert(
-                    "Éxito",
-                    "Reporte agregado exitosamente.",
+                    "Error",
+                    "Ocurrió un problema. Inténtelo de nuevo más tarde.",
                     [{
                         text: "Aceptar"
                     }]
-                )
-                const response = await httpClient
-                    .get(`reports?user_id=${user.userData.id}`, {
-                        'Authorization': `Bearer ${token}`,
-                    });
-
-                if (response.length != 0) {
-                    if (response.message != 'Reporte no registrado') {
+                );
+            } else {
+                if (response.status != false) {
+                    dispatch({ type: 'SET_CLEAR_FROM' });
+                    dispatch({
+                        type: 'CHANGE_VISIBLE_MODAL',
+                        payload: { type: 'isVisibleIncident', }
+                    })
+                    Alert.alert(
+                        "Éxito",
+                        "Reporte agregado exitosamente.",
+                        [{
+                            text: "Aceptar"
+                        }]
+                    )
+                    const response = await httpClient.get(`reports?user_id=${user.userData.id}`,
+                        {
+                            'Authorization': `Bearer ${token}`,
+                        });
+                    if (response.length != 0) {
+                        if (response.message != 'Reporte no registrado') {
+                            dispatch({
+                                type: 'SET_REPORTS_LIST',
+                                payload: { response }
+                            })
+                        }
+                    } else {
                         dispatch({
-                            type: 'SET_REPORTS_LIST',
-                            payload: { response }
-                        })
+                            type: 'SET_REQUEST_ERROR',
+                            payload: {
+                                error: true,
+                                message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                            }
+                        });
                     }
                 } else {
+                    let errorMessage = "";
+                    if (typeof response.message === "object") {
+                        const errorKey = Object.keys(response.message)[0];
+                        errorMessage = response.message[errorKey][0];
+                    } else if (typeof response.message === "string") {
+                        errorMessage = response.message;
+                    }
                     dispatch({
-                        type: 'SET_REQUEST_ERROR',
+                        type: 'CHANGE_ERROR',
                         payload: {
-                            error: true,
-                            message: 'Por el momento el servicio no está disponible, inténtelo mas tarde.'
+                            message: errorMessage
                         }
                     });
                 }
-            } else {
-                let errorMessage = "";
-                if (typeof response.message === "object") {
-                    const errorKey = Object.keys(response.message)[0];
-                    errorMessage = response.message[errorKey][0];
-                } else if (typeof response.message === "string") {
-                    errorMessage = response.message;
-                }
-                dispatch({
-                    type: 'CHANGE_ERROR',
-                    payload: {
-                        message: errorMessage
-                    }
-                });
             }
         } catch (error) {
             console.log(error);

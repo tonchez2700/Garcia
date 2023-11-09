@@ -57,7 +57,6 @@ const clearState = (dispatch) => {
 const requestForegroundPermissions = (dispatch) => {
     return async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
-        console.log(status);
         if (status === 'granted') {
             dispatch({ type: 'SET_SUCCESS_PERMISSION', payload: true })
             // let ubi = await Location.getCurrentPositionAsync();
