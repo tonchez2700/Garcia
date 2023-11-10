@@ -431,10 +431,9 @@ const store = (dispatch) => {
                             text: "Aceptar"
                         }]
                     )
-                    const response = await httpClient.get(`reports?user_id=${user.userData.id}`,
-                        {
-                            'Authorization': `Bearer ${token}`,
-                        });
+                    const response = await httpClient.get(`reports?user_id=${user.userData.id}`, {
+                        'Authorization': `Bearer ${token}`,
+                    });
                     if (response.length != 0) {
                         if (response.message != 'Reporte no registrado') {
                             dispatch({

@@ -21,8 +21,6 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
 
     const navigation = useNavigation();
     const [showPassword, setShowPassword] = useState(false);
-
-
     const handleGoogleSignIn = async () => {
         try {
             await GoogleSignin.hasPlayServices();
@@ -68,8 +66,8 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
             </View>
             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                 <GoogleSigninButton
-                    style={{ width: '90%', height: 40 }}
-                    size={GoogleSigninButton.Size.Icon}
+                    style={{ width: '90%', height: 40}}
+                    size={2}
                     color={GoogleSigninButton.Color.Dark}
                     onPress={handleGoogleSignIn}
                 />

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Garcia",
     "slug": "Garcia",
-    "version": "3.0.1",
+    "version": "3.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -50,7 +50,7 @@
     },
     "android": {
       "package": "com.copixil.GarciaApp",
-      "versionCode": 11,
+      "versionCode": 12,
       "useProxy": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",

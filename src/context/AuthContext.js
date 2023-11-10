@@ -5,8 +5,19 @@ import createDataContext from './createDataContext'
 import httpClient from '../services/httpClient'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as rootNavigation from '../helpers/rootNavigation';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-google-signin/google-signin';
 import moment from 'moment';
 
+
+
+GoogleSignin.configure({
+    offlineAccess: true,
+    webClientId: '851474503024-h4eltil6qbffdr4tr99p040ek5ajhg6c.apps.googleusercontent.com',
+});
 const initialState = {
     error: false,
     message: null,
@@ -106,7 +117,8 @@ const signout = (dispatch) => {
     return async () => {
         await AsyncStorage.removeItem('user')
         dispatch({ type: 'SIGNOUT' });
-        rootNavigation.reset()
+        GoogleSignin.signOut();
+        rootNavigation.reset();
     }
 }
 
@@ -118,6 +130,7 @@ const tryAuth = async (email, password, dispatch) => {
         password: password
     }
     const response = await httpClient.post('auth/login', data)
+
     if (response.status) {
         const user = {
             userData: {
@@ -141,6 +154,7 @@ const tryAuth = async (email, password, dispatch) => {
         dispatch({ type: 'SIGNIN', payload: { user } });
         rootNavigation.navigate('WrapperInnerScreens')
     } else {
+        GoogleSignin.signOut();
         dispatch({
             type: 'SET_RESPONSE_ERROR',
             payload: {
@@ -346,6 +360,7 @@ const authGoogle = (dispatch) => {
                 dispatch({ type: 'SIGNIN', payload: { user } });
                 rootNavigation.navigate('WrapperInnerScreens')
             } else {
+                GoogleSignin.signOut();
                 dispatch({
                     type: 'SET_RESPONSE_ERROR',
                     payload: {
