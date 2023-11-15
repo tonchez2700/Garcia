@@ -7,8 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as rootNavigation from '../helpers/rootNavigation';
 import {
     GoogleSignin,
-    GoogleSigninButton,
-    statusCodes,
 } from '@react-native-google-signin/google-signin';
 import moment from 'moment';
 
@@ -16,6 +14,7 @@ import moment from 'moment';
 
 GoogleSignin.configure({
     offlineAccess: true,
+    iosClientId: '851474503024-ac4gu1n447c9jn75ge0qffffd3j74i0d.apps.googleusercontent.com',
     webClientId: '851474503024-h4eltil6qbffdr4tr99p040ek5ajhg6c.apps.googleusercontent.com',
 });
 const initialState = {

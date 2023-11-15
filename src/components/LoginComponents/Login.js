@@ -6,15 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 import Images from "@assets/images";
 import ButtonFrom from "../Forms/ButtonFrom";
 import InputForm from "../Forms/InputForm";
-import {
-    GoogleSignin,
-    GoogleSigninButton,
-    statusCodes,
-} from '@react-native-google-signin/google-signin';
+import ButtonsGoogle from "../ButtonsGoogle"
+import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
     offlineAccess: true,
     webClientId: '851474503024-h4eltil6qbffdr4tr99p040ek5ajhg6c.apps.googleusercontent.com',
+    iosClientId: '851474503024-ac4gu1n447c9jn75ge0qffffd3j74i0d.apps.googleusercontent.com'
 });
 
 const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook, authGoogle }) => {
@@ -26,9 +24,17 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             authGoogle(userInfo);
-            // Aquí puedes usar la información de usuario para iniciar sesión en tu aplicación.
         } catch (error) {
-            console.error(error);
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+                console.log(error.code);
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (e.g. sign in) is in progress already
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+            } else {
+                // some other error happened
+            }
         }
     }
 
@@ -65,10 +71,7 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
                 <View style={{ backgroundColor: 'black', height: 1, flex: 1, alignSelf: 'center' }} />
             </View>
             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                <GoogleSigninButton
-                    style={{ width: '90%', height: 40}}
-                    size={2}
-                    color={GoogleSigninButton.Color.Dark}
+                <ButtonsGoogle
                     onPress={handleGoogleSignIn}
                 />
             </View>

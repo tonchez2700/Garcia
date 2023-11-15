@@ -28,11 +28,19 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.copixil.GarciaApp",
       "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "Esta aplicación requiere acceso a la cámara para leer documentos de identidad.",
         "NSPhotoLibraryUsageDescription": "Esta aplicación requiere acceso a la galería para guardar las imágenes de los documentos de identidad.",
         "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you.",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "851474503024-ac4gu1n447c9jn75ge0qffffd3j74i0d.apps.googleusercontent.com"
+            ]
+          }
+        ],
         "SKAdNetworkItems": [
           {
             "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
@@ -43,10 +51,9 @@
         ]
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyD9As-GqbZc_taGYaxm-w5UkOMcmLtXxRM",
-        "googleServicesFile": "./GoogleService-Info.plist"
-      },
-      "bundleIdentifier": "com.copixil.GarciaApp"
+        "googleServicesFile": "./GoogleService-Info.plist",
+        "googleMapsApiKey": "AIzaSyD9As-GqbZc_taGYaxm-w5UkOMcmLtXxRM"
+      }
     },
     "android": {
       "package": "com.copixil.GarciaApp",
