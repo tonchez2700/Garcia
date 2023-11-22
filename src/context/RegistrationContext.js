@@ -330,7 +330,6 @@ const getReports = (dispatch) => {
                 .get(`reports?user_id=${user.userData.id}`, {
                     'Authorization': `Bearer ${token}`,
                 });
-            console.log(JSON.stringify(response, null, 2));
             if (response.message === 'Unauthenticated.') {
                 Alert.alert(
                     "Tiempo agotado",
@@ -382,7 +381,7 @@ const store = (dispatch) => {
     return async (data) => {
         try {
 
-            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: false } });
+            dispatch({ type: 'FETCHING_DATA', payload: { fetchingData: true } });
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const token = user.token
             const separatedData = {
@@ -406,8 +405,7 @@ const store = (dispatch) => {
                     {
                         'Authorization': `Bearer ${token}`,
                     }
-                )
-            console.log(response);
+                );
             if (response.exception) {
                 // Manejar el error de servidor y mostrar un mensaje genérico.
                 Alert.alert(

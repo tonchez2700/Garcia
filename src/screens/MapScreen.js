@@ -54,7 +54,8 @@ const MapScreen = () => {
                 :
                 <View style={{ flex: 1 }}>
                     <MapView
-                        // showsUserLocation={true} // here is what I thought should show it
+                        showsUserLocation={true}  // here is what I thought should show it
+                        followsUserLocation={true}
                         showsMyLocationButton={true}
                         zoomControlEnabled={true}
                         style={MapsStyles.Map}

@@ -8,6 +8,7 @@ import ButtonFrom from "../Forms/ButtonFrom";
 import InputForm from "../Forms/InputForm";
 import ButtonsGoogle from "../ButtonsGoogle"
 import { GoogleSignin, statusCodes, } from '@react-native-google-signin/google-signin';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 GoogleSignin.configure({
     offlineAccess: true,
@@ -25,15 +26,19 @@ const Login = ({ onChangeText, signin, fetchingData, id, stateView, authFacebook
             const userInfo = await GoogleSignin.signIn();
             authGoogle(userInfo);
         } catch (error) {
+            console.log(error);
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 // user cancelled the login flow
                 console.log(error.code);
             } else if (error.code === statusCodes.IN_PROGRESS) {
                 // operation (e.g. sign in) is in progress already
+                console.log(error.code);
             } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
                 // play services not available or outdated
+                console.log(error.code);
             } else {
                 // some other error happened
+                console.log(error.code);
             }
         }
     }

@@ -69,7 +69,7 @@ const PhotoScreen = () => {
     };
     let takePic = async () => {
         let options = {
-            quality: 1,
+            quality: 0.5,
             base64: true,
             exif: false
         };
@@ -115,7 +115,7 @@ const PhotoScreen = () => {
     let recordVideo = () => {
         setIsRecording(true);
         let options = {
-            quality: "1080p",
+            quality: "720p",
             maxDuration: 60,
             mute: false
         };
