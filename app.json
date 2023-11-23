@@ -2,7 +2,7 @@
   "expo": {
     "name": "Garcia",
     "slug": "Garcia",
-    "version": "3.1.34",
+    "version": "3.1.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -44,14 +44,6 @@
               "com.googleusercontent.apps.851474503024-ac4gu1n447c9jn75ge0qffffd3j74i0d"
             ]
           }
-        ],
-        "SKAdNetworkItems": [
-          {
-            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
-          },
-          {
-            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
-          }
         ]
       },
       "config": {
@@ -60,7 +52,7 @@
     },
     "android": {
       "package": "com.copixil.GarciaApp",
-      "versionCode": 13,
+      "versionCode": 14,
       "useProxy": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
@@ -71,10 +63,8 @@
         "RECORD_AUDIO",
         "READ_EXTERNAL_STORAGE",
         "INTERNET",
-        "ACCESS_BACKGROUND_LOCATION",
         "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
+        "ACCESS_LOCATION_EXTRA_COMMANDS",
         "FOREGROUND_SERVICE"
       ],
       "config": {
@@ -88,7 +78,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "61d46014-8a2e-4da2-9d91-7e6cb1e43812"
+        "projectId": "c0c3b978-cd2a-45e9-b3f7-668d01a2d9b1"
       }
     }
   }

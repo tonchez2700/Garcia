@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
 import { Context as LocationContext } from '../context/LocationContext';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, enableLatestRenderer } from 'react-native-maps';
 import { MapsStyles } from '../theme/MapsStyles';
 import CardAlert from '../components/CardAlert';
 import { Icon, Button, Card } from 'react-native-elements';
@@ -15,6 +15,7 @@ import ModalAlert from '../components/Modal/ModalAlert';
 import CardIncident from '../components/CardIncident';
 import Images from '@assets/images';
 
+
 const MapScreen = () => {
     const navigation = useNavigation();
     const {
@@ -24,13 +25,12 @@ const MapScreen = () => {
         getReports,
         getReportList,
         locationRevers,
-        store,
     } = useContext(RegistrationContext);
     const { state: stateLocation, requestForegroundPermissions } = useContext(LocationContext)
     const { state: stateAuth, signout } = useContext(AuthContext);
     const [markCard, setmarkCard] = useState('');
     const [location, setLocation] = useState(null);
-
+    enableLatestRenderer();
     useEffect(() => {
         requestForegroundPermissions()
         clearStateFrom();
@@ -43,8 +43,8 @@ const MapScreen = () => {
         const randomIndex = Math.floor(Math.random() * colors.length);
         return colors[randomIndex];
     }
-
-
+    const ValueLocation = Platform.OS === 'android' ? false : true;
+    
     return (
         <View style={MapsStyles.container}>
             {!stateLocation.hasPermission ?
@@ -54,7 +54,7 @@ const MapScreen = () => {
                 :
                 <View style={{ flex: 1 }}>
                     <MapView
-                        showsUserLocation={true}  // here is what I thought should show it
+                        showsUserLocation={ValueLocation}  // here is what I thought should show it
                         followsUserLocation={true}
                         showsMyLocationButton={true}
                         zoomControlEnabled={true}
