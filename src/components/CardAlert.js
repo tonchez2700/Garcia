@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-nativ
 import { Input, Icon } from 'react-native-elements'
 
 const CardAlert = () => {
-    const leftValue = '10%';
+    const leftValue = Platform.OS === 'android' ? '5%' : '10%';
 
     return (
         <View style={[styles.container, { left: leftValue }]}>

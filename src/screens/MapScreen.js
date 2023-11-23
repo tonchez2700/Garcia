@@ -54,7 +54,7 @@ const MapScreen = () => {
                 :
                 <View style={{ flex: 1 }}>
                     <MapView
-                        showsUserLocation={ValueLocation}  // here is what I thought should show it
+                        showsUserLocation={true}  // here is what I thought should show it
                         followsUserLocation={true}
                         showsMyLocationButton={true}
                         zoomControlEnabled={true}
