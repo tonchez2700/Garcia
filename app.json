@@ -2,7 +2,7 @@
   "expo": {
     "name": "Garcia",
     "slug": "Garcia",
-    "version": "3.1.4",
+    "version": "3.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -12,9 +12,6 @@
     },
     "plugins": [
       [
-        "expo-apple-authentication"
-      ],
-      [
         "@react-native-google-signin/google-signin"
       ],
       [
@@ -22,6 +19,9 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
+      ],
+      [
+        "expo-apple-authentication"
       ]
     ],
     "updates": {
@@ -31,28 +31,21 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.copixil.GarciaApp",
-      "usesAppleSignIn": true,
       "supportsTablet": false,
+      "usesAppleSignIn": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Esta aplicación requiere acceso a la cámara para leer documentos de identidad.",
         "NSPhotoLibraryUsageDescription": "Esta aplicación requiere acceso a la galería para guardar las imágenes de los documentos de identidad.",
-        "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you.",
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.851474503024-ac4gu1n447c9jn75ge0qffffd3j74i0d"
-            ]
-          }
-        ]
+        "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you."
       },
       "config": {
         "googleMapsApiKey": "AIzaSyD9As-GqbZc_taGYaxm-w5UkOMcmLtXxRM"
-      }
+      },
+      "bundleIdentifier": "com.copixil.GarciaApp"
     },
     "android": {
       "package": "com.copixil.GarciaApp",
-      "versionCode": 14,
+      "versionCode": 12,
       "useProxy": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
@@ -68,6 +61,7 @@
         "FOREGROUND_SERVICE"
       ],
       "config": {
+        "googleServicesFile": "./google-services.json",
         "googleMaps": {
           "apiKey": "AIzaSyD9As-GqbZc_taGYaxm-w5UkOMcmLtXxRM"
         }
