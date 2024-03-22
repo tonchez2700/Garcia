@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from "react-na
 import { Button, SocialIcon, } from "react-native-elements";
 import { AuthStyle } from "../../theme/AuthStyles";
 import { useNavigation } from "@react-navigation/native";
-import Images from "@assets/images";
+import Images from "../../components/assets/images";
 import ButtonFrom from "../Forms/ButtonFrom";
 import InputForm from "../Forms/InputForm";
 import ButtonsGoogle from "../ButtonsGoogle"

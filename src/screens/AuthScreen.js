@@ -12,7 +12,7 @@ import useHandleOnChangeTextInput from "./../hooks/useHandleOnChangeTextInput";
 import Login from "../components/LoginComponents/Login";
 import Registration from "../components/LoginComponents/Registration";
 import Recovery from "../components/LoginComponents/Recovery";
-import Images from "@assets/images";
+import Images from "../components/assets/images";
 import SimpleNavBar from '../components/SimpleNavBar'
 
 const AuthScreen = () => {

@@ -2,7 +2,7 @@ import React from 'react'
 import { StatusBar } from "react-native";
 import { Icon } from 'react-native-elements';
 import Logo from './Logo';
-import Images from '@assets/images';
+import Images from '../components/assets/images';
 
 const SimpleNavBar = () => {
     return (

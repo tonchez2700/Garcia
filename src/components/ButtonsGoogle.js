@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import Images from "@assets/images";
+import Images from "../components/assets/images";
 const ButtonsGoogle = ({ onPress }) => {
 
 

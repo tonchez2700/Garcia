@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Context as RegistrationContext } from '../../context/RegistrationContext';
 import * as Location from 'expo-location';
 import { Icon, Button, Input } from 'react-native-elements'
-import Images from "@assets/images";
+import Images from "../../components/assets/images";
 
 
 const { width } = Dimensions.get("window");

@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Image, View } from 'react-native'
-import Images from '@assets/images';
+import Images from '../components/assets/images';
 
 const Logo = ({ size, ...otherProps }) => {
     

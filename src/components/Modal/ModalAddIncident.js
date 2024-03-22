@@ -5,7 +5,7 @@ import { Context as RegistrationContext } from '../../context/RegistrationContex
 import { UserSytles } from '../../theme/UserSytles';
 import DropD from '../DropD';
 import { Video } from 'expo-av';
-import Images from "@assets/images";
+import Images from "../../components/assets/images";
 import { Icon, Button } from 'react-native-elements'
 
 

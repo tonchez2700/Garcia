@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import {
-    StyleSheet, View, Text, Image,
+    StyleSheet, View, Text, Image,Platform,
     Dimensions, UIManager, LayoutAnimation
 } from 'react-native'
-import Images from "@assets/images";
+import Images from "../components/assets/images";
 import { CardSytles } from '../theme/CardStyles';
 import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';

@@ -29,7 +29,7 @@ export const AuthStyle = StyleSheet.create({
         paddingHorizontal: 15,
     },
     ImagenLogo: {
-        height: 69,
+        height: 60,
         width: 245,
         marginBottom: 30,
         alignSelf: 'center'

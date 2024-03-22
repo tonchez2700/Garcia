@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, ImageBackground, ActivityIndicator } from 'react-native'
-import Images from '@assets/images';
+import Images from '../../components/assets/images';
 import Logo from './../components/Logo';
 import tw from 'tailwind-react-native-classnames';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image ,Platform} from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as RegistrationContext } from '../context/RegistrationContext';
 import { Context as LocationContext } from '../context/LocationContext';
@@ -13,7 +13,7 @@ import ModalList from '../components/Modal/ModalList';
 import ModalAddIncident from '../components/Modal/ModalAddIncident';
 import ModalAlert from '../components/Modal/ModalAlert';
 import CardIncident from '../components/CardIncident';
-import Images from '@assets/images';
+import Images from '../components/assets/images';
 
 
 const MapScreen = () => {
@@ -68,8 +68,8 @@ const MapScreen = () => {
                         pitchEnabled={true}
                         onPress={(e) => { locationRevers(e.nativeEvent.coordinate), setLocation(e.nativeEvent.coordinate) }}
                         initialRegion={{
-                            latitude: 25.810530,
-                            longitude: -100.594123,
+                            latitude: 25.67507,
+                            longitude: -100.31847,
                             latitudeDelta: 0.05,
                             longitudeDelta: 0.05,
                         }}

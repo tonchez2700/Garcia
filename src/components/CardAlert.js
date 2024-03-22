@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text, TextInput, Platform} from 'react-native'
 import { Input, Icon } from 'react-native-elements'
 
 const CardAlert = () => {

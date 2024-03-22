@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { RegistrationSchema } from "../../config/schemas";
 import useHandleOnChangeTextInput from "../../hooks/useHandleOnChangeTextInput";
-import Images from "@assets/images";
+import Images from "../../components/assets/images";
 import ButtonFrom from "../Forms/ButtonFrom";
 
 const Registration = ({ fetchingData, id, stateView }) => {

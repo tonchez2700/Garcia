@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { TouchableOpacity, Image, } from 'react-native';
 import { Header, Icon } from 'react-native-elements';
 import Logo from './Logo';
-import Images from '@assets/images';
+import Images from '../components/assets/images';
 
 const NavBar = (navigation) => {
 
@@ -21,7 +21,7 @@ const NavBar = (navigation) => {
             leftContainerStyle={{ justifyContent: 'center' }}
             rightComponent={
                 <Image source={Images.logoAdmin} style={{
-                    width: '100%',
+                    width: '50%',
                     height: 40,
                     resizeMode: 'stretch',
                 }} />}

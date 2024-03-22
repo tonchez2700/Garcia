@@ -3,7 +3,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerItemList, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Context as AuthContext } from './../context/AuthContext';
-import Images from "@assets/images";
+import Images from "../components/assets/images";
 import { NavigationContainer } from '@react-navigation/native';
 
 

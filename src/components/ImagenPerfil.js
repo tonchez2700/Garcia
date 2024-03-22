@@ -4,7 +4,7 @@ import {
     Image, TouchableOpacity, Platform,
 } from "react-native";
 import { Input, Button } from 'react-native-elements'
-import Images from "@assets/images";
+import Images from "../components/assets/images";
 import * as ImagePicker from 'expo-image-picker';
 import { UserSytles } from "../theme/UserSytles";
 

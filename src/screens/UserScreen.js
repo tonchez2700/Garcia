@@ -10,7 +10,7 @@ import { Context as RegistrationContext } from "../context/RegistrationContext";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { UserSytles } from "../theme/UserSytles";
-import Images from "@assets/images";
+import Images from "../components/assets/images";
 
 
 const UserScreen = () => {
