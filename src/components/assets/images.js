@@ -9,7 +9,7 @@ const images = {
     iconAddReportes: require('./img/iconoAddreportes.png'),
     iconSalida: require('./img/salida.png'),
     iconGoogle: require('./img/icono-google.png'),
-    garciaBackgraund: require('./img/garciaBackgraund.png'),
+    garciaBackgraund: require('./img/garciaBackgraund.jpg'),
     garciaLogo: require('./img/garciaLogo.png'),
     garciaLogoBlanco: require('./img/Garcia_logoWhite.png'),
     perfil: require('./img/userProfile.png'),
